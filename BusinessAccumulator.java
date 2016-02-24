@@ -7,8 +7,7 @@ public class BusinessAccumulator implements ActionListener {
 	public BusinessAccumulator() {
 		// TODO Auto-generated constructor stub
 	}
-	HELLO
-	asdfasdfkasdkfn askdnfkasdjfkasjdfkjasdfkjasdlkfjasdf
+
 	
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -17,8 +16,7 @@ public class BusinessAccumulator implements ActionListener {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-sadfkjasdfkjas;df
-asdfasdf
-	}
 
+	}
+	Hello from Chase
 }
