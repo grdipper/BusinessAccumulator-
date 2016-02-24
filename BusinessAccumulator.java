@@ -13,7 +13,11 @@ public class BusinessAccumulator implements ActionListener {
 		// TODO Auto-generated method stub
 	hello from alden
 	}
-
+	
+	public void static finally this Grant(){
+		
+	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
