@@ -11,12 +11,15 @@ public class BusinessAccumulator implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-	hello from alden
+	
 	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
 	}
-	Hello from Chase
+	
+	public void Chase(char[] bubba) {
+		System.out.println("This is Chase!");
+	}
 }
