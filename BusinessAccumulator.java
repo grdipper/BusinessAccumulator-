@@ -10,7 +10,7 @@ public class BusinessAccumulator implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-
+	FUCK OFF
 	}
 
 	public static void main(String[] args) {
