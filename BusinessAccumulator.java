@@ -1,19 +1,20 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.text.DecimalFormat;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 
 
-public class BusinessAccumulator implements ActionListener, KeyListener {
+public class BusinessAccumulator implements ActionListener {
 
 	// globalUserInputValueMath is the User's input string in correct double
 	// form
@@ -21,93 +22,114 @@ public class BusinessAccumulator implements ActionListener, KeyListener {
 	static double accumulatedValue = 0;
 	
 	//Grant's GUI variables
-	JFrame	accWindow	= new JFrame();
-	JButton accButton	= new JButton();
-	JButton clearButton	= new JButton("Clear");
-	JTextField inNumber	= new JTextField(10); //sets the length of the text field
-	JTextField tot		= new JTextField(5); // sets the length of the text field
-	JTextField logArea	= new JTextField();
-	JTextField errorMsg = new JTextField();
-	JScrollBar scroll	= new JScrollBar();
-	JPanel clrtotnum	= new JPanel();
-	JLabel totLabel		= new JLabel("Total ="); //Text right beside the "tot" text field
-	JLabel inNumLabel	= new JLabel("Enter amount to add =>"); // Text right beside the "inNumber" text field 
+	public JFrame	accWindow			= new JFrame();
+	public JButton clearButton			= new JButton("Clear");
+	public JTextField inNumber			= new JTextField(10); //sets the length of the text field
+	public JTextField tot				= new JTextField(5); // sets the length of the text field
+	public JTextArea logArea			= new JTextArea("");
+	public JTextField errorMsg 			= new JTextField();
+	public JScrollPane logAreaScroll	= new JScrollPane(logArea);
+	public JPanel clrtotnum				= new JPanel();
+	public JLabel totLabel				= new JLabel("Total ="); //Text right beside the "tot" text field
+	public JLabel inNumLabel			= new JLabel("Enter amount to add =>"); // Text right beside the "inNumber" text field 
 	
 	
 	
+	/*
+	***********************************************************************************
+	GUI Construction and Function
 	
+	GUI Construction Current Status: 1 more issue
+	GUI Construction Current Issues: Can't seem to figure out the scroll bar...Simple I know.
+	
+	GUI Function Current Status: Almost done.
+	GUI Function Current Issues: 
+	
+	***********************************************************************************
+	*/
 	
 	public BusinessAccumulator() {
 		//Build the GUI
 		accWindow.setSize(700,300);
 		accWindow.setLocation(250, 200);
 		accWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		accWindow.getContentPane().add(accButton,"Center");
 		accWindow.getContentPane().add(logArea,"Center");
 		accWindow.getContentPane().add(errorMsg,"South");
 		accWindow.getContentPane().add(clrtotnum,"North");
+		accWindow.getContentPane().add(logAreaScroll,"East");
+		
 		
 		accWindow.setTitle("Business Accumulator - Enter an amount to be added (minus sign OK)");
-		accButton.setMnemonic(KeyEvent.VK_ENTER);
 		
-		clrtotnum.add(clearButton);
-		clrtotnum.add(totLabel);
-		clrtotnum.add(tot);
-		clrtotnum.add(inNumLabel);
-		clrtotnum.add(inNumber);
+		clrtotnum.add(clearButton);	// --
+		clrtotnum.add(totLabel);	//	 |
+		clrtotnum.add(tot);			//	 | - This section sets the panel on the top of the GUI
+		clrtotnum.add(inNumLabel);	//	 |
+		clrtotnum.add(inNumber);	// --
 		
-		tot.setText("$0");
-		tot.setBackground(Color.CYAN);
+		accWindow.getContentPane().add(logAreaScroll,"East");
+		logAreaScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		
+		tot.setText("0");
+		tot.setEditable(false);
+		logArea.setBackground(Color.WHITE); 	//
+		logArea.setEditable(false);				//INITILIZING THE GUI BACKGROUND
+		errorMsg.setBackground(Color.WHITE);	//
+		errorMsg.setEditable(false);			//
+		
+		logArea.setLineWrap(true);
+		logArea.setWrapStyleWord(true);
 		
 		
-		
-		accWindow.setVisible(true);
-		
-		
-		accButton.addActionListener(this);
+		inNumber.addActionListener(this);		// The reason that this is on the inNumber TEXTFIELD is because the actionListener by default
+												// listens for the ENTER key. When the enter key is pressed in the inNumber textfield, an a
+												// action will occur.
 		clearButton.addActionListener(this);
 		
-		
-		
-		
-		
-		
-		
-		
+		accWindow.setVisible(true);				//ARE YOU NOT ENTERTAINED!?!?!?!?!
 		//End of GUI
 	}
 
 	
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource()==accButton) {
-			System.out.println("Acc Button Pressed");
-			//CHECK FOR ERRORS IN THE textArea
-			
-			if(CheckForUserInput(inNumber.getText())) {
-			
+		
+		final String newLine = "\n";
+		if(e.getSource()==inNumber) {
+			System.out.println("Number has been entered...");
+			String userInput = inNumber.getText();
+			if((CheckForUserInput(userInput))) {
+				inNumber.setText("");
+				System.out.println("No Errors");
+				errorMsg.setBackground(Color.WHITE);
+				errorMsg.setText("");
 				//No errors in textArea
 				//Continue on to accumulate the value and displaying it in the "log" textArea
 				//Alden's code already has set the value that will be used to accumulate
-				
 				AccumulateTotal();
-			
+				logArea.setText(logArea.getText() + newLine);
+				
 			}
 			
 			else {
 				
-				//Show error in the GUI
-				
+				System.out.println("User Input was: " + userInput);
+				errorMsg.setBackground(Color.PINK);
+				errorMsg.setFont(new Font("default",Font.BOLD,13));
+				errorMsg.setText(errorWithUserInput);
+				inNumber.setText("");
 				return;
-			
 			}
+			
 		
 		
 		}
 		
 		if(e.getSource()==clearButton) {
-			tot.setText("$0");
+			System.out.println("Clear Button Pressed...");
+			tot.setText("0");
 			inNumber.setText("");
-	
+			errorMsg.setBackground(Color.WHITE);
+			errorMsg.setText("");
 		}
 	
 	}
@@ -127,51 +149,44 @@ public class BusinessAccumulator implements ActionListener, KeyListener {
 	the new calculated value.
 	Places it in the "log" textArea and scrolls to the bottom 
 	
-	Current status: incomplete
+
+	Current status: ALMOST DONE
+	Issues: Treats EVERY numerical input as a double.
+			If the new accumulated value is nonnegative, then the "tot" text field background needs to be CYAN
+			If the new accumulated valie is negative, then the "tot" text field background needs to be RED
 	
 	***********************************************************************************
 	*/
 	
 	void AccumulateTotal() {
-		//Local string variable to be added to LOGAREA
-		
-	String newAccumulate = "";
-		double oldAccumulate=accumulatedValue;
-		if(globalUserInputValueMath>=0) {
-			//POSITIVE NUMBER TYPED
-			//Shows up in "log" textArea as "old_value + typed_value = new_value"
-			//Check Bowman's program if unsure of "log" format
-			
-			//Set string newAccumulate to what it should look like here
-			accumulatedValue =globalUserInputValueMath + accumulatedValue;
-			newAccumulate= oldAccumulate + " + " + globalUserInputValueMath + " = " + accumulatedValue; 
-			
-		}
-		
-		else {
-			//NEGATIVE NUMBER TYPED
-			//Shows up in "log" textArea as "old_value - absolute_value_of(typed_value) = new_value"
-			//Check Bowman's program if unsure of "log" format
-			
-			//Set string newAccumulate to what it should look like here
-			double absolute_userinput= -1*globalUserInputValueMath;//takes absolute value of our globalUserInputValueMath
-			accumulatedValue = globalUserInputValueMath + accumulatedValue;//calculates new  accumulated Value 
-			newAccumulate= oldAccumulate + " - " + absolute_userinput + " = " + accumulatedValue; 
-			
-		}
-		
-		//Add the newAccumulate string to the "log" textArea and scroll down to bottom
-		
-		
-		//GRANT - Feel free to change the names of these, I made them called LOGAREA
-		// before you made the GUI 
-		LOGAREA.append(newAccumulate);
-		LOGAREA.setCaretPosition(LOGAREA.getDocument().getLength()); 
-	
-	
-	
+ 		//Local string variable to be added to LOGAREA
+ 		double oldAccumulate=accumulatedValue;
+ 		
+ 		if(globalUserInputValueMath>=0) {
+ 			//POSITIVE NUMBER TYPED
+ 			//Shows up in "log" textArea as "old_value + typed_value = new_value"
+ 			//Check Bowman's program if unsure of "log" format
+ 			
+ 			//Set string newAccumulate to what it should look like here
+ 			accumulatedValue = globalUserInputValueMath + accumulatedValue;
+ 			logArea.setText(logArea.getText() + oldAccumulate + " + " + globalUserInputValueMath + " = " + accumulatedValue);
+ 			//oldAccumulate + " + " + globalUserInputValueMath + " = " + accumulatedValue; 
+ 			tot.setText("$" + accumulatedValue);
+ 		}
+ 		
+ 		else {
+ 			//NEGATIVE NUMBER TYPED
+ 			//Shows up in "log" textArea as "old_value - absolute_value_of(typed_value) = new_value"
+  			//Check Bowman's program if unsure of "log" format
+  			
+  			//Set string newAccumulate to what it should look like here
+ 			double absolute_userinput= Math.abs(globalUserInputValueMath);//takes absolute value of our globalUserInputValueMath
+ 			absolute_userinput = -1*(globalUserInputValueMath);//takes absolute value of our globalUserInputValueMath
+  			accumulatedValue = globalUserInputValueMath + accumulatedValue;//calculates new  accumulated Value 
+  			logArea.setText(logArea.getText() + oldAccumulate + " - " + absolute_userinput + " = " + accumulatedValue);
+  			tot.setText("$" + accumulatedValue);
+ 		}
 	}
-	
 	
 	
 	
@@ -183,7 +198,8 @@ public class BusinessAccumulator implements ActionListener, KeyListener {
 	Checks for errors and returns false if the value to be accumulated has errors
 	Sets a global variable to what the user inputed as a double
 	
-	
+	Status: ALMOST DONE
+	Issue: It treats an empty entry as a DoubleParseError...
 	
 	***********************************************************************************
 	*/
@@ -203,13 +219,12 @@ public class BusinessAccumulator implements ActionListener, KeyListener {
 		int userInputContainsTwoAfterDecimal = 0;
 		boolean userInputContainsDoubleParseError = false;
 		double userValue = 0;
-		String storedUserInput = userInput;
+		//String storedUserInput = userInput;
 
 		// Remove excess whitespace and handles a blank input
 		userInput = userInput.trim();
 
 		if (userInput == "") {
-			errorWithUserInput = "";
 			globalUserInputValueMath = 0;
 			return false;
 		}
