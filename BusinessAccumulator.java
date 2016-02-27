@@ -154,7 +154,7 @@ public class BusinessAccumulator implements ActionListener, KeyListener {
 			//Check Bowman's program if unsure of "log" format
 			
 			//Set string newAccumulate to what it should look like here
-			double absolute_userinput= abs(globalUserInputValueMath);//takes absolute value of our globalUserInputValueMath
+			double absolute_userinput= -1*globalUserInputValueMath;//takes absolute value of our globalUserInputValueMath
 			accumulatedValue = globalUserInputValueMath + accumulatedValue;//calculates new  accumulated Value 
 			newAccumulate= oldAccumulate + " - " + absolute_userinput + " = " + accumulatedValue; 
 			
