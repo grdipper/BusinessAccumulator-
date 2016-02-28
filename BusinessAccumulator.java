@@ -371,6 +371,10 @@ public class BusinessAccumulator implements ActionListener {
 		if (userInputContainsDoubleParseError == true) {
 			errorWithUserInput = "amount is not numeric";
 			return false;
+		} else if (userInput.startsWith("0") && (userValue != 0)){
+		errorWithUserInput = "The amount should not have a leading 0.";
+		globalUserInputValueMath = 0;
+		return false;
 
 		} else if (userInputContainsTwoAfterDecimal == 1) {
 			errorWithUserInput = "Two decimal digits are required following a decimal point.";
