@@ -223,7 +223,7 @@ public class BusinessAccumulator implements ActionListener {
 		double userValue = 0;
 		String storedUserInput = userInput;
 
-		// Remove excess whitespace and handles a blank input
+		//Remove excess whitespace and handles a blank input
 		userInput = userInput.trim();
 
 		if (userInput == "") {
@@ -267,7 +267,7 @@ public class BusinessAccumulator implements ActionListener {
 		if (commaCount > 0) {
 			if (userInput.contains(",")) {
 				userInputContainsThreeAfterComma = 1;
-				System.out.println("contains ,");
+				// Trace Statement: System.out.println("contains ,");
 				int commaLocation = userInput.lastIndexOf(',');
 				int correctLocationFactor = userInput.lastIndexOf(',') + 1; // not
 																			// sure
@@ -275,7 +275,7 @@ public class BusinessAccumulator implements ActionListener {
 																			// these
 																			// numbers
 
-				System.out.println(commaLocation);
+				// Trace Statement: System.out.println(commaLocation);
 
 				if (userInputContainsTwoAfterDecimal == 2) {
 					correctLocationFactor = userInput.lastIndexOf(',') + 1; // not
@@ -283,10 +283,10 @@ public class BusinessAccumulator implements ActionListener {
 																			// of
 																			// these
 																			// numbers
-					System.out.println("has decimal");
+					// Trace Statement: System.out.println("has decimal");
 				}
-				System.out.println("correctLocationFactor: " + correctLocationFactor);
-				System.out.println("length: " + userInput.length());
+				// Trace Statement: System.out.println("correctLocationFactor: " + correctLocationFactor);
+				// Trace Statement: System.out.println("length: " + userInput.length());
 				if (((userInput.indexOf('.') - userInput.lastIndexOf(',')) != 4)
 						&& (userInputContainsTwoAfterDecimal == 2)) {
 					errorWithUserInput = ("Illegal use of comma in " + userInput);
@@ -295,11 +295,11 @@ public class BusinessAccumulator implements ActionListener {
 				if ((userInput.length() - correctLocationFactor) < 4) {
 					userInputContainsThreeAfterComma = 2;
 					// Trace Statements
-					System.out.println("no decimal and works");
+					// Trace Statement: System.out.println("no decimal and works");
 				} else if ((userInput.length() - (correctLocationFactor)) < 7) {
 					userInputContainsThreeAfterComma = 2;
 					// Trace Statements
-					System.out.println("decimal and works");
+					// Trace Statement: System.out.println("decimal and works");
 				}
 
 			}
@@ -312,8 +312,8 @@ public class BusinessAccumulator implements ActionListener {
 			String checkCommaPlacements = userInput;
 			while (commaCount > 1) {
 
-				System.out.println("previousCommaLocation: " + previousCommaLocation);
-				System.out.println("nextCommaLocation: " + nextCommaLocation);
+				// Trace Statement: System.out.println("previousCommaLocation: " + previousCommaLocation);
+				// Trace Statement: System.out.println("nextCommaLocation: " + nextCommaLocation);
 				// For first case running through the string
 				if (previousCommaLocation == 0) {
 					// Check to see if there is more than three numbers in front
@@ -335,20 +335,20 @@ public class BusinessAccumulator implements ActionListener {
 				// digits between each other
 				else if ((nextCommaLocation - previousCommaLocation) != 4) {
 
-					System.out.println("Check the correct number between commas");
+					// Trace Statement: System.out.println("Check the correct number between commas");
 					errorWithUserInput = ("Illegal use of comma in " + userInput);
 					return false;
 				}
 
 				// Creates a new string with the furthest left comma removed
-				System.out.println("1st checkCommaPlacements :" + checkCommaPlacements);
+				// Trace Statement: System.out.println("1st checkCommaPlacements :" + checkCommaPlacements);
 				checkCommaPlacements = checkCommaPlacements.substring(previousCommaLocation, nextCommaLocation) + '&'
 						+ checkCommaPlacements.substring(nextCommaLocation + 1, checkCommaPlacements.length());
 
 				previousCommaLocation = nextCommaLocation;
 				nextCommaLocation = checkCommaPlacements.indexOf(',');
 				commaCount = commaCount - 1;
-				System.out.println("2nd checkCommaPlacements :" + checkCommaPlacements);
+				// Trace Statement: System.out.println("2nd checkCommaPlacements :" + checkCommaPlacements);
 
 				// 343,454,234
 			}
