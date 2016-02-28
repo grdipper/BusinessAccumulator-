@@ -1,7 +1,9 @@
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
 import javax.swing.JButton;
@@ -51,13 +53,21 @@ public class BusinessAccumulator implements ActionListener {
 	
 	public BusinessAccumulator() {
 		//Build the GUI
+		
+		
 		accWindow.setSize(700,300);
 		accWindow.setLocation(250, 200);
 		accWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		accWindow.getContentPane().add(logArea,"Center");
-		accWindow.getContentPane().add(errorMsg,"South");
+		
+		accWindow.getContentPane().add(logAreaScroll, "Center");
 		accWindow.getContentPane().add(clrtotnum,"North");
-		accWindow.getContentPane().add(logAreaScroll,"East");
+		
+		accWindow.getContentPane().add(errorMsg,"South");
+		
+        
+		
+		
+		
 		
 		
 		accWindow.setTitle("Business Accumulator - Enter an amount to be added (minus sign OK)");
@@ -68,10 +78,10 @@ public class BusinessAccumulator implements ActionListener {
 		clrtotnum.add(inNumLabel);	//	 |
 		clrtotnum.add(inNumber);	// --
 		
-		accWindow.getContentPane().add(logAreaScroll,"East");
+		
 		logAreaScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		
-		tot.setText("0");
+		tot.setText("$0");
 		tot.setEditable(false);
 		logArea.setBackground(Color.WHITE); 	//
 		logArea.setEditable(false);				//INITILIZING THE GUI BACKGROUND
@@ -80,6 +90,8 @@ public class BusinessAccumulator implements ActionListener {
 		
 		logArea.setLineWrap(true);
 		logArea.setWrapStyleWord(true);
+		
+		tot.setBackground(Color.CYAN);			//MAKE IT BLUE!?
 		
 		
 		inNumber.addActionListener(this);		// The reason that this is on the inNumber TEXTFIELD is because the actionListener by default
@@ -98,6 +110,10 @@ public class BusinessAccumulator implements ActionListener {
 		if(e.getSource()==inNumber) {
 			System.out.println("Number has been entered...");
 			String userInput = inNumber.getText();
+			if(inNumber.getText().trim().isEmpty()) {
+				inNumber.setText("");
+				return;
+			}
 			if((CheckForUserInput(userInput))) {
 				inNumber.setText("");
 				System.out.println("No Errors");
@@ -127,10 +143,12 @@ public class BusinessAccumulator implements ActionListener {
 		
 		if(e.getSource()==clearButton) {
 			System.out.println("Clear Button Pressed...");
-			tot.setText("0");
+			accumulatedValue = 0;
+			tot.setText("$0");
 			inNumber.setText("");
 			errorMsg.setBackground(Color.WHITE);
 			errorMsg.setText("");
+			tot.setBackground(Color.cyan);
 		}
 	
 	}
@@ -150,7 +168,6 @@ public class BusinessAccumulator implements ActionListener {
 	the new calculated value.
 	Places it in the "log" textArea and scrolls to the bottom 
 	
-
 	Current status: ALMOST DONE
 	Issues: Treats EVERY numerical input as a double.
 			If the new accumulated value is nonnegative, then the "tot" text field background needs to be CYAN
@@ -170,7 +187,8 @@ public class BusinessAccumulator implements ActionListener {
  			
  			//Set string newAccumulate to what it should look like here
  			accumulatedValue = globalUserInputValueMath + accumulatedValue;
- 			logArea.setText(logArea.getText() + oldAccumulate + " + " + globalUserInputValueMath + " = " + accumulatedValue);
+ 			accumulatedValue = Math.round(accumulatedValue * 100.0) / 100.0;
+ 			logArea.append(oldAccumulate + " + " + globalUserInputValueMath + " = " + accumulatedValue);
  			//oldAccumulate + " + " + globalUserInputValueMath + " = " + accumulatedValue; 
  			tot.setText("$" + accumulatedValue);
  		}
@@ -183,10 +201,30 @@ public class BusinessAccumulator implements ActionListener {
   			//Set string newAccumulate to what it should look like here
  			double absolute_userinput= Math.abs(globalUserInputValueMath);//takes absolute value of our globalUserInputValueMath
  			absolute_userinput = -1*(globalUserInputValueMath);//takes absolute value of our globalUserInputValueMath
-  			accumulatedValue = globalUserInputValueMath + accumulatedValue;//calculates new  accumulated Value 
-  			logArea.setText(logArea.getText() + oldAccumulate + " - " + absolute_userinput + " = " + accumulatedValue);
+  			accumulatedValue = globalUserInputValueMath + accumulatedValue;//calculates new  accumulated Value
+  			accumulatedValue = Math.round(accumulatedValue * 100.0) / 100.0;
+  			logArea.append(oldAccumulate + " - " + absolute_userinput + " = " + accumulatedValue);
   			tot.setText("$" + accumulatedValue);
  		}
+ 		if((double)((int)accumulatedValue)-(accumulatedValue)==0) {
+ 			//Value has non-zero digits beyond decimal point (integer)
+ 			int noTrailZero = (int) accumulatedValue;
+ 			tot.setText("$" + noTrailZero);
+ 		}
+ 		
+ 		
+ 		
+ 		
+ 		logArea.setCaretPosition(logArea.getDocument().getLength());
+ 		
+ 		if(accumulatedValue>=0) {
+ 			tot.setBackground(Color.CYAN);			//MAKE IT BLUE!?
+ 		}
+ 		else {
+ 			tot.setBackground(Color.red);
+ 		}
+ 		
+ 		
 	}
 	
 	
@@ -200,7 +238,7 @@ public class BusinessAccumulator implements ActionListener {
 	Sets a global variable to what the user inputed as a double
 	
 	Status: ALMOST DONE
-	Issue: It treats an empty entry as a DoubleParseError...
+	Issue: 
 	
 	***********************************************************************************
 	*/
@@ -252,13 +290,15 @@ public class BusinessAccumulator implements ActionListener {
 		if (userInput.contains(".")) {
 			userInputContainsTwoAfterDecimal = 1;
 			int decimalLocation = userInput.indexOf('.');
-			if ((userInput.length() - 3) <= decimalLocation) {
+			if ((userInput.length() - 3) == decimalLocation) {
 				userInputContainsTwoAfterDecimal = 2;
 				// //Trace Statements
-				// System.out.println(userInput.length());
-				// System.out.println(decimalLocation);
-				// System.out.println("truee");
+				//System.out.println(userInput.length());
+				//System.out.println(decimalLocation);
+				System.out.println("truee");
 			}
+			else
+				System.out.println("problem");
 
 		}
 
@@ -371,7 +411,7 @@ public class BusinessAccumulator implements ActionListener {
 		if (userInputContainsDoubleParseError == true) {
 			errorWithUserInput = "amount is not numeric";
 			return false;
-		} else if (userInput.startsWith("0") && (userValue != 0)){
+		} else if (userInput.startsWith("0") && (!(Math.abs(userValue) < 1))){
 		errorWithUserInput = "The amount should not have a leading 0.";
 		globalUserInputValueMath = 0;
 		return false;
