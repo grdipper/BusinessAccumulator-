@@ -41,6 +41,7 @@ public class BusinessAccumulator implements ActionListener {
 	
 	GUI Construction Current Status: 1 more issue
 	GUI Construction Current Issues: Can't seem to figure out the scroll bar...Simple I know.
+											ayyy lmao
 	
 	GUI Function Current Status: Almost done.
 	GUI Function Current Issues: 
@@ -217,14 +218,16 @@ public class BusinessAccumulator implements ActionListener {
 		// satisfies parameters, 2 indicates that there is a decimal present and
 		// it follows parameters
 		int userInputContainsTwoAfterDecimal = 0;
+		int userInputContainsThreeAfterComma = 0;
 		boolean userInputContainsDoubleParseError = false;
 		double userValue = 0;
-		//String storedUserInput = userInput;
+		String storedUserInput = userInput;
 
 		// Remove excess whitespace and handles a blank input
 		userInput = userInput.trim();
 
 		if (userInput == "") {
+			errorWithUserInput = "";
 			globalUserInputValueMath = 0;
 			return false;
 		}
@@ -259,6 +262,102 @@ public class BusinessAccumulator implements ActionListener {
 
 		}
 
+		int commaCount = userInput.length() - userInput.replace(",", "").length();
+
+		if (commaCount > 0) {
+			if (userInput.contains(",")) {
+				userInputContainsThreeAfterComma = 1;
+				System.out.println("contains ,");
+				int commaLocation = userInput.lastIndexOf(',');
+				int correctLocationFactor = userInput.lastIndexOf(',') + 1; // not
+																			// sure
+																			// of
+																			// these
+																			// numbers
+
+				System.out.println(commaLocation);
+
+				if (userInputContainsTwoAfterDecimal == 2) {
+					correctLocationFactor = userInput.lastIndexOf(',') + 1; // not
+																			// sure
+																			// of
+																			// these
+																			// numbers
+					System.out.println("has decimal");
+				}
+				System.out.println("correctLocationFactor: " + correctLocationFactor);
+				System.out.println("length: " + userInput.length());
+				if (((userInput.indexOf('.') - userInput.lastIndexOf(',')) != 4)
+						&& (userInputContainsTwoAfterDecimal == 2)) {
+					errorWithUserInput = ("Illegal use of comma in " + userInput);
+					return false;
+				}
+				if ((userInput.length() - correctLocationFactor) < 4) {
+					userInputContainsThreeAfterComma = 2;
+					// Trace Statements
+					System.out.println("no decimal and works");
+				} else if ((userInput.length() - (correctLocationFactor)) < 7) {
+					userInputContainsThreeAfterComma = 2;
+					// Trace Statements
+					System.out.println("decimal and works");
+				}
+
+			}
+		}
+		// For when there are more than 1 comma
+		if (commaCount > 1) {
+			int previousCommaLocation = 0;
+			int nextCommaLocation = 0;
+			nextCommaLocation = userInput.indexOf(',');
+			String checkCommaPlacements = userInput;
+			while (commaCount > 1) {
+
+				System.out.println("previousCommaLocation: " + previousCommaLocation);
+				System.out.println("nextCommaLocation: " + nextCommaLocation);
+				// For first case running through the string
+				if (previousCommaLocation == 0) {
+					// Check to see if there is more than three numbers in front
+					// of the comma or none
+					if ((nextCommaLocation > 3) || (nextCommaLocation == 0)) {
+						// Trace System.out.println("Entered more than one
+						// number in front of the comma");
+						errorWithUserInput = ("Illegal use of comma in " + userInput);
+						return false;
+
+					}
+					// Remove Decimal part to make easier
+					if (userInputContainsTwoAfterDecimal == 2) {
+						checkCommaPlacements = checkCommaPlacements.substring(0, checkCommaPlacements.indexOf('.'));
+
+					}
+				}
+				// Condition to check if the next pair of commas does not have 3
+				// digits between each other
+				else if ((nextCommaLocation - previousCommaLocation) != 4) {
+
+					System.out.println("Check the correct number between commas");
+					errorWithUserInput = ("Illegal use of comma in " + userInput);
+					return false;
+				}
+
+				// Creates a new string with the furthest left comma removed
+				System.out.println("1st checkCommaPlacements :" + checkCommaPlacements);
+				checkCommaPlacements = checkCommaPlacements.substring(previousCommaLocation, nextCommaLocation) + '&'
+						+ checkCommaPlacements.substring(nextCommaLocation + 1, checkCommaPlacements.length());
+
+				previousCommaLocation = nextCommaLocation;
+				nextCommaLocation = checkCommaPlacements.indexOf(',');
+				commaCount = commaCount - 1;
+				System.out.println("2nd checkCommaPlacements :" + checkCommaPlacements);
+
+				// 343,454,234
+			}
+
+		}
+		if (userInputContainsThreeAfterComma == 2) {
+			userInput = userInput.replace(",", "");
+		}
+
 		// Tests the string for everything else
 		try {
 			userValue = Double.parseDouble(userInput);
@@ -276,6 +375,9 @@ public class BusinessAccumulator implements ActionListener {
 		} else if (userInputContainsTwoAfterDecimal == 1) {
 			errorWithUserInput = "Two decimal digits are required following a decimal point.";
 			return false;
+		} else if (userInputContainsThreeAfterComma == 1) {
+			errorWithUserInput = ("Illegal use of comma in " + userInput);
+			return false;
 		} else {
 			// CheckUserInput method changes the global variable to equal it's
 			// math form instead of a string
@@ -285,5 +387,6 @@ public class BusinessAccumulator implements ActionListener {
 		}
 
 	}
+
 
 }
