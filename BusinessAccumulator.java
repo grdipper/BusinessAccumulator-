@@ -269,6 +269,12 @@ public class BusinessAccumulator implements ActionListener {
 			globalUserInputValueMath = 0;
 			return false;
 		}
+		
+				if (userInput.startsWith(",")){
+			errorWithUserInput = ("Illegal use of comma in " + userInput);
+			globalUserInputValueMath = 0;
+			return false;
+		}
 
 		// Removes d from the string and sets the boolean value to true
 		if (userInput.endsWith("d")) {
