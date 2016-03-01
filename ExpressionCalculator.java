@@ -150,9 +150,18 @@ public class ExpressionCalculator implements ActionListener {
 	
 	public String evaluateExpression(String expression) {
 		//EVALUATE THE EXPRESSION AND RETURN THE ANSWER STRING
+		//CALLS METHODS....
+		//FIND PRIORITY PARANTHESES (returns string inside the highest priority parantheses)
 		return expression;
 	}
 	
+	public String findPriorityParantheses(String expression){
+		//
+		//for loop
+		/* finds the indecies of the top priority open and close parantheses and  truncates the string to include the parentheses at those indecies
+		*/
+		return expression; 
+	}
 	public void printError(String error) {
 		//PRINT ERROR STRING TO ERROR LABEL
 		errorLabel.setText("Error: "+error);
