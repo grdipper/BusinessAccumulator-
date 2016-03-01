@@ -36,6 +36,7 @@ public class ExpressionCalculator implements ActionListener {
 	public ExpressionCalculator() {
 		//EXAMPLE OF FONT
 		//outChatTextArea.setFont(new Font("default",Font.BOLD,20));
+		//BUILDING THE GUI
 		expressionWindow.getContentPane().add(topPanel,"North");
 		expressionWindow.getContentPane().add(errorPanel, "South");
 		expressionWindow.getContentPane().add(workScroll, "Center");
@@ -62,12 +63,48 @@ public class ExpressionCalculator implements ActionListener {
 		expressionWindow.setSize(800, 400);
 		expressionWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		expressionWindow.setVisible(true);
+		//BUILDING THE GUI
 		
 	}
 
 	@Override
+	//**************************************************
+	// Method: actionPerformed
+	// Status: Complete
+	// Arguments: ActionEvent e
+	//
+	// Who calls this method: 
+	// 	When the "enter" key is pressed while inside
+	// 	the inputField, this method is called. Also,
+	// 	when the submitButton is pressed this method
+	//      is called.
+	//
+	// Purpose/Structure:
+	//	Starts the expressionCalculator algorithm by:
+	//	1. Checking to see if the user has typed
+	//	anything into the inputField. If not, it
+	//	displays a message in the outputField, returns, 
+	//	and waits for the user to hit "enter"
+	//	or the submitButton.
+	//	2. Calls the checkForErrors() method and passes
+	//	whatever the user has typed into the inputField
+	//	as a parameter.  If it returns true, then an
+	//	error was found and this method will return. The 
+	//	error message is handled by the checkForErrors()
+	//	method.
+	//	3. At this point, the user has typed in a valid
+	//	expression that we are ready to solve. Now we 
+	//	call the evaluateExpression() method and pass
+	//	the expression String to it. We assign the 
+	//	returned String to our "answer" variable and
+	//	display it in the outputField.
+	//
+	//
+	//
+	//**************************************************
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		
 		String expression = inputField.getText();
 		String answer;
 		
@@ -91,6 +128,27 @@ public class ExpressionCalculator implements ActionListener {
 		
 	}
 	
+	//**************************************************
+	// Method: checkForErrors
+	// Status: Incomplete
+	// Arguments: String expression
+	//
+	// Who calls this method: 
+	//	The actionPerformed() method will call this
+	//	method to check for errors in the user's typed
+	//	expression in the inputField.
+	//
+	// Purpose/Structure:
+	//	The sole purpose of this method is to check
+	//	for every possible error with the original
+	//	expression.  This method calls numerous
+	//	specific error-checking methods and this 
+	//	method will return false (no error) if every
+	//	error-checking method returns false as well.
+	//
+	//
+	//
+	//**************************************************
 	public boolean checkForErrors(String expression) {
 		// Check for all errors
 		// TRUE MEANS ERROR
