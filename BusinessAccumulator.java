@@ -1,3 +1,6 @@
+
+//ECE 309 Lab 8 By Grant Dipper, Chase Andries, Alden Cope, and Taha Arif"
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -108,7 +111,7 @@ public class BusinessAccumulator implements ActionListener {
 
 		final String newLine = "\n";
 		if (e.getSource() == inNumber) {
-			System.out.println("Number has been entered...");
+			//System.out.println("Number has been entered...");
 			String userInput = inNumber.getText();
 			if (inNumber.getText().trim().isEmpty()) {
 				inNumber.setText("");
@@ -116,7 +119,7 @@ public class BusinessAccumulator implements ActionListener {
 			}
 			if ((CheckForUserInput(userInput))) {
 				inNumber.setText("");
-				System.out.println("No Errors");
+				//System.out.println("No Errors");
 				errorMsg.setBackground(Color.WHITE);
 				errorMsg.setText("");
 				// No errors in textArea
@@ -131,7 +134,7 @@ public class BusinessAccumulator implements ActionListener {
 
 			else {
 
-				System.out.println("User Input was: " + userInput);
+				//System.out.println("User Input was: " + userInput);
 				errorMsg.setBackground(Color.PINK);
 				errorMsg.setFont(new Font("default", Font.BOLD, 13));
 				errorMsg.setText(errorWithUserInput);
@@ -142,7 +145,7 @@ public class BusinessAccumulator implements ActionListener {
 		}
 
 		if (e.getSource() == clearButton) {
-			System.out.println("Clear Button Pressed...");
+		//	System.out.println("Clear Button Pressed...");
 			accumulatedValue = 0;
 			tot.setText("$0");
 			inNumber.setText("");
@@ -155,6 +158,7 @@ public class BusinessAccumulator implements ActionListener {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		System.out.println("ECE 309 Lab 8 By Grant Dipper, Chase Andries, Alden Cope, and Taha Arif.");
 		new BusinessAccumulator();
 	}
 
