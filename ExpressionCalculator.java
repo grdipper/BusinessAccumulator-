@@ -30,6 +30,8 @@ public class ExpressionCalculator implements ActionListener {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		new ExpressionCalculator();
+		
+		
 	}
 	
 	
@@ -64,6 +66,9 @@ public class ExpressionCalculator implements ActionListener {
 		expressionWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		expressionWindow.setVisible(true);
 		//BUILDING THE GUI
+		String test = "4+3-10*-5+24*(-5-2)";
+		System.out.println(replaceUnaryOperator(test));
+		
 		
 	}
 
@@ -121,7 +126,7 @@ public class ExpressionCalculator implements ActionListener {
 			return;
 		
 		//Evaluate the expression and set it equal to the answer
-		answer = evaluateExpression(expression);
+		answer = evaluateExpression(replaceUnaryOperator(expression));
 		
 		outputField.setText(answer);
 		
@@ -209,16 +214,277 @@ public class ExpressionCalculator implements ActionListener {
 	public String evaluateExpression(String expression) {
 		//EVALUATE THE EXPRESSION AND RETURN THE ANSWER STRING
 		//CALLS METHODS....
-		//FIND PRIORITY PARANTHESES (returns string inside the highest priority parantheses)
+		String priorityExpr;
+		
+		//FIND PRIORITY PARENTHESES (returns string inside the highest priority parentheses)
+		while(containsBinaryOperator(expression)) {
+		
+			if(expression.contains("("))
+				priorityExpr = findPriorityParentheses(expression);
+			else
+				priorityExpr = expression;
+			//Replace the highest priority expression with the solved expression
+			
+			expression = expression.replace(priorityExpr, simplifyExp(expression));
+			expression = replaceUnaryOperator(expression);
+		}
+		
+		
+		if(numberOfUnaryOperators(expression)%2==0) {
+			
+			expression = expression.replace("u", "");
+			expression = expression.replace("(", "");
+			expression = expression.replace(")", "");
+			
+		}
+		else {
+			System.out.println("Odd number of u's");
+			expression = expression.replace("u", "");
+			expression = expression.replace("(", "");
+			expression = expression.replace(")", "");
+			expression = "-" + expression;
+		}
+			
+		
+		return expression;
+	}
+	public int numberOfUnaryOperators(String expression) {
+		int i;
+		int count = 0;
+		char[] exprArray = expression.toCharArray();
+		
+		for(i=0;i<exprArray.length;i++) {
+			if(exprArray[i]=='u')
+				count++;
+		}
+		
+		
+		
+		return count;
+	}
+	public String replaceUnaryOperator(String expression) {
+		int i;
+		
+		char[] exprArray = expression.toCharArray();
+		if(expression.contains("-")) {
+			
+			
+			for(i=0;i<exprArray.length-1;i++) {
+				if(exprArray[i]=='-') {
+					if(i==0) {
+						exprArray[i] = 'u';
+					}
+					else {
+						
+						if((exprArray[i-1]=='-')||(exprArray[i-1]=='('))
+							exprArray[i]='u';
+						else if((exprArray[i-1]=='+')||(exprArray[i-1]=='-')
+								||(exprArray[i-1]=='*')||(exprArray[i-1]=='/')
+								||(exprArray[i-1]=='r')||(exprArray[i-1]=='^'))
+							exprArray[i]='u';
+					}
+				}
+			}
+			
+			
+		}
+		else
+			return expression;
+		
+		System.out.println(new String(exprArray));
+		return new String(exprArray);
+	}
+	
+	public String simplifyExp(String expression) {
+		String priorityAns;
+		//All unary operators should be expressed as a 'u'
+		//Remove parentheses from beginning and end of expression
+		//There should never be nested parentheses when this method is called
+		System.out.println(expression);
+		if(expression.startsWith("("))
+			expression = expression.replace("(", "");
+		if(expression.startsWith(")"))
+			expression = expression.replace(")", "");
+		
+		//Parentheses have been removed and it is time to begin solving the expression
+		
+		int priority = 0;
+		int i;
+		int indexOfOperator = -1;
+		int indexOfOp1 = -1;
+		int indexOfOp2 = -1;
+		String priorityExpr = "";
+		char[] exprArray = expression.toCharArray();
+		
+		//Find index of operator
+		for(i=1;i<exprArray.length;i++) {
+			if(((exprArray[i]=='^')||(exprArray[i]=='r'))&&(priority<4)) {
+				priority = 4;
+				indexOfOperator = i;
+			}
+			else if(((exprArray[i]=='*')||(exprArray[i]=='/'))&&(priority<3)) {
+				priority = 3;
+				indexOfOperator = i;
+			}
+			else if(((exprArray[i]=='+')||(exprArray[i]=='-'))&&(priority<2)) {
+				priority = 2;
+				indexOfOperator = i;
+			}
+				
+		}
+		System.out.println(indexOfOperator);
+		
+		//Find index of operand 1
+		
+		for(i=indexOfOperator-1;i>=0;i--) {
+			// If it's not a number
+			if(exprArray[i]=='u') {
+				indexOfOp1 = i;
+				i = 0;
+			}
+			else if(i==0) {
+				indexOfOp1 = 0;
+				
+			}
+			else if((((exprArray[i]>'9')||(exprArray[i]<'0')||(i==0)))&&(exprArray[i]!='.')) {
+				indexOfOp1 = i+1;
+				i=0;
+			}
+		}
+		
+		for(i=indexOfOperator+1;i<exprArray.length;i++) {
+			if(exprArray[i]=='u')
+				System.out.println("Negative!");
+			else if(i==exprArray.length-1)
+				indexOfOp2 = exprArray.length-1;
+			else if((((exprArray[i]>'9')||(exprArray[i]<'0')||(i==exprArray.length-1)))&&(exprArray[i]!='.')) {
+				indexOfOp2 = i;
+				i = exprArray.length;
+			}
+			
+			
+		}
+		
+		
+		
+		
+		
+		if(indexOfOp2==exprArray.length-1)
+			priorityExpr = expression.substring(indexOfOp1,indexOfOp2+1);
+		
+		else priorityExpr = expression.substring(indexOfOp1,indexOfOp2);
+		System.out.println(priorityExpr);
+		priorityAns = solveMathExpression(priorityExpr);
+		if(priorityExpr.equals(expression))
+			expression = expression.replace(priorityExpr, priorityAns);
+		
+		else {
+			String prefix = expression.substring(0,indexOfOp1);
+			String suffix = expression.substring(indexOfOp2,expression.length());
+			expression = prefix + solveMathExpression(priorityExpr) + suffix;
+		}
+		System.out.println("Solved priority expression: "+expression);
+		expression = replaceUnaryOperator(expression);
+		if(containsBinaryOperator(expression))
+			expression = simplifyExp(expression);
+		
+		
+		
+		
 		return expression;
 	}
 	
-	public String findPriorityParantheses(String expression){
+	public String solveMathExpression(String expression) {
+		String answer = "0";
+		String operator = "-";
+		
+		if(expression.contains("^"))
+			operator = "^";
+		else if(expression.contains("r"))
+			operator = "r";
+		else if(expression.contains("*"))
+			operator = "*";
+		else if(expression.contains("/"))
+			operator = "/";
+		else if(expression.contains("+"))
+			operator = "+";
+		else if(expression.contains("-"))
+			operator = "-";
+		String op1 = expression.substring(0,expression.indexOf(operator));
+		String op2 = expression.substring(expression.indexOf(operator)+1, expression.length());
+		
+		if(op1.contains("u"))
+			op1 = String.valueOf(Double.parseDouble(op1.substring(1) )*-1);
+		if(op2.contains("u"))
+			op2 = String.valueOf(Double.parseDouble(op2.substring(1) )*-1);
+		
+		
+		if(operator=="+") 
+			answer = String.valueOf(Double.parseDouble(op1) + Double.parseDouble(op2));
+		else if(operator=="-") 
+			answer = String.valueOf(Double.parseDouble(op1) - Double.parseDouble(op2));
+		else if(operator=="*") 
+			answer = String.valueOf(Double.parseDouble(op1) * Double.parseDouble(op2));
+		else if(operator=="/") 
+			answer = String.valueOf(Double.parseDouble(op1) / Double.parseDouble(op2));
+		else if(operator=="^") 
+			answer = String.valueOf(Math.pow(Double.parseDouble(op1), Double.parseDouble(op2)));
+		else if(operator=="r") 
+			answer = String.valueOf(Math.pow(Double.parseDouble(op1), 1/Double.parseDouble(op2)));
+		
+		//round answer to avoid weird bugs with 5*5 = 25.0000005
+		answer = String.valueOf(Math.round(Double.parseDouble(answer) * 1000000.0) / 1000000.0);
+		return answer;
+	}
+	
+	
+	public String findPriorityParentheses(String expression){
 		//
 		//for loop
-		/* finds the indecies of the top priority open and close parantheses and  truncates the string to include the parentheses at those indecies
+		/* finds the indices of the top priority open and close parentheses and  truncates the string to include the parentheses at those indecies
 		*/
+		expression = "(3+4)";
 		return expression; 
+	}
+	
+	//**************************************************
+		// Method: containsBinaryOperator
+		// Status: Incomplete
+		// Arguments: String expression
+		//
+		// Who calls this method: 
+		//	The exaluateExpression() method calls upon
+		//  this method to check for the completion of
+		//  the program.
+		//
+		// Purpose/Structure:
+		//	The purpose of this method is to check for
+		//  any binary operators.  Returns true if there
+		//  are any.
+		//
+		//
+		//
+   //**************************************************
+	public boolean containsBinaryOperator(String expression) {
+		//Check for binary operators: + / * r ^
+		if((expression.contains("+"))||(expression.contains("-"))||(expression.contains("/"))||(expression.contains("r"))||
+				(expression.contains("*"))||(expression.contains("^")))
+					return true;
+		
+		char[] expArray = expression.toCharArray();
+		int i;
+		
+		// Check for "-" binary operator
+		for(i=1;i<expArray.length;i++) {
+			if((((expArray[i-1]>='0')&&(expArray[i-1]<='9'))||(expArray[i-1]==')'))&&(expArray[i]=='-')) {
+				System.out.println(i);
+				return true;
+			}
+				
+		}
+		
+		System.out.println("No binary operators found");
+		return false;
 	}
 	public void printError(String error) {
 		//PRINT ERROR STRING TO ERROR LABEL
@@ -266,3 +532,4 @@ public class ExpressionCalculator implements ActionListener {
 	
 
 }
+
