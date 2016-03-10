@@ -499,9 +499,27 @@ public class ExpressionCalculator implements ActionListener {
 		return false;
 	}
 	
+	//Method to check that each parentheses has a match 
+	//Returns false if all parentheses having a matching pair
+	//By Alden Cope
 	public boolean unmatchedParenthesesError(String expression) {
-		
-		return false;
+		String manipulatedExpression = expression;
+		int parenthesesCounter = 0;
+		for( int i=0; i<manipulatedExpression.length(); i++ ) {
+			//if right facing parentheses found increase count by one
+		    if( manipulatedExpression.charAt(i) == '(' ) {
+		    	parenthesesCounter++;
+		    } 
+		  //if left facing parentheses found decrease count by one
+		    if( manipulatedExpression.charAt(i) == ')' ) {
+		    	parenthesesCounter--;
+		    } 
+		}
+		if(parenthesesCounter == 0){
+			return false;
+		}
+		// answer = "Parentheses unmatched";
+		return true;
 	}
 	
 	public boolean unidentifiedOperatorError(String expression) {
