@@ -12,6 +12,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+@SuppressWarnings("unused")
 public class ExpressionCalculator implements ActionListener {
 	
 	//GUI Objects
@@ -598,7 +599,7 @@ public class ExpressionCalculator implements ActionListener {
 	//illegalIndexLocation contains the location of the illegal Operator
 	static int illegalIndexLocation = 0;
 	
-	public static boolean unidentifiedOperatorError(String expression) {
+	public boolean unidentifiedOperatorError(String expression) {
 		//FirstCheck checks all of the chars in the string for an illegal char, it returns the illegalOperator and it's illegalIndexLocation
 		//System.out.println(FirstCheck(expression));
 		if(FirstCheck(expression) == true){
