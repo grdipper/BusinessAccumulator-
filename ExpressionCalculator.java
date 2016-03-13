@@ -380,7 +380,9 @@ public class ExpressionCalculator implements ActionListener {
 		
 		else {
 			String prefix = expression.substring(0,indexOfOp1);
-			String suffix = expression.substring(indexOfOp2+1,expression.length());
+			String suffix = expression.substring(indexOfOp2,expression.length());
+			if(!containsBinaryOperator(suffix))
+				suffix = "";
 			expression = prefix + solveMathExpression(priorityExpr) + suffix;
 		}
 		System.out.println("Solved priority expression: "+expression);
@@ -434,7 +436,7 @@ public class ExpressionCalculator implements ActionListener {
 		
 		System.out.println("BANG!: "+answer);
 		//round answer to avoid weird bugs with 5*5 = 25.0000005
-		answer = String.valueOf(Math.round(Double.parseDouble(answer) * 1000000.0) / 1000000.0);
+		answer = String.valueOf(Math.round(Double.parseDouble(answer) * 10000000.0) / 10000000.0);
 		System.out.println("BANG!: "+answer);
 		return answer;
 	}
