@@ -543,13 +543,24 @@ public class ExpressionCalculator implements ActionListener {
 		errorLabel.setText("Error: "+error);
 	}
 	
-	public boolean missingParenthesesError(String expression) {
+	public static boolean missingParenthesesError(String expression) {
 		//CHECK FOR MISSING PARENTHESES ERROR
 		//Should find error if number of open parentheses does not match number of closes parentheses
+		char[] exprArray = expression.toCharArray();
+		int paranCount=0;
 		
+		for(int i=0;i<exprArray.length;i++)
+		{
+			if(exprArray[i]=='(') paranCount++;
+			else if(exprArray[i]==')') paranCount--;
+			//System.out.println(paranCount);
+		}
 		
-		return false;
+		//System.out.println("Final= " + paranCount);
+		if(paranCount==0)return false;
+		else return true;
 	}
+
 	
 	//Method to check that each parentheses has a match 
 	//Returns false if all parentheses having a matching pair
