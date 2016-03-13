@@ -441,15 +441,63 @@ public class ExpressionCalculator implements ActionListener {
 		return answer;
 	}
 	
-	
+/**************************************************
+	// Method: findPriorityParentheses
+	// Status: Incomplete
+	// Arguments: String expression
+	 	Returns: String expression         (with open and close parentheses)
+	//
+	// Who calls this method: 
+	//	evaluateExpression method, only if the expression in the method has found a parentheses
+	//	
+	//
+	// Purpose/Structure:
+	 	Finds the indices of the top priority open and close parentheses, and truncates the string
+		to return that string.
+	***********************************************/
 	public String findPriorityParentheses(String expression){
-		//
-		//for loop
-		/* finds the indices of the top priority open and close parentheses and  truncates the string to include the parentheses at those indecies
-		*/
-		expression = "(3+4)";
+		char[] exprArray = expression.toCharArray();
+		boolean priorityParFound=false;
+		int openParIndex=0;                        // index of priority parantheses
+		int closeParIndex=expression.length()-1;
+		/*(int x=0;
+		int y=0;
+		int z=0;
+		int r=0;*/
+		for(int i=0;i<=exprArray.length-1;i++){ 						//Outer Loop
+			if(exprArray[i] == '(')
+				{
+				//z++;
+				openParIndex=i; //saves Index of Open Parentheses
+					for(int j=i+1;j<=exprArray.length;j++){             //Inner Loop
+						{
+							if(exprArray[j]=='(')
+							{
+								openParIndex=j; //New priority Index
+								//x++;
+							}
+							if(exprArray[j]==')')
+							{
+								closeParIndex=j;      // 
+								priorityParFound= true;
+								j=exprArray.length+1; //Exits the inner for loop, Indicates if
+								//y++;
+							}
+							}
+						}
+			
+				}
+			if(priorityParFound) break;
+			//r++;
+			}
+	
+		expression = expression.substring(openParIndex,closeParIndex+1);//needs to return a function surrounded with parentheses.
+		//System.out.println("z=" + z + " x=" + x + " y=" + y + " r=" + r);
+		//System.out.println(expression);
+		
 		return expression; 
-	}
+	} 
+	
 	
 	//**************************************************
 		// Method: containsBinaryOperator
