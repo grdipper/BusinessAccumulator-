@@ -443,7 +443,7 @@ public class ExpressionCalculator implements ActionListener {
 	
 /**************************************************
 	// Method: findPriorityParentheses
-	// Status: Incomplete
+	// Status: Complete--------------------------------------------> NEEDS TESTING
 	// Arguments: String expression
 	 	Returns: String expression         (with open and close parentheses)
 	//
