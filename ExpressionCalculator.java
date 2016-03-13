@@ -574,9 +574,127 @@ public class ExpressionCalculator implements ActionListener {
 		return true;
 	}
 	
-	public boolean unidentifiedOperatorError(String expression) {
+
+	//For letters --- unknown symbol
+	//anything --- unknown operator
+	//Need to look for ..
+	//illegalOperator contains the illegal Operator found in string
+	static char illegalOperator = ' ';
+	//illegalIndexLocation contains the location of the illegal Operator
+	static int illegalIndexLocation = 0;
+	
+	public static boolean unidentifiedOperatorError(String expression) {
+		//FirstCheck checks all of the chars in the string for an illegal char, it returns the illegalOperator and it's illegalIndexLocation
+		//System.out.println(FirstCheck(expression));
+		if(FirstCheck(expression) == true){
+			//WhatTypeError returns true if the problem is a letter
+			if(whatTypeError(expression) == true){
+				printError("Expression contained unknown symbol: " + illegalOperator);
+				//System.out.println("Expression contained unknown symbol: " + illegalOperator);
+
+				return true;
+			}
+			else{
+				printError("Expression contained unknown operator: " + illegalOperator);
+				System.out.println("Expression contained unknown operator: " + illegalOperator);
+				return true;
+			}
+		}
 		
 		return false;
+		
+		
+	}
+
+
+	public static boolean whatTypeError(String expression){
+		//specialAlphabet excludes known letter operators r,x
+		String specialAlphabet = "abcdfghijklmnopqrstuvwyz";
+		for(int i = 0; i < (specialAlphabet.length() - 1); i++){
+			if(illegalOperator == specialAlphabet.charAt(i)){
+				return true;
+				
+			}
+		}
+	
+		return false;
+	}
+	//specialCharCheck is a function that checks a string for a certain char and returns back true or false
+	public static boolean specialCharCheck(char specialChar, String expression){
+		if(expression.indexOf(specialChar) == -1){
+			return false;
+		}
+	
+		return true;
+	}
+	
+	public static boolean FirstCheck(String expression){
+	
+		
+	char[] allowedChars = {'(',')','^','*','/','+','-',' ', '1','2','3','4','5','6','7','8','9','0','e','x','p','.'};
+	boolean matchesAnAllowedChar = false; 
+	
+	
+//	if(specialCharCheck( '#',  expression)){
+//		illegalOperator = '#';
+//		illegalIndexLocation = expression.indexOf('#');
+//		return true;
+//	}
+	
+	//First for loop looks through string
+	for(int i = 0; i < expression.length() ; i++ ){
+		//Second for loop uses character given to it and checks for all allowed chars
+		for(int k = 0; k < 22;  k++){
+			
+			//If it is an allowed char
+			if(expression.charAt(i) == allowedChars[k]){
+				//System.out.println(expression.charAt(i));
+				//System.out.println(allowedChars[k]);
+				matchesAnAllowedChar = true;
+				if(expression.charAt(i) == 'p'){
+					//Checks if the p is a part of pi operator
+					//System.out.println("Detects a p");
+
+					if(expression.charAt(i+1) == 'i'){
+						//Increase i by one to skip i of pi
+						i = i + 1;
+						//System.out.println("Detects an i");
+					}
+					else{
+						matchesAnAllowedChar = false;
+						illegalOperator = 'p';
+						illegalIndexLocation = i;
+						//System.out.println(illegalOperator);
+						return true;
+					}
+					
+				}
+				//If anAllowedChar is found it breaks out of the second for loop
+				if(matchesAnAllowedChar == true){
+					//breaks out of for loop
+					k = 25;
+					matchesAnAllowedChar = false;
+				}
+
+			}
+			//If it reaches the end of searching for allowed characters
+			if(k == 21){
+				
+					matchesAnAllowedChar = false;
+					illegalOperator = expression.charAt(i);
+					illegalIndexLocation = i;
+					//System.out.println(illegalOperator);
+
+					return true;
+				}
+			}
+
+			
+		}
+	
+	illegalOperator = ' ';
+	illegalIndexLocation = 0;
+	return false;
 	}
 	
 	public boolean missingOperatorError(String expression) {
