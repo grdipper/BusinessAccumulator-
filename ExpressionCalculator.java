@@ -554,7 +554,7 @@ public class ExpressionCalculator implements ActionListener {
 	//Method to check that each parentheses has a match 
 	//Returns false if all parentheses having a matching pair
 	//By Alden Cope
-	public boolean unmatchedParenthesesError(String expression) {
+	public static boolean unmatchedParenthesesError(String expression) {
 		String manipulatedExpression = expression;
 		int parenthesesCounter = 0;
 		for( int i=0; i<manipulatedExpression.length(); i++ ) {
@@ -566,6 +566,10 @@ public class ExpressionCalculator implements ActionListener {
 		    if( manipulatedExpression.charAt(i) == ')' ) {
 		    	parenthesesCounter--;
 		    } 
+		  //If there are move left facing parentheses encountered at first
+		    if(parenthesesCounter < 0){
+		    	return true;
+		    }
 		}
 		if(parenthesesCounter == 0){
 			return false;
