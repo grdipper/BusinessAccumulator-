@@ -225,7 +225,7 @@ public class ExpressionCalculator implements ActionListener {
 				priorityExpr = expression;
 			//Replace the highest priority expression with the solved expression
 			
-			expression = expression.replace(priorityExpr, simplifyExp(expression));
+			expression = expression.replace(priorityExpr, simplifyExp(priorityExpr));
 			expression = replaceUnaryOperator(expression);
 		}
 		
@@ -380,7 +380,7 @@ public class ExpressionCalculator implements ActionListener {
 		
 		else {
 			String prefix = expression.substring(0,indexOfOp1);
-			String suffix = expression.substring(indexOfOp2,expression.length());
+			String suffix = expression.substring(indexOfOp2+1,expression.length());
 			expression = prefix + solveMathExpression(priorityExpr) + suffix;
 		}
 		System.out.println("Solved priority expression: "+expression);
@@ -417,7 +417,7 @@ public class ExpressionCalculator implements ActionListener {
 			op1 = String.valueOf(Double.parseDouble(op1.substring(1) )*-1);
 		if(op2.contains("u"))
 			op2 = String.valueOf(Double.parseDouble(op2.substring(1) )*-1);
-		
+		System.out.println("boom: "+op1+" "+op2);
 		
 		if(operator=="+") 
 			answer = String.valueOf(Double.parseDouble(op1) + Double.parseDouble(op2));
@@ -432,8 +432,10 @@ public class ExpressionCalculator implements ActionListener {
 		else if(operator=="r") 
 			answer = String.valueOf(Math.pow(Double.parseDouble(op1), 1/Double.parseDouble(op2)));
 		
+		System.out.println("BANG!: "+answer);
 		//round answer to avoid weird bugs with 5*5 = 25.0000005
 		answer = String.valueOf(Math.round(Double.parseDouble(answer) * 1000000.0) / 1000000.0);
+		System.out.println("BANG!: "+answer);
 		return answer;
 	}
 	
@@ -550,4 +552,3 @@ public class ExpressionCalculator implements ActionListener {
 	
 
 }
-
