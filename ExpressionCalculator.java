@@ -112,7 +112,7 @@ public class ExpressionCalculator implements ActionListener {
 	//
 	//**************************************************
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+	// TODO Auto-generated method stub
 		
 		String expression = inputField.getText();
 		String answer;
@@ -130,6 +130,8 @@ public class ExpressionCalculator implements ActionListener {
 		//Check for errors and TRUE means ERROR
 		if(checkForErrors(expression)){
 			inputField.setText("");
+			errorPanel.setBackground(Color.PINK);
+			outputField.setText("");
 			return;
 		}
 			
