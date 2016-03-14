@@ -22,17 +22,16 @@ public class ExpressionCalculator implements ActionListener {
 	JTextField variableField = new JTextField(5);
 	JButton submitButton = new JButton("Evaluate");
 	JLabel varLabel = new JLabel("x = ");
+	JLabel varLabel2 = new JLabel("Type expression here: ");
 	JPanel topPanel = new JPanel();
-	JTextArea workArea = new JTextArea("Work for solved problems will show up here.");
-	JScrollPane workScroll = new JScrollPane(workArea);
+	//JTextArea workArea = new JTextArea("Work for solved problems will show up here.");
+	//JScrollPane workScroll = new JScrollPane(workArea);
 	JLabel errorLabel = new JLabel();
 	JPanel errorPanel = new JPanel();
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		new ExpressionCalculator();
-		
-		
 	}
 	
 	
@@ -42,15 +41,18 @@ public class ExpressionCalculator implements ActionListener {
 		//BUILDING THE GUI
 		expressionWindow.getContentPane().add(topPanel,"North");
 		expressionWindow.getContentPane().add(errorPanel, "South");
-		expressionWindow.getContentPane().add(workScroll, "Center");
+		//expressionWindow.getContentPane().add(workScroll, "Center");
 		
 		errorPanel.add(errorLabel);
-		errorPanel.setBackground(Color.pink);
+		errorPanel.setBackground(Color.white);
 		
 		errorLabel.setFont(new Font("Times New Roman",Font.ITALIC,15));
 		errorLabel.setText("Errors will show up here");
 		
+		
+		
 		topPanel.add(submitButton);
+		topPanel.add(varLabel2);
 		topPanel.add(inputField);
 		topPanel.add(varLabel);
 		topPanel.add(variableField);
@@ -59,16 +61,17 @@ public class ExpressionCalculator implements ActionListener {
 		submitButton.addActionListener(this);
 		inputField.addActionListener(this);
 		
-		workArea.setEditable(false);
+		//workArea.setEditable(false);
 		outputField.setEditable(false);
 		
 		expressionWindow.setLocation(100, 100);
-		expressionWindow.setSize(800, 400);
+		expressionWindow.setSize(800, 200);
 		expressionWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		expressionWindow.setVisible(true);
+		
 		//BUILDING THE GUI
-		String test = "4+3-10*-5+24*(-5-2)";
-		System.out.println(replaceUnaryOperator(test));
+		//String test = "4+3-10*-5+24*(-5-2)";
+		//System.out.println(replaceUnaryOperator(test));
 		
 		
 	}
@@ -117,20 +120,26 @@ public class ExpressionCalculator implements ActionListener {
 		// Check to see if anything was typed in
 		// If it was blank, then the user probably didn't mean to 
 		if(expression.trim().length()==0) {
+			errorPanel.setBackground(Color.WHITE);
 			inputField.setText("");
-			outputField.setText("Nothing typed...");
+			errorLabel.setText("");
+			outputField.setText("Nothing has been typed in.");
 			return;
 		}
 		
 		//Check for errors and TRUE means ERROR
-		if(checkForErrors(expression))
+		if(checkForErrors(expression)){
+			inputField.setText("");
 			return;
+		}
+			
 		
 		//Evaluate the expression and set it equal to the answer
 		answer = evaluateExpression(replaceUnaryOperator(expression));
-		
+		inputField.setText("");
+		errorPanel.setBackground(Color.WHITE);
 		outputField.setText(answer);
-		
+		errorLabel.setText("");
 		
 	}
 	
@@ -725,6 +734,34 @@ public class ExpressionCalculator implements ActionListener {
 	
 	public boolean adjacentBinaryOperators(String expression) {
 		
+		char[] bOperators = {'+','-','/','*'} ; // Creates an array of binary operators to reference
+		for(int k = 0; k<expression.length(); k++){ // this FOR loop checks the expression that is entered
+			for(int j = 0; j<bOperators.length; j++){ // this FOR loop then compares the elements in the expression entered to the elements in the operators array		
+				
+				//This IF statement gets the first operator and checks if the next element in the expression is a "+, *, or /" and if the next element is another one of these
+				//operators, then there is an adjacent binary operator error, thus return is TRUE.
+				if((expression.charAt(k) == bOperators[j]) && ((expression.charAt(k+1) == bOperators[0])//Adjacent operator is +
+						|| (expression.charAt(k+1) == bOperators[2]) // Adjacent operator is /
+						|| (expression.charAt(k+1) == bOperators[3]))){ // Adjacent operator is *
+					System.out.println(expression.charAt(k) + " followed by " + expression.charAt(k+1));
+					return true;
+				}
+				
+				//This IF statement gets the first operator and checks if the next element in the expression is a "-", then it checks if the second element after the first operator
+				//is another operator.  These statements are to check for non-unary operators. The getNumericValue returns the corresponding value 0-9 if a char is 0-9. If a char
+				//is anything other than 0-9, it returns -1, thus that is why the last condition is checking to see if it less than 0.
+				if((expression.charAt(k) == bOperators[j]) && (expression.charAt(k+1) == bOperators[1]) && ((Character.getNumericValue(expression.charAt(k+2)) < 0))){
+					return true;
+				}
+				
+				//This IF statement checks to see if the first operator is a "-" sign. It then checks the next element to see if that is a "-" as well. Finally it checks the next
+				//element after that to see if it IS a decimal number. If it is, we then can treat the SECOND "-" in the expression as a UNARY operator, which is why the
+				//replaceUnaryOperator method is called.
+				if((expression.charAt(k) == bOperators[1]) && (expression.charAt(k+1) == bOperators[1]) && ((Character.getNumericValue(expression.charAt(k+2)) >= 0))){
+					expression = replaceUnaryOperator(expression);
+				}
+			}
+		}	
 		return false;
 	}
 	
