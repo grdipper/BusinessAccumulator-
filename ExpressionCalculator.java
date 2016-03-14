@@ -9,6 +9,16 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -36,6 +46,7 @@ public class ExpressionCalculator implements ActionListener {
 	
 	
 	public ExpressionCalculator() {
+		//System.out.println(findPriorityParentheses("(3+4*(3-1))"));
 		//EXAMPLE OF FONT
 		//outChatTextArea.setFont(new Font("default",Font.BOLD,20));
 		//BUILDING THE GUI
@@ -65,7 +76,7 @@ public class ExpressionCalculator implements ActionListener {
 		outputField.setEditable(false);
 		
 		expressionWindow.setLocation(100, 100);
-		expressionWindow.setSize(800, 200);
+		expressionWindow.setSize(900, 200);
 		expressionWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		expressionWindow.setVisible(true);
 		
@@ -129,7 +140,7 @@ public class ExpressionCalculator implements ActionListener {
 		
 		//Check for errors and TRUE means ERROR
 		if(checkForErrors(expression)){
-			inputField.setText("");
+			
 			errorPanel.setBackground(Color.PINK);
 			outputField.setText("");
 			return;
@@ -138,7 +149,7 @@ public class ExpressionCalculator implements ActionListener {
 		
 		//Evaluate the expression and set it equal to the answer
 		answer = evaluateExpression(replaceUnaryOperator(expression));
-		inputField.setText("");
+		
 		errorPanel.setBackground(Color.WHITE);
 		outputField.setText(answer);
 		errorLabel.setText("");
@@ -228,16 +239,25 @@ public class ExpressionCalculator implements ActionListener {
 		//CALLS METHODS....
 		String priorityExpr;
 		
+		if((expression.startsWith("("))&&(expression.endsWith(")")))
+			expression=expression.substring(1,expression.length()-1);
+		
 		//FIND PRIORITY PARENTHESES (returns string inside the highest priority parentheses)
 		while(containsBinaryOperator(expression)) {
 		
-			if(expression.contains("("))
+			if(expression.contains("(")) {
 				priorityExpr = findPriorityParentheses(expression);
-			else
+				expression = expression.replace(priorityExpr, evaluateExpression(priorityExpr));
+				
+				
+			}
+			else {
 				priorityExpr = expression;
 			//Replace the highest priority expression with the solved expression
 			
 			expression = expression.replace(priorityExpr, simplifyExp(priorityExpr));
+			
+			}
 			expression = replaceUnaryOperator(expression);
 		}
 		
@@ -315,7 +335,7 @@ public class ExpressionCalculator implements ActionListener {
 		System.out.println(expression);
 		if(expression.startsWith("("))
 			expression = expression.replace("(", "");
-		if(expression.startsWith(")"))
+		if(expression.endsWith(")"))
 			expression = expression.replace(")", "");
 		
 		//Parentheses have been removed and it is time to begin solving the expression
