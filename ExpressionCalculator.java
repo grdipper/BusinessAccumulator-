@@ -678,7 +678,7 @@ public class ExpressionCalculator implements ActionListener {
 	public static boolean FirstCheck(String expression){
 	
 		
-	char[] allowedChars = {'(',')','^','*','/','+','-',' ', '1','2','3','4','5','6','7','8','9','0','e','x','p','.'};
+	char[] allowedChars = {'(',')','^','*','/','+','-',' ', '1','2','3','4','5','6','7','8','9','0','e','x','p','.','r'};
 	boolean matchesAnAllowedChar = false; 
 	
 	
@@ -691,7 +691,7 @@ public class ExpressionCalculator implements ActionListener {
 	//First for loop looks through string
 	for(int i = 0; i < expression.length() ; i++ ){
 		//Second for loop uses character given to it and checks for all allowed chars
-		for(int k = 0; k < 22;  k++){
+		for(int k = 0; k < 23;  k++){
 			
 			//If it is an allowed char
 			if(expression.charAt(i) == allowedChars[k]){
