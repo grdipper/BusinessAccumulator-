@@ -914,7 +914,7 @@ public static boolean whatTypeError(String expression){
 	
 	public static boolean FirstCheck(String expression){
 		
-		char[] allowedChars = {'(',')','^','*','/','+','-',' ', '1','2','3','4','5','6','7','8','9','0','r','e','p','.','x','P'};
+		char[] allowedChars = {'(',')','^','*','/','+','-',' ', '1','2','3','4','5','6','7','8','9','0','r','e','p','.','x','P','E'};
 		boolean matchesAnAllowedChar = false; 
 		
 
