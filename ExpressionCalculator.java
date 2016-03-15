@@ -200,8 +200,8 @@ public class ExpressionCalculator implements ActionListener {
 			expression = expression.replace("Pi", String.valueOf(pi));
 			expression = expression.replace("PI", String.valueOf(pi));
 			expression = expression.replace("pi", String.valueOf(pi));
-			expression = expression.replace("e", String.valueOf(e));
-			expression = expression.replace("E", String.valueOf(e));
+			expression = expression.replace("e", String.valueOf(this.e));
+			expression = expression.replace("E", String.valueOf(this.e));
 			if(checkNumberFormat(expression))
 				return;
 			answer = evaluateExpression("("+replaceUnaryOperator(expression)+")");
@@ -277,8 +277,8 @@ public class ExpressionCalculator implements ActionListener {
 				expression = expression.replace("Pi", String.valueOf(pi));
 				expression = expression.replace("PI", String.valueOf(pi));
 				expression = expression.replace("pi", String.valueOf(pi));
-				expression = expression.replace("e", String.valueOf(e));
-				expression = expression.replace("E", String.valueOf(e));
+				expression = expression.replace("e", String.valueOf(this.e));
+				expression = expression.replace("E", String.valueOf(this.e));
 				if(checkNumberFormat(expression))
 					return;
 				answer = evaluateExpression("("+replaceUnaryOperator(expression)+")");
@@ -353,8 +353,8 @@ public class ExpressionCalculator implements ActionListener {
 						expression = expression.replace("Pi", String.valueOf(pi));
 						expression = expression.replace("PI", String.valueOf(pi));
 						expression = expression.replace("pi", String.valueOf(pi));
-						expression = expression.replace("e", String.valueOf(e));
-						expression = expression.replace("E", String.valueOf(e));
+						expression = expression.replace("e", String.valueOf(this.e));
+						expression = expression.replace("E", String.valueOf(this.e));
 						if(checkNumberFormat(expression))
 							return;
 						answer = evaluateExpression("("+replaceUnaryOperator(expression)+")");
@@ -377,8 +377,8 @@ public class ExpressionCalculator implements ActionListener {
 				expression = expression.replace("Pi", String.valueOf(pi));
 				expression = expression.replace("PI", String.valueOf(pi));
 				expression = expression.replace("pi", String.valueOf(pi));
-				expression = expression.replace("e", String.valueOf(e));
-				expression = expression.replace("E", String.valueOf(e));
+				expression = expression.replace("e", String.valueOf(this.e));
+				expression = expression.replace("E", String.valueOf(this.e));
 				if(checkNumberFormat(expression))
 					return;
 				answer = evaluateExpression("("+replaceUnaryOperator(expression)+")");
