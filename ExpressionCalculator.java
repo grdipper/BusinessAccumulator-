@@ -838,74 +838,73 @@ public class ExpressionCalculator implements ActionListener {
 		return true;
 	}
 	
-	public static boolean FirstCheck(String expression){
-	
+public static boolean FirstCheck(String expression){
 		
-	char[] allowedChars = {'(',')','^','*','/','+','-',' ', '1','2','3','4','5','6','7','8','9','0','e','x','p','.','r'};
-	boolean matchesAnAllowedChar = false; 
-	
-	
-//	if(specialCharCheck( '#',  expression)){
-//		illegalOperator = '#';
-//		illegalIndexLocation = expression.indexOf('#');
-//		return true;
-//	}
-	
-	//First for loop looks through string
-	for(int i = 0; i < expression.length() ; i++ ){
-		//Second for loop uses character given to it and checks for all allowed chars
-		for(int k = 0; k < 23;  k++){
-			
-			//If it is an allowed char
-			if(expression.charAt(i) == allowedChars[k]){
-				//System.out.println(expression.charAt(i));
-				//System.out.println(allowedChars[k]);
-				matchesAnAllowedChar = true;
-				if(expression.charAt(i) == 'p'){
-					//Checks if the p is a part of pi operator
-					//System.out.println("Detects a p");
+		char[] allowedChars = {'(',')','^','*','/','+','-',' ', '1','2','3','4','5','6','7','8','9','0','r','e','p','.','x'};
+		boolean matchesAnAllowedChar = false; 
+		
+		
+//		if(specialCharCheck( '#',  expression)){
+//			illegalOperator = '#';
+//			illegalIndexLocation = expression.indexOf('#');
+//			return true;
+//		}
+		System.out.println(allowedChars.length);
+		//First for loop looks through string
+		for(int i = 0; i < expression.length() ; i++ ){
+			//Second for loop uses character given to it and checks for all allowed chars
+			for(int k = 0; k < (allowedChars.length);  k++){
+				
+				//If it is an allowed char
+				if(expression.charAt(i) == allowedChars[k]){
+					System.out.println(expression.charAt(i));
+					System.out.println(allowedChars[k]);
+					matchesAnAllowedChar = true;
+					if(expression.charAt(i) == 'p'){
+						//Checks if the p is a part of pi operator
+						//System.out.println("Detects a p");
 
-					if(expression.charAt(i+1) == 'i'){
-						//Increase i by one to skip i of pi
-						i = i + 1;
-						//System.out.println("Detects an i");
+						if(expression.charAt(i+1) == 'i'){
+							//Increase i by one to skip i of pi
+							i = i + 1;
+							//System.out.println("Detects an i");
+						}
+						else{
+							matchesAnAllowedChar = false;
+							illegalOperator = 'p';
+							illegalIndexLocation = i;
+							//System.out.println(illegalOperator);
+							return true;
+						}
+						
 					}
-					else{
+					//If anAllowedChar is found it breaks out of the second for loop
+					if(matchesAnAllowedChar == true){
+						//breaks out of for loop
+						k = 25;
 						matchesAnAllowedChar = false;
-						illegalOperator = 'p';
+					}
+
+				}
+				//If it reaches the end of searching for allowed characters
+				if(k == allowedChars.length -1){
+					
+						matchesAnAllowedChar = false;
+						illegalOperator = expression.charAt(i);
 						illegalIndexLocation = i;
 						//System.out.println(illegalOperator);
+
 						return true;
 					}
-					
-				}
-				//If anAllowedChar is found it breaks out of the second for loop
-				if(matchesAnAllowedChar == true){
-					//breaks out of for loop
-					k = 25;
-					matchesAnAllowedChar = false;
 				}
 
-			}
-			//If it reaches the end of searching for allowed characters
-			if(k == 21){
 				
-					matchesAnAllowedChar = false;
-					illegalOperator = expression.charAt(i);
-					illegalIndexLocation = i;
-					//System.out.println(illegalOperator);
-
-					return true;
-				}
 			}
-
-			
+		
+		illegalOperator = ' ';
+		illegalIndexLocation = 0;
+		return false;
 		}
-	
-	illegalOperator = ' ';
-	illegalIndexLocation = 0;
-	return false;
-	}
 	
 	public boolean missingOperatorError(String expression) {
 		
