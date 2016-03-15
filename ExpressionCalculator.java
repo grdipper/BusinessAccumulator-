@@ -514,7 +514,7 @@ public class ExpressionCalculator implements ActionListener {
 			expression = "-" + expression;
 		}
 			
-		
+		expression = String.valueOf(Math.round(Double.parseDouble(expression) * 100000.0) / 100000.0);
 		return expression;
 	}
 	public int numberOfUnaryOperators(String expression) {
