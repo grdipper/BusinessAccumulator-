@@ -815,7 +815,7 @@ public class ExpressionCalculator implements ActionListener {
 			}
 			else{
 				printError("Expression contained unknown operator: " + illegalOperator);
-				System.out.println("Expression contained unknown operator: " + illegalOperator);
+				//System.out.println("Expression contained unknown operator: " + illegalOperator);
 				return true;
 			}
 		}
@@ -866,8 +866,8 @@ public static boolean FirstCheck(String expression){
 				
 				//If it is an allowed char
 				if(expression.charAt(i) == allowedChars[k]){
-					System.out.println(expression.charAt(i));
-					System.out.println(allowedChars[k]);
+					//System.out.println(expression.charAt(i));
+					//System.out.println(allowedChars[k]);
 					matchesAnAllowedChar = true;
 					if(expression.charAt(i) == 'p'){
 						//Checks if the p is a part of pi operator
