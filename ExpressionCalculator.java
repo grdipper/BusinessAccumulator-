@@ -148,6 +148,14 @@ public class ExpressionCalculator implements ActionListener {
 			outputField.setText("Nothing has been typed in the expression field.");
 			return;
 		}
+		if(expression.contains("x.x")){
+			errorPanel.setBackground(Color.PINK);
+			inputField.setText("");
+			variableField.setText("");
+			outputField.setText("");
+			errorLabel.setText("Error: Expression contained unknown operator: .");
+			return;
+		}
 		
 		if((expression.contains("x")) && (eX.trim().length() == 0)){
 			errorPanel.setBackground(Color.WHITE);
@@ -206,6 +214,14 @@ public class ExpressionCalculator implements ActionListener {
 			errorLabel.setText("");
 			variableField.setText("");
 			outputField.setText("Nothing has been typed in either of the fields.");
+			return;
+		}
+		if(expression.contains("x.x")){
+			errorPanel.setBackground(Color.PINK);
+			inputField.setText("");
+			variableField.setText("");
+			outputField.setText("");
+			errorLabel.setText("Error: Expression contained unknown operator: .");
 			return;
 		}
 		if((expression.contains("x")) && (eX.trim().length() == 0)){
@@ -283,6 +299,14 @@ public class ExpressionCalculator implements ActionListener {
 					errorLabel.setText("");
 					variableField.setText("");
 					outputField.setText("Nothing has been typed in the expression field.");
+					return;
+				}
+				if(expression.contains("x.x")){
+					errorPanel.setBackground(Color.PINK);
+					inputField.setText("");
+					variableField.setText("");
+					outputField.setText("");
+					errorLabel.setText("Error: Expression contained unknown operator: .");
 					return;
 				}
 			for(int a = 0; a<=eX.length(); a++){
