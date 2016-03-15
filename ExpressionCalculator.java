@@ -237,7 +237,7 @@ public class ExpressionCalculator implements ActionListener {
 		
 		//Evaluate the expression and set it equal to the answer
 				expression = expression.replace("x", eX );
-				answer = evaluateExpression(replaceUnaryOperator(expression));
+				answer = evaluateExpression("("+replaceUnaryOperator(expression)+")");
 				inputField.setText("");
 				variableField.setText("");
 				errorPanel.setBackground(Color.WHITE);
@@ -295,7 +295,7 @@ public class ExpressionCalculator implements ActionListener {
 				
 				//Evaluate the expression and set it equal to the answer
 						expression = expression.replace("x", eX );
-						answer = evaluateExpression(replaceUnaryOperator(expression));
+						answer = evaluateExpression("("+replaceUnaryOperator(expression)+")");
 						inputField.setText("");
 						errorPanel.setBackground(Color.WHITE);
 						outputField.setText(answer);
@@ -311,7 +311,7 @@ public class ExpressionCalculator implements ActionListener {
 	
 		//Evaluate the expression and set it equal to the answer
 				expression = expression.replace("x", eX );
-				answer = evaluateExpression(replaceUnaryOperator(expression));
+				answer = evaluateExpression("("+replaceUnaryOperator(expression)+")");
 				inputField.setText("");
 				variableField.setText("");
 				errorPanel.setBackground(Color.WHITE);
