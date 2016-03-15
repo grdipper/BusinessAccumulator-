@@ -178,7 +178,14 @@ public class ExpressionCalculator implements ActionListener {
 					return;
 					}
 			}
-		answer = evaluateExpression("("+replaceUnaryOperator(expression)+")");
+			if(checkForErrors(expression)){
+				inputField.setText("");
+				variableField.setText("");
+				errorPanel.setBackground(Color.PINK);
+				outputField.setText("");
+				return;
+			}
+			answer = evaluateExpression("("+replaceUnaryOperator(expression)+")");
 			inputField.setText("");
 			variableField.setText("");
 			errorPanel.setBackground(Color.WHITE);
@@ -230,6 +237,7 @@ public class ExpressionCalculator implements ActionListener {
 		//Check for errors and TRUE means ERROR
 		if(checkForErrors(expression)){
 			inputField.setText("");
+			variableField.setText("");
 			errorPanel.setBackground(Color.PINK);
 			outputField.setText("");
 			return;
@@ -288,6 +296,7 @@ public class ExpressionCalculator implements ActionListener {
 				//Check for errors and TRUE means ERROR
 				if(checkForErrors(expression)){
 					inputField.setText("");
+					variableField.setText("");
 					errorPanel.setBackground(Color.PINK);
 					outputField.setText("");
 					return;
