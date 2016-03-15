@@ -178,7 +178,7 @@ public class ExpressionCalculator implements ActionListener {
 					return;
 					}
 			}
-			answer = evaluateExpression(replaceUnaryOperator(expression));
+		answer = evaluateExpression("("+replaceUnaryOperator(expression)+")");
 			inputField.setText("");
 			variableField.setText("");
 			errorPanel.setBackground(Color.WHITE);
