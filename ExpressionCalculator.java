@@ -28,7 +28,7 @@ public class ExpressionCalculator implements ActionListener {
 	//GUI Objects
 	JFrame expressionWindow = new JFrame();
 	JTextField inputField = new JTextField(20);
-	JTextField outputField = new JTextField(20);
+	JTextField outputField = new JTextField(25);
 	JTextField variableField = new JTextField(5);
 	JButton submitButton = new JButton("Evaluate");
 	JLabel varLabel = new JLabel("x = ");
@@ -76,7 +76,7 @@ public class ExpressionCalculator implements ActionListener {
 		outputField.setEditable(false);
 		
 		expressionWindow.setLocation(100, 100);
-		expressionWindow.setSize(900, 200);
+		expressionWindow.setSize(1000, 200);
 		expressionWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		expressionWindow.setVisible(true);
 		
