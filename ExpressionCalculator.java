@@ -368,6 +368,10 @@ public class ExpressionCalculator implements ActionListener {
 			printError("Unmatched Parentheses Error");
 			return true;
 		}
+		if(checkNumberFormat(expression)) {
+			printError("Incorrect Number Format with decimal");
+			return true;
+		}
 		if(unidentifiedOperatorError(expression)) {
 			// Print the error message within the method
 			// so that a more descriptive error could be given
@@ -960,6 +964,42 @@ public static boolean FirstCheck(String expression){
 	
 	public boolean unknownSymbolError(String expression) {
 		
+		return false;
+	}
+	public boolean checkNumberFormat(String expression) {
+		
+		char[] exprArray = expression.toCharArray();
+		int i;
+		int error = 0;
+		if(!expression.contains("."))
+			return false;
+		for(i=0;i<exprArray.length;i++) {
+			if((exprArray[i]>='0')&&(exprArray[i]<='9')) {
+				if(error==0)
+					error = 1;
+				
+			}
+			else if(exprArray[i]=='.') {
+				if(error==2)
+					return true;
+				else if(error==1) {
+					error = 2;
+				}
+				
+				if(i<exprArray.length-1) {
+					if(!((exprArray[i+1]>='0')&&((exprArray[i+1]<='9'))))
+						return true;
+				}
+				
+					
+			}
+			else
+				error = 0;
+			
+			
+			
+			
+		}
 		return false;
 	}
 	
