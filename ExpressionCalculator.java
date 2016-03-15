@@ -165,10 +165,12 @@ public class ExpressionCalculator implements ActionListener {
 				variableField.setText("");
 				outputField.setText("");
 				errorLabel.setText("Error: Value entered in Variable Field is non-numeric");
+				return;
 			}
 			if((expression.contains("x") && ((Character.getNumericValue(eX.charAt(a)) != -1)
 				|| eX.charAt(a) == '-'))){
 				expression = expression.replace("x", eX );
+				expression = expression.replace(" ", "");
 				if(adjacentBinaryOperators(expression)){
 					inputField.setText("");
 					variableField.setText("");
@@ -185,6 +187,7 @@ public class ExpressionCalculator implements ActionListener {
 				outputField.setText("");
 				return;
 			}
+			expression = expression.replace(" ", "");
 			answer = evaluateExpression("("+replaceUnaryOperator(expression)+")");
 			inputField.setText("");
 			variableField.setText("");
@@ -224,6 +227,7 @@ public class ExpressionCalculator implements ActionListener {
 	for(int a = 0; a<=eX.length(); a++){
 		if((expression.contains("x") && (Character.getNumericValue(eX.charAt(a)) != -1))){
 			expression = expression.replace("x", eX );
+			expression = expression.replace(" ", "");
 			System.out.println("Trace 1");
 			if(adjacentBinaryOperators(expression)){
 				inputField.setText("");
@@ -245,6 +249,7 @@ public class ExpressionCalculator implements ActionListener {
 		
 		//Evaluate the expression and set it equal to the answer
 				expression = expression.replace("x", eX );
+				expression = expression.replace(" ", "");
 				answer = evaluateExpression("("+replaceUnaryOperator(expression)+")");
 				inputField.setText("");
 				variableField.setText("");
@@ -283,6 +288,7 @@ public class ExpressionCalculator implements ActionListener {
 			for(int a = 0; a<=eX.length(); a++){
 				if((expression.contains("x") && (Character.getNumericValue(eX.charAt(a)) != -1))){
 					expression = expression.replace("x", eX );
+					expression = expression.replace(" ", "");
 					System.out.println("Trace 1");
 					if(adjacentBinaryOperators(expression)){
 						inputField.setText("");
@@ -304,6 +310,7 @@ public class ExpressionCalculator implements ActionListener {
 				
 				//Evaluate the expression and set it equal to the answer
 						expression = expression.replace("x", eX );
+						expression = expression.replace(" ", "");
 						answer = evaluateExpression("("+replaceUnaryOperator(expression)+")");
 						inputField.setText("");
 						errorPanel.setBackground(Color.WHITE);
@@ -320,6 +327,7 @@ public class ExpressionCalculator implements ActionListener {
 	
 		//Evaluate the expression and set it equal to the answer
 				expression = expression.replace("x", eX );
+				expression = expression.replace(" ", "");
 				answer = evaluateExpression("("+replaceUnaryOperator(expression)+")");
 				inputField.setText("");
 				variableField.setText("");
