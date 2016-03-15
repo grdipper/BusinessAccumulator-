@@ -71,6 +71,7 @@ public class ExpressionCalculator implements ActionListener {
 		
 		submitButton.addActionListener(this);
 		inputField.addActionListener(this);
+		variableField.addActionListener(this);
 		
 		//workArea.setEditable(false);
 		outputField.setEditable(false);
@@ -203,6 +204,14 @@ public class ExpressionCalculator implements ActionListener {
 			errorLabel.setText("");
 			variableField.setText("");
 			outputField.setText("Nothing has been typed in the variable field.");
+			return;
+		}
+		if((expression.trim().length()==0) && (eX.trim().length() != 0)) {
+			errorPanel.setBackground(Color.WHITE);
+			inputField.setText("");
+			errorLabel.setText("");
+			variableField.setText("");
+			outputField.setText("Nothing has been typed in the expression field.");
 			return;
 		}
 	for(int a = 0; a<=eX.length(); a++){
