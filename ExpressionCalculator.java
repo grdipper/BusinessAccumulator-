@@ -1050,26 +1050,31 @@ public static boolean whatTypeError(String expression){
 		char[] exprArray = expression.toCharArray();
 		int i;
 		int error = 0;
-		if(!expression.contains("."))
+		if(!(expression.contains(".")))
 			return false;
 		for(i=0;i<exprArray.length;i++) {
+			
 			if((exprArray[i]>='0')&&(exprArray[i]<='9')) {
 				if(error==0)
 					error = 1;
 				
 			}
 			else if(exprArray[i]=='.') {
-				if(error==2)
+				if(error==2) {
+					System.out.println("Error found at: "+i);
 					return true;
+				}
 				else if(error==1) {
 					error = 2;
-				}
+				
 				
 				if(i<exprArray.length-1) {
-					if(!((exprArray[i+1]>='0')&&((exprArray[i+1]<='9'))))
+					if(!((exprArray[i+1]>='0')&&((exprArray[i+1]<='9')))) {
+						System.out.println("Error found at: "+i);
 						return true;
+					}
 				}
-				
+				}
 					
 			}
 			else
