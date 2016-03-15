@@ -126,34 +126,188 @@ public class ExpressionCalculator implements ActionListener {
 	// TODO Auto-generated method stub
 		
 		String expression = inputField.getText();
+		String eX = variableField.getText();
 		String answer;
 		
-		// Check to see if anything was typed in
-		// If it was blank, then the user probably didn't mean to 
-		if(expression.trim().length()==0) {
+	if(e.getSource() == variableField){
+		if((expression.trim().length()==0) && (eX.trim().length() == 0)) {
 			errorPanel.setBackground(Color.WHITE);
 			inputField.setText("");
 			errorLabel.setText("");
-			outputField.setText("Nothing has been typed in.");
+			variableField.setText("");
+			outputField.setText("Nothing has been typed in either of the fields.");
 			return;
 		}
 		
+		if((expression.trim().length()==0) && (eX.trim().length() != 0)) {
+			errorPanel.setBackground(Color.WHITE);
+			inputField.setText("");
+			errorLabel.setText("");
+			variableField.setText("");
+			outputField.setText("Nothing has been typed in the expression field.");
+			return;
+		}
+		
+		if((expression.contains("x")) && (eX.trim().length() == 0)){
+			errorPanel.setBackground(Color.WHITE);
+			inputField.setText("");
+			errorLabel.setText("");
+			variableField.setText("");
+			outputField.setText("Nothing has been typed in the variable field.");
+			return;
+		}
+	
+		for(int a = 0; a < eX.length(); a++){
+			if((Character.getNumericValue(eX.charAt(a)) == -1) && (eX.charAt(a) != '-')){
+				errorPanel.setBackground(Color.PINK);
+				inputField.setText("");
+				variableField.setText("");
+				outputField.setText("");
+				errorLabel.setText("Error: Value entered in Variable Field is non-numeric");
+			}
+			if((expression.contains("x") && ((Character.getNumericValue(eX.charAt(a)) != -1)
+				|| eX.charAt(a) == '-'))){
+				expression = expression.replace("x", eX );
+				if(adjacentBinaryOperators(expression)){
+					inputField.setText("");
+					variableField.setText("");
+					errorPanel.setBackground(Color.PINK);
+					outputField.setText("");
+					errorLabel.setText("Error: Adjacent Operator Error");
+					return;
+					}
+			}
+			answer = evaluateExpression(replaceUnaryOperator(expression));
+			inputField.setText("");
+			variableField.setText("");
+			errorPanel.setBackground(Color.WHITE);
+			outputField.setText(answer);
+			errorLabel.setText("");
+		}
+	}
+		
+	if(e.getSource() == inputField) {
+		// Check to see if anything was typed in
+		// If it was blank, then the user probably didn't mean to 
+		if((expression.trim().length()==0) && (eX.trim().length() == 0)){
+			errorPanel.setBackground(Color.WHITE);
+			inputField.setText("");
+			errorLabel.setText("");
+			variableField.setText("");
+			outputField.setText("Nothing has been typed in either of the fields.");
+			return;
+		}
+		if((expression.contains("x")) && (eX.trim().length() == 0)){
+			errorPanel.setBackground(Color.WHITE);
+			inputField.setText("");
+			errorLabel.setText("");
+			variableField.setText("");
+			outputField.setText("Nothing has been typed in the variable field.");
+			return;
+		}
+	for(int a = 0; a<=eX.length(); a++){
+		if((expression.contains("x") && (Character.getNumericValue(eX.charAt(a)) != -1))){
+			expression = expression.replace("x", eX );
+			System.out.println("Trace 1");
+			if(adjacentBinaryOperators(expression)){
+				inputField.setText("");
+				variableField.setText("");
+				errorPanel.setBackground(Color.PINK);
+				outputField.setText("");
+				errorLabel.setText("Error: Adjacent Operator Error");
+				}
+			}
+		}
 		//Check for errors and TRUE means ERROR
 		if(checkForErrors(expression)){
-			
+			inputField.setText("");
 			errorPanel.setBackground(Color.PINK);
 			outputField.setText("");
 			return;
 		}
-			
 		
 		//Evaluate the expression and set it equal to the answer
-		answer = evaluateExpression(replaceUnaryOperator(expression));
+				expression = expression.replace("x", eX );
+				answer = evaluateExpression(replaceUnaryOperator(expression));
+				inputField.setText("");
+				variableField.setText("");
+				errorPanel.setBackground(Color.WHITE);
+				outputField.setText(answer);
+				errorLabel.setText("");
+	}
+			
+	if(e.getSource() == submitButton){
+		// Check to see if anything was typed in
+				// If it was blank, then the user probably didn't mean to 
+				if((expression.trim().length()==0) && (eX.trim().length() == 0)){
+					errorPanel.setBackground(Color.WHITE);
+					inputField.setText("");
+					errorLabel.setText("");
+					variableField.setText("");
+					outputField.setText("Nothing has been typed in either of the fields.");
+					return;
+				}
+				if((expression.contains("x")) && (eX.trim().length() == 0)){
+					errorPanel.setBackground(Color.WHITE);
+					inputField.setText("");
+					errorLabel.setText("");
+					variableField.setText("");
+					outputField.setText("Nothing has been typed in the variable field.");
+					return;
+				}
+				if((expression.trim().length()==0) && (eX.trim().length() != 0)) {
+					errorPanel.setBackground(Color.WHITE);
+					inputField.setText("");
+					errorLabel.setText("");
+					variableField.setText("");
+					outputField.setText("Nothing has been typed in the expression field.");
+					return;
+				}
+			for(int a = 0; a<=eX.length(); a++){
+				if((expression.contains("x") && (Character.getNumericValue(eX.charAt(a)) != -1))){
+					expression = expression.replace("x", eX );
+					System.out.println("Trace 1");
+					if(adjacentBinaryOperators(expression)){
+						inputField.setText("");
+						variableField.setText("");
+						errorPanel.setBackground(Color.PINK);
+						outputField.setText("");
+						errorLabel.setText("Error: Adjacent Operator Error");
+						}
+					}
+				}
+				//Check for errors and TRUE means ERROR
+				if(checkForErrors(expression)){
+					inputField.setText("");
+					errorPanel.setBackground(Color.PINK);
+					outputField.setText("");
+					return;
+				}
+				
+				//Evaluate the expression and set it equal to the answer
+						expression = expression.replace("x", eX );
+						answer = evaluateExpression(replaceUnaryOperator(expression));
+						inputField.setText("");
+						errorPanel.setBackground(Color.WHITE);
+						outputField.setText(answer);
+						errorLabel.setText("");
+			}
 		
-		errorPanel.setBackground(Color.WHITE);
-		outputField.setText(answer);
-		errorLabel.setText("");
-		
+		if(checkForErrors(expression)){
+			inputField.setText("");
+			errorPanel.setBackground(Color.PINK);
+			outputField.setText("");
+			return;
+		}
+	
+		//Evaluate the expression and set it equal to the answer
+				expression = expression.replace("x", eX );
+				answer = evaluateExpression(replaceUnaryOperator(expression));
+				inputField.setText("");
+				variableField.setText("");
+				errorPanel.setBackground(Color.WHITE);
+				outputField.setText(answer);
+				errorLabel.setText("");
 	}
 	
 	//**************************************************
