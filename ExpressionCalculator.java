@@ -24,7 +24,8 @@ import javax.swing.JTextField;
 
 @SuppressWarnings("unused")
 public class ExpressionCalculator implements ActionListener {
-	
+	public static final double pi = 3.14159265;
+	public static final double e = 2.7182818;
 	//GUI Objects
 	JFrame expressionWindow = new JFrame();
 	JTextField inputField = new JTextField(20);
