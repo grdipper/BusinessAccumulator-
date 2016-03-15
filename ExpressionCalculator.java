@@ -196,6 +196,13 @@ public class ExpressionCalculator implements ActionListener {
 				return;
 			}
 			expression = expression.replace(" ", "");
+			expression = expression.replace("Pi", String.valueOf(pi));
+			expression = expression.replace("PI", String.valueOf(pi));
+			expression = expression.replace("pi", String.valueOf(pi));
+			expression = expression.replace("e", String.valueOf(e));
+			expression = expression.replace("E", String.valueOf(e));
+			if(checkNumberFormat(expression))
+				return;
 			answer = evaluateExpression("("+replaceUnaryOperator(expression)+")");
 			inputField.setText("");
 			variableField.setText("");
@@ -266,6 +273,13 @@ public class ExpressionCalculator implements ActionListener {
 		//Evaluate the expression and set it equal to the answer
 				expression = expression.replace("x", eX );
 				expression = expression.replace(" ", "");
+				expression = expression.replace("Pi", String.valueOf(pi));
+				expression = expression.replace("PI", String.valueOf(pi));
+				expression = expression.replace("pi", String.valueOf(pi));
+				expression = expression.replace("e", String.valueOf(e));
+				expression = expression.replace("E", String.valueOf(e));
+				if(checkNumberFormat(expression))
+					return;
 				answer = evaluateExpression("("+replaceUnaryOperator(expression)+")");
 				inputField.setText("");
 				variableField.setText("");
@@ -335,6 +349,13 @@ public class ExpressionCalculator implements ActionListener {
 				//Evaluate the expression and set it equal to the answer
 						expression = expression.replace("x", eX );
 						expression = expression.replace(" ", "");
+						expression = expression.replace("Pi", String.valueOf(pi));
+						expression = expression.replace("PI", String.valueOf(pi));
+						expression = expression.replace("pi", String.valueOf(pi));
+						expression = expression.replace("e", String.valueOf(e));
+						expression = expression.replace("E", String.valueOf(e));
+						if(checkNumberFormat(expression))
+							return;
 						answer = evaluateExpression("("+replaceUnaryOperator(expression)+")");
 						inputField.setText("");
 						errorPanel.setBackground(Color.WHITE);
@@ -352,6 +373,13 @@ public class ExpressionCalculator implements ActionListener {
 		//Evaluate the expression and set it equal to the answer
 				expression = expression.replace("x", eX );
 				expression = expression.replace(" ", "");
+				expression = expression.replace("Pi", String.valueOf(pi));
+				expression = expression.replace("PI", String.valueOf(pi));
+				expression = expression.replace("pi", String.valueOf(pi));
+				expression = expression.replace("e", String.valueOf(e));
+				expression = expression.replace("E", String.valueOf(e));
+				if(checkNumberFormat(expression))
+					return;
 				answer = evaluateExpression("("+replaceUnaryOperator(expression)+")");
 				inputField.setText("");
 				variableField.setText("");
