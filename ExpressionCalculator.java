@@ -997,9 +997,74 @@ public static boolean whatTypeError(String expression){
 		illegalIndexLocation = 0;
 		return false;
 		}
-	
+	/*scenarios:
+	1. (* or (- or (/ 
+	2. *) or -) or /)
+	3. 4__5
+	4. Starts with an operator. . . . *xxxx or /xxxx or +xxxxx
+	*/
 	public boolean missingOperatorError(String expression) {
+		char[] exprArray = expression.toCharArray();
 		
+		boolean firstCharDetected=false;
+		
+		for(int i=0;i<exprArray.length;i++)///////////Checks first character to see if it is a binary operator
+			{
+			//System.out.println(i);
+			if(exprArray[i]==' ')
+				{
+			//	System.out.println("trace1");
+				i++;//disregards spaces
+				}
+			if((((exprArray[i]<='9')&&(exprArray[i]>='0'))||(exprArray[i]=='(')))
+				{
+			//	System.out.println("Trace2");
+				firstCharDetected=true;//if a number is detected than, an operator is allowed.
+				break;
+				}
+		
+			if((exprArray[i]=='+'||exprArray[i]=='*'||exprArray[i]=='/') && (!firstCharDetected))
+			{
+			//	System.out.println("true2");
+				return true;//first character is an operator
+			}
+			}
+		
+		for(int i=0; i< exprArray.length-1;i++){
+			//System.out.println(i);
+			if((exprArray[i] == '(' )&& (exprArray[i+1]=='*'||exprArray[i+1]=='/'||exprArray[i+1]=='+'))//If we have an openParentheses and the next character is a binary operator
+				{
+				
+				//System.out.println("true3");
+				return true;
+				}
+			 if((exprArray[i] == ')' )&& (exprArray[i-1]=='-'||exprArray[i-1]=='*'||exprArray[i-1]=='/'||exprArray[i-1]=='+'))//If we have an openParentheses and the previous character is a binary operator 
+				{
+				//System.out.println("true4");
+				return true;
+				}
+			if(((exprArray[i]<= '9')&&(exprArray[i]>='0')) && exprArray[i+1]==' ')//detects a number with a space afterwards
+					{
+					for(int j=i+2; j<exprArray.length;j++)//checks rest of array
+						{
+						if(exprArray[j]=='+' ||exprArray[j]=='-'||exprArray[j]=='*'||exprArray[j]=='/'||exprArray[j]==')' )//detects a binary operator or end parentheses
+							{
+						//	System.out.println("trace3");
+							break;
+							}	
+						if(((exprArray[j]<='9') && (exprArray[j]>='0'))||exprArray[j]=='(')
+							{
+						//System.out.println("true5");
+							return true;//a number is detected once more
+							}
+						}
+					
+					}
+			// continue;
+				
+						}
+					
+	//System.out.println("false2");		
 		return false;
 	}
 	
