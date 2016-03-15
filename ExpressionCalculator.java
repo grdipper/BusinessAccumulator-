@@ -891,10 +891,10 @@ public class ExpressionCalculator implements ActionListener {
 	}
 
 
-	public static boolean whatTypeError(String expression){
+public static boolean whatTypeError(String expression){
 		//specialAlphabet excludes known letter operators r,x
-		String specialAlphabet = "abcdfghijklmnopqrstuvwyz";
-		for(int i = 0; i < (specialAlphabet.length() - 1); i++){
+		String specialAlphabet = "abcdfghijklmnopqstuvwyzABCDFGHIJKLMNOPQSTUVWYZ";
+		for(int i = 0; i < (specialAlphabet.length()); i++){
 			if(illegalOperator == specialAlphabet.charAt(i)){
 				return true;
 				
@@ -912,15 +912,28 @@ public class ExpressionCalculator implements ActionListener {
 		return true;
 	}
 	
-public static boolean FirstCheck(String expression){
+	public static boolean FirstCheck(String expression){
 		
-		char[] allowedChars = {'(',')','^','*','/','+','-',' ', '1','2','3','4','5','6','7','8','9','0','r','e','p','.','x'};
+		char[] allowedChars = {'(',')','^','*','/','+','-',' ', '1','2','3','4','5','6','7','8','9','0','r','e','p','.','x','P'};
 		boolean matchesAnAllowedChar = false; 
 		
+
+		//###Alden looking for bugs###
+		//############################
+		//When [Type expression here: (34 + 22)   x = : 4]
+		//Will give the answer in the parentheses and it will allow a value put in for x
+		//
+		//When [Type expression here: (34  22)   x = : ]
+		//Will give an answer of 3422 
+		//
+		//When [Type expression here: (34 + + 22)   x = : ]
+		//Will causes an exception to be printed out and the GUI won't move
 		
-//		if(specialCharCheck( '#',  expression)){
-//			illegalOperator = '#';
-//			illegalIndexLocation = expression.indexOf('#');
+				
+		
+//		if(specialCharCheck( '\\',  expression)){
+//			illegalOperator = '\\';
+//			illegalIndexLocation = expression.indexOf('\\');
 //			return true;
 //		}
 		System.out.println(allowedChars.length);
@@ -931,27 +944,32 @@ public static boolean FirstCheck(String expression){
 				
 				//If it is an allowed char
 				if(expression.charAt(i) == allowedChars[k]){
-					//System.out.println(expression.charAt(i));
-					//System.out.println(allowedChars[k]);
+					System.out.println(expression.charAt(i));
+					System.out.println(allowedChars[k]);
 					matchesAnAllowedChar = true;
-					if(expression.charAt(i) == 'p'){
+					if(expression.charAt(i) == 'p' || expression.charAt(i) == 'P'){
 						//Checks if the p is a part of pi operator
 						//System.out.println("Detects a p");
 
-						if(expression.charAt(i+1) == 'i'){
+						if(expression.charAt(i+1) == 'i' && (expression.charAt(i) == 'p' || expression.charAt(i) == 'P')){
 							//Increase i by one to skip i of pi
 							i = i + 1;
 							//System.out.println("Detects an i");
 						}
+						else if(expression.charAt(i+1) == 'I' && expression.charAt(i) == 'P'){
+							i = i + 1;
+						}
 						else{
 							matchesAnAllowedChar = false;
-							illegalOperator = 'p';
+							illegalOperator = expression.charAt(i);
 							illegalIndexLocation = i;
 							//System.out.println(illegalOperator);
 							return true;
 						}
 						
 					}
+					
+				
 					//If anAllowedChar is found it breaks out of the second for loop
 					if(matchesAnAllowedChar == true){
 						//breaks out of for loop
