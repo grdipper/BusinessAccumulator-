@@ -658,7 +658,7 @@ public class ExpressionCalculator implements ActionListener {
 		else
 			return expression;
 		
-		//System.out.println(new String(exprArray));
+	
 		return new String(exprArray);
 	}
 	
@@ -788,7 +788,7 @@ public class ExpressionCalculator implements ActionListener {
 			op1 = String.valueOf(Double.parseDouble(op1.substring(1) )*-1);
 		if(op2.contains("u"))
 			op2 = String.valueOf(Double.parseDouble(op2.substring(1) )*-1);
-		//System.out.println("boom: "+op1+" "+op2);
+		
 		
 		if(operator=="+") 
 			answer = String.valueOf(Double.parseDouble(op1) + Double.parseDouble(op2));
@@ -806,7 +806,7 @@ public class ExpressionCalculator implements ActionListener {
 		//System.out.println("BANG!: "+answer);
 		//round answer to avoid weird bugs with 5*5 = 25.0000005
 		answer = String.valueOf(Math.round(Double.parseDouble(answer) * 10000000.0) / 10000000.0);
-		//System.out.println("BANG!: "+answer);
+	
 		return answer;
 	}
 	
@@ -829,40 +829,32 @@ public class ExpressionCalculator implements ActionListener {
 		boolean priorityParFound=false;
 		int openParIndex=0;                        // index of priority parantheses
 		int closeParIndex=expression.length()-1;
-		/*(int x=0;
-		int y=0;
-		int z=0;
-		int r=0;*/
 		for(int i=0;i<=exprArray.length-1;i++){ 						//Outer Loop
 			if(exprArray[i] == '(')
 				{
-				//z++;
 				openParIndex=i; //saves Index of Open Parentheses
 					for(int j=i+1;j<=exprArray.length;j++){             //Inner Loop
 						{
 							if(exprArray[j]=='(')
 							{
 								openParIndex=j; //New priority Index
-								//x++;
 							}
 							if(exprArray[j]==')')
 							{
 								closeParIndex=j;      // 
 								priorityParFound= true;
 								j=exprArray.length+1; //Exits the inner for loop, Indicates if
-								//y++;
+							
 							}
 							}
 						}
 			
 				}
 			if(priorityParFound) break;
-			//r++;
+			
 			}
 	
 		expression = expression.substring(openParIndex,closeParIndex+1);//needs to return a function surrounded with parentheses.
-		//System.out.println("z=" + z + " x=" + x + " y=" + y + " r=" + r);
-		//System.out.println(expression);
 		
 		return expression; 
 	} 
@@ -898,13 +890,13 @@ public class ExpressionCalculator implements ActionListener {
 		// Check for "-" binary operator
 		for(i=1;i<expArray.length;i++) {
 			if((((expArray[i-1]>='0')&&(expArray[i-1]<='9'))||(expArray[i-1]==')'))&&(expArray[i]=='-')) {
-				//System.out.println(i);
+			
 				return true;
 			}
 				
 		}
 		
-		//System.out.println("No binary operators found");
+		
 		return false;
 	}
 	public void printError(String error) {
@@ -922,10 +914,10 @@ public class ExpressionCalculator implements ActionListener {
 		{
 			if(exprArray[i]=='(') paranCount++;
 			else if(exprArray[i]==')') paranCount--;
-			//System.out.println(paranCount);
+		
 		}
 		
-		//System.out.println("Final= " + paranCount);
+		
 		if(paranCount==0)return false;
 		else return true;
 	}
@@ -954,7 +946,6 @@ public class ExpressionCalculator implements ActionListener {
 		if(parenthesesCounter == 0){
 			return false;
 		}
-		// answer = "Parentheses unmatched";
 		return true;
 	}
 	
@@ -969,18 +960,18 @@ public class ExpressionCalculator implements ActionListener {
 	
 	public boolean unidentifiedOperatorError(String expression) {
 		//FirstCheck checks all of the chars in the string for an illegal char, it returns the illegalOperator and it's illegalIndexLocation
-		//System.out.println(FirstCheck(expression));
+		
 		if(FirstCheck(expression) == true){
 			//WhatTypeError returns true if the problem is a letter
 			if(whatTypeError(expression) == true){
 				printError("Expression contained unknown symbol: " + illegalOperator);
-				//System.out.println("Expression contained unknown symbol: " + illegalOperator);
+				
 
 				return true;
 			}
 			else{
 				printError("Expression contained unknown operator: " + illegalOperator);
-				//System.out.println("Expression contained unknown operator: " + illegalOperator);
+			
 				return true;
 			}
 		}
