@@ -190,7 +190,7 @@ public class ExpressionCalculator implements ActionListener {
 					}
 			}
 			if(checkForErrors(expression)){
-				inputField.setText("");
+				
 				variableField.setText("");
 				errorPanel.setBackground(Color.PINK);
 				outputField.setText("");
@@ -205,7 +205,7 @@ public class ExpressionCalculator implements ActionListener {
 			if(checkNumberFormat(expression))
 				return;
 			answer = evaluateExpression("("+replaceUnaryOperator(expression)+")");
-			inputField.setText("");
+			
 			variableField.setText("");
 			errorPanel.setBackground(Color.WHITE);
 			outputField.setText(answer);
@@ -218,7 +218,7 @@ public class ExpressionCalculator implements ActionListener {
 		// If it was blank, then the user probably didn't mean to 
 		if((expression.trim().length()==0) && (eX.trim().length() == 0)){
 			errorPanel.setBackground(Color.WHITE);
-			inputField.setText("");
+			
 			errorLabel.setText("");
 			variableField.setText("");
 			outputField.setText("Nothing has been typed in either of the fields.");
@@ -226,7 +226,7 @@ public class ExpressionCalculator implements ActionListener {
 		}
 		if(expression.contains("x.x")){
 			errorPanel.setBackground(Color.PINK);
-			inputField.setText("");
+			
 			variableField.setText("");
 			outputField.setText("");
 			errorLabel.setText("Error: Expression contained unknown operator: .");
@@ -234,7 +234,7 @@ public class ExpressionCalculator implements ActionListener {
 		}
 		if((expression.contains("x")) && (eX.trim().length() == 0)){
 			errorPanel.setBackground(Color.WHITE);
-			inputField.setText("");
+			
 			errorLabel.setText("");
 			variableField.setText("");
 			outputField.setText("Nothing has been typed in the variable field.");
@@ -242,7 +242,7 @@ public class ExpressionCalculator implements ActionListener {
 		}
 		if((expression.trim().length()==0) && (eX.trim().length() != 0)) {
 			errorPanel.setBackground(Color.WHITE);
-			inputField.setText("");
+			
 			errorLabel.setText("");
 			variableField.setText("");
 			outputField.setText("Nothing has been typed in the expression field.");
@@ -254,7 +254,7 @@ public class ExpressionCalculator implements ActionListener {
 			expression = expression.replace(" ", "");
 			System.out.println("Trace 1");
 			if(adjacentBinaryOperators(expression)){
-				inputField.setText("");
+				
 				variableField.setText("");
 				errorPanel.setBackground(Color.PINK);
 				outputField.setText("");
@@ -264,7 +264,7 @@ public class ExpressionCalculator implements ActionListener {
 		}
 		//Check for errors and TRUE means ERROR
 		if(checkForErrors(expression)){
-			inputField.setText("");
+			
 			variableField.setText("");
 			errorPanel.setBackground(Color.PINK);
 			outputField.setText("");
@@ -282,7 +282,7 @@ public class ExpressionCalculator implements ActionListener {
 				if(checkNumberFormat(expression))
 					return;
 				answer = evaluateExpression("("+replaceUnaryOperator(expression)+")");
-				inputField.setText("");
+				
 				variableField.setText("");
 				errorPanel.setBackground(Color.WHITE);
 				outputField.setText(answer);
@@ -294,7 +294,7 @@ public class ExpressionCalculator implements ActionListener {
 				// If it was blank, then the user probably didn't mean to 
 				if((expression.trim().length()==0) && (eX.trim().length() == 0)){
 					errorPanel.setBackground(Color.WHITE);
-					inputField.setText("");
+					
 					errorLabel.setText("");
 					variableField.setText("");
 					outputField.setText("Nothing has been typed in either of the fields.");
@@ -302,7 +302,7 @@ public class ExpressionCalculator implements ActionListener {
 				}
 				if((expression.contains("x")) && (eX.trim().length() == 0)){
 					errorPanel.setBackground(Color.WHITE);
-					inputField.setText("");
+					
 					errorLabel.setText("");
 					variableField.setText("");
 					outputField.setText("Nothing has been typed in the variable field.");
@@ -310,7 +310,7 @@ public class ExpressionCalculator implements ActionListener {
 				}
 				if((expression.trim().length()==0) && (eX.trim().length() != 0)) {
 					errorPanel.setBackground(Color.WHITE);
-					inputField.setText("");
+					
 					errorLabel.setText("");
 					variableField.setText("");
 					outputField.setText("Nothing has been typed in the expression field.");
@@ -318,7 +318,7 @@ public class ExpressionCalculator implements ActionListener {
 				}
 				if(expression.contains("x.x")){
 					errorPanel.setBackground(Color.PINK);
-					inputField.setText("");
+					
 					variableField.setText("");
 					outputField.setText("");
 					errorLabel.setText("Error: Expression contained unknown operator: .");
@@ -330,7 +330,7 @@ public class ExpressionCalculator implements ActionListener {
 					expression = expression.replace(" ", "");
 					System.out.println("Trace 1");
 					if(adjacentBinaryOperators(expression)){
-						inputField.setText("");
+						
 						variableField.setText("");
 						errorPanel.setBackground(Color.PINK);
 						outputField.setText("");
@@ -340,7 +340,7 @@ public class ExpressionCalculator implements ActionListener {
 				}
 				//Check for errors and TRUE means ERROR
 				if(checkForErrors(expression)){
-					inputField.setText("");
+					
 					variableField.setText("");
 					errorPanel.setBackground(Color.PINK);
 					outputField.setText("");
@@ -358,14 +358,14 @@ public class ExpressionCalculator implements ActionListener {
 						if(checkNumberFormat(expression))
 							return;
 						answer = evaluateExpression("("+replaceUnaryOperator(expression)+")");
-						inputField.setText("");
+						
 						errorPanel.setBackground(Color.WHITE);
 						outputField.setText(answer);
 						errorLabel.setText("");
 			}
 		
 		if(checkForErrors(expression)){
-			inputField.setText("");
+			
 			errorPanel.setBackground(Color.PINK);
 			outputField.setText("");
 			return;
@@ -382,7 +382,7 @@ public class ExpressionCalculator implements ActionListener {
 				if(checkNumberFormat(expression))
 					return;
 				answer = evaluateExpression("("+replaceUnaryOperator(expression)+")");
-				inputField.setText("");
+				
 				variableField.setText("");
 				errorPanel.setBackground(Color.WHITE);
 				outputField.setText(answer);
@@ -410,23 +410,77 @@ public class ExpressionCalculator implements ActionListener {
 	//
 	//
 	//**************************************************
+	public boolean endsWithOperator(String expression) {
+		
+		expression = expression.trim();
+		if((expression.endsWith("/"))
+				||(expression.endsWith("*"))
+				||(expression.endsWith("+"))
+				||(expression.endsWith("-"))
+				||(expression.endsWith("^"))
+				||(expression.endsWith("r")))
+			return true;
+		
+		
+		return false;
+	}
+	public boolean startsWithOperator(String expression) {
+		
+		expression = expression.trim();
+		if((expression.startsWith("/"))
+				||(expression.startsWith("*"))
+				||(expression.startsWith("+"))
+				||(expression.startsWith("^"))
+				||(expression.startsWith("r")))
+			return true;
+		if(expression.startsWith("-")) {
+			
+			expression = expression.substring(1);
+			if(expression.startsWith("-"))
+				return true;
+			
+		}
+		
+		
+		return false;
+	}
 	public boolean checkForErrors(String expression) {
 		// Check for all errors
 		// TRUE MEANS ERROR
 		
 		//Possibly translate all unary operators here
-		
+		expression=expression.replace("PI", String.valueOf(pi));
+		expression=expression.replace("Pi", String.valueOf(pi));
+		expression=expression.replace("pi", String.valueOf(pi));
+		expression=expression.replace("E", String.valueOf(e));
+		expression=expression.replace("e", String.valueOf(e));
 		
 		
 		
 		// End of translation of unary operators
-		
+		/*if(implicitMultiplicationError(expression)) {
+			printError("Expression contains implicit multiplication");
+			return true;
+		}
+		*/
+		if(endsWithOperator(expression)) {
+			printError("Expression ends in operator");
+			return true;
+		}
+		if(startsWithOperator(expression)) {
+			printError("Expression starts with binary operator");
+			return true;
+		}
 		if(missingParenthesesError(expression)) {
 			printError("Missing Parentheses Error");
 			return true;
 		}
 		if(unmatchedParenthesesError(expression)) {
 			printError("Unmatched Parentheses Error");
+			return true;
+		}
+		if(adjacentBinaryOperators(expression)) {
+			printError("Adjacent Operator Error");
 			return true;
 		}
 		if(checkNumberFormat(expression)) {
@@ -450,10 +504,7 @@ public class ExpressionCalculator implements ActionListener {
 			printError("Divide by Zero Error");
 			return true;
 		}
-		if(adjacentBinaryOperators(expression)) {
-			printError("Adjacent Operator Error");
-			return true;
-		}
+		
 		if(unknownSymbolError(expression)) {
 			// Once again, put the printError message in the method
 			// because we want to give the user an accurate message
@@ -1069,7 +1120,36 @@ public static boolean whatTypeError(String expression){
 	}
 	
 	public boolean divideByZeroError(String expression) {
+		char[] exprArray = expression.toCharArray();
+		int i;
+		int error = 0;
+		if(!(expression.contains("/")))
+			return false;
+		if(!(expression.contains("0")))
+			return false;
+		for(i=0;i<exprArray.length;i++) {
+			if(exprArray[i]=='/')
+				error = 1;
+			else if(exprArray[i]=='0') {
+				if(error>=1)
+					error = 2;
+			}
+			
+			else if((exprArray[i]>='1')&&(exprArray[i]<='9')) {
+				error = 0;
+			}
+				
+			else if(exprArray[i]=='.'){}
+			
+			else {
+				if(error == 2 ) return true;
+				else error = 0;
+			}
+				
+		}
 		
+		if(error==2)
+			return true;
 		return false;
 	}
 	
