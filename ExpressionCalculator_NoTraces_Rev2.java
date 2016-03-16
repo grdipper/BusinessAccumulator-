@@ -35,8 +35,7 @@ public class ExpressionCalculator implements ActionListener {
 	JLabel varLabel = new JLabel("x = ");
 	JLabel varLabel2 = new JLabel("Type expression here: ");
 	JPanel topPanel = new JPanel();
-	//JTextArea workArea = new JTextArea("Work for solved problems will show up here.");
-	//JScrollPane workScroll = new JScrollPane(workArea);
+
 	JLabel errorLabel = new JLabel();
 	JPanel errorPanel = new JPanel();
 	
@@ -53,7 +52,7 @@ public class ExpressionCalculator implements ActionListener {
 		//BUILDING THE GUI
 		expressionWindow.getContentPane().add(topPanel,"North");
 		expressionWindow.getContentPane().add(errorPanel, "South");
-		//expressionWindow.getContentPane().add(workScroll, "Center");
+		
 		
 		errorPanel.add(errorLabel);
 		errorPanel.setBackground(Color.white);
@@ -83,8 +82,7 @@ public class ExpressionCalculator implements ActionListener {
 		expressionWindow.setVisible(true);
 		
 		//BUILDING THE GUI
-		//String test = "4+3-10*-5+24*(-5-2)";
-		//System.out.println(replaceUnaryOperator(test));
+		
 		
 		
 	}
@@ -178,7 +176,7 @@ public class ExpressionCalculator implements ActionListener {
 			}
 			if((expression.contains("x") && ((Character.getNumericValue(eX.charAt(a)) != -1)
 				|| eX.charAt(a) == '-'))){
-				//expression = expression.replace("x", eX );
+				
 				
 				if(adjacentBinaryOperators(expression)){
 					
@@ -263,7 +261,7 @@ public class ExpressionCalculator implements ActionListener {
 			}
 			if((expression.contains("x") && ((Character.getNumericValue(eX.charAt(a)) != -1)
 				|| eX.charAt(a) == '-'))){
-				//expression = expression.replace("x", eX );
+			
 				
 				if(adjacentBinaryOperators(expression)){
 					
@@ -365,7 +363,7 @@ public class ExpressionCalculator implements ActionListener {
 						
 					}
 				}
-				//System.out.println("1");
+			
 				//Check for errors and TRUE means ERROR
 				expression = expression.replace("x", eX );
 				if(checkForErrors(expression)){
@@ -487,9 +485,6 @@ public class ExpressionCalculator implements ActionListener {
 		//	specific error-checking methods and this 
 		//	method will return false (no error) if every
 		//	error-checking method returns false as well.
-		//
-		//
-		//
 		//**************************************************
 	public boolean checkForErrors(String expression) {
 		// Check for all errors
@@ -667,7 +662,6 @@ public class ExpressionCalculator implements ActionListener {
 		//All unary operators should be expressed as a 'u'
 		//Remove parentheses from beginning and end of expression
 		//There should never be nested parentheses when this method is called
-		//System.out.println(expression);
 		if(expression.startsWith("("))
 			expression = expression.replace("(", "");
 		if(expression.endsWith(")"))
@@ -699,7 +693,7 @@ public class ExpressionCalculator implements ActionListener {
 			}
 				
 		}
-		//System.out.println(indexOfOperator);
+	
 		
 		//Find index of operand 1
 		
@@ -723,7 +717,7 @@ public class ExpressionCalculator implements ActionListener {
 			if(exprArray[i]=='u'){
 				
 			}
-				//System.out.println("Negative!");
+				
 			else if(i==exprArray.length-1)
 				indexOfOp2 = exprArray.length-1;
 			else if((((exprArray[i]>'9')||(exprArray[i]<'0')||(i==exprArray.length-1)))&&(exprArray[i]!='.')) {
@@ -742,7 +736,7 @@ public class ExpressionCalculator implements ActionListener {
 			priorityExpr = expression.substring(indexOfOp1,indexOfOp2+1);
 		
 		else priorityExpr = expression.substring(indexOfOp1,indexOfOp2);
-		//System.out.println(priorityExpr);
+		
 		priorityAns = solveMathExpression(priorityExpr);
 		if(priorityExpr.equals(expression))
 			expression = expression.replace(priorityExpr, priorityAns);
@@ -754,7 +748,7 @@ public class ExpressionCalculator implements ActionListener {
 				suffix = "";
 			expression = prefix + solveMathExpression(priorityExpr) + suffix;
 		}
-		//System.out.println("Solved priority expression: "+expression);
+		
 		expression = replaceUnaryOperator(expression);
 		if(containsBinaryOperator(expression))
 			expression = simplifyExp(expression);
@@ -803,7 +797,7 @@ public class ExpressionCalculator implements ActionListener {
 		else if(operator=="r") 
 			answer = String.valueOf(Math.pow(Double.parseDouble(op1), 1/Double.parseDouble(op2)));
 		
-		//System.out.println("BANG!: "+answer);
+		
 		//round answer to avoid weird bugs with 5*5 = 25.0000005
 		answer = String.valueOf(Math.round(Double.parseDouble(answer) * 10000000.0) / 10000000.0);
 	
@@ -874,9 +868,6 @@ public class ExpressionCalculator implements ActionListener {
 		//	The purpose of this method is to check for
 		//  any binary operators.  Returns true if there
 		//  are any.
-		//
-		//
-		//
    //**************************************************
 	public boolean containsBinaryOperator(String expression) {
 		//Check for binary operators: + / * r ^
@@ -1007,27 +998,7 @@ public static boolean whatTypeError(String expression){
 		
 		char[] allowedChars = {'(',')','^','*','/','+','-',' ', '1','2','3','4','5','6','7','8','9','0','r','e','p','.','x','P','E'};
 		boolean matchesAnAllowedChar = false; 
-		
-
-		//###Alden looking for bugs###
-		//############################
-		//When [Type expression here: (34 + 22)   x = : 4]
-		//Will give the answer in the parentheses and it will allow a value put in for x
-		//
-		//When [Type expression here: (34  22)   x = : ]
-		//Will give an answer of 3422 
-		//
-		//When [Type expression here: (34 + + 22)   x = : ]
-		//Will causes an exception to be printed out and the GUI won't move
-		
-				
-		
-//		if(specialCharCheck( '\\',  expression)){
-//			illegalOperator = '\\';
-//			illegalIndexLocation = expression.indexOf('\\');
-//			return true;
-//		}
-		//System.out.println(allowedChars.length);
+	
 		//First for loop looks through string
 		for(int i = 0; i < expression.length() ; i++ ){
 			//Second for loop uses character given to it and checks for all allowed chars
@@ -1035,17 +1006,16 @@ public static boolean whatTypeError(String expression){
 				
 				//If it is an allowed char
 				if(expression.charAt(i) == allowedChars[k]){
-					//System.out.println(expression.charAt(i));
-					//System.out.println(allowedChars[k]);
+					
 					matchesAnAllowedChar = true;
 					if(expression.charAt(i) == 'p' || expression.charAt(i) == 'P'){
 						//Checks if the p is a part of pi operator
-						//System.out.println("Detects a p");
+					
 
 						if(expression.charAt(i+1) == 'i' && (expression.charAt(i) == 'p' || expression.charAt(i) == 'P')){
 							//Increase i by one to skip i of pi
 							i = i + 1;
-							//System.out.println("Detects an i");
+						
 						}
 						else if(expression.charAt(i+1) == 'I' && expression.charAt(i) == 'P'){
 							i = i + 1;
@@ -1054,7 +1024,7 @@ public static boolean whatTypeError(String expression){
 							matchesAnAllowedChar = false;
 							illegalOperator = expression.charAt(i);
 							illegalIndexLocation = i;
-							//System.out.println(illegalOperator);
+							
 							return true;
 						}
 						
@@ -1075,8 +1045,7 @@ public static boolean whatTypeError(String expression){
 						matchesAnAllowedChar = false;
 						illegalOperator = expression.charAt(i);
 						illegalIndexLocation = i;
-						//System.out.println(illegalOperator);
-
+					
 						return true;
 					}
 				}
@@ -1101,37 +1070,37 @@ public static boolean whatTypeError(String expression){
 		
 		for(int i=0;i<exprArray.length;i++)///////////Checks first character to see if it is a binary operator
 			{
-			//System.out.println(i);
+			
 			if(exprArray[i]==' ')
 				{
-			//	System.out.println("trace1");
+		
 				i++;//disregards spaces
 				}
 			if((((exprArray[i]<='9')&&(exprArray[i]>='0'))||(exprArray[i]=='(')))
 				{
-			//	System.out.println("Trace2");
+	
 				firstCharDetected=true;//if a number is detected than, an operator is allowed.
 				break;
 				}
 		
 			if((exprArray[i]=='+'||exprArray[i]=='*'||exprArray[i]=='/') && (!firstCharDetected))
 			{
-			//	System.out.println("true2");
+	
 				return true;//first character is an operator
 			}
 			}
 		
 		for(int i=0; i< exprArray.length-1;i++){
-			//System.out.println(i);
+			
 			if((exprArray[i] == '(' )&& (exprArray[i+1]=='*'||exprArray[i+1]=='/'||exprArray[i+1]=='+'))//If we have an openParentheses and the next character is a binary operator
 				{
 				
-				//System.out.println("true3");
+				
 				return true;
 				}
 			 if((exprArray[i] == ')' )&& (exprArray[i-1]=='-'||exprArray[i-1]=='*'||exprArray[i-1]=='/'||exprArray[i-1]=='+'))//If we have an openParentheses and the previous character is a binary operator 
 				{
-				//System.out.println("true4");
+				
 				return true;
 				}
 			if(((exprArray[i]<= '9')&&(exprArray[i]>='0')) && exprArray[i+1]==' ')//detects a number with a space afterwards
@@ -1140,22 +1109,22 @@ public static boolean whatTypeError(String expression){
 						{
 						if(exprArray[j]=='+' ||exprArray[j]=='-'||exprArray[j]=='*'||exprArray[j]=='/'||exprArray[j]==')' )//detects a binary operator or end parentheses
 							{
-						//	System.out.println("trace3");
+					
 							break;
 							}	
 						if(((exprArray[j]<='9') && (exprArray[j]>='0'))||exprArray[j]=='(')
 							{
-						//System.out.println("true5");
+						
 							return true;//a number is detected once more
 							}
 						}
 					
 					}
-			// continue;
+			
 				
 						}
 					
-	//System.out.println("false2");		
+			
 		return false;
 	}
 	
@@ -1204,7 +1173,7 @@ public static boolean whatTypeError(String expression){
 				if((expression.charAt(k) == bOperators[j]) && ((expression.charAt(k+1) == bOperators[0])//Adjacent operator is +
 						|| (expression.charAt(k+1) == bOperators[2]) // Adjacent operator is /
 						|| (expression.charAt(k+1) == bOperators[3]))){ // Adjacent operator is *
-					//System.out.println(expression.charAt(k) + " followed by " + expression.charAt(k+1));
+				
 					return true;
 				}
 				
@@ -1246,7 +1215,7 @@ public static boolean whatTypeError(String expression){
 			}
 			else if(exprArray[i]=='.') {
 				if(error==2) {
-					//System.out.println("Error found at: "+i);
+					
 					return true;
 				}
 				else if(error==1) {
@@ -1255,7 +1224,7 @@ public static boolean whatTypeError(String expression){
 				
 				if(i<exprArray.length-1) {
 					if(!((exprArray[i+1]>='0')&&((exprArray[i+1]<='9')))) {
-						//System.out.println("Error found at: "+i);
+						
 						return true;
 					}
 				}
