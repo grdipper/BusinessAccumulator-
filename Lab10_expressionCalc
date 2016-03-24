@@ -147,6 +147,9 @@ public class ExpressionCalculator implements ActionListener {
 		String answer;
 		
 	if(ae.getSource() == graphButton){
+		double[] xValues = {-5,-4,-3,-2,-1,0,1,2,3,4,5};
+		double[] yValues = {-5,-4,-3,-2,-1,0,1,2,3,4,5};
+		/*
 		if((expression.trim().length()==0) && (eX.trim().length() == 0)) {
 			errorPanel.setBackground(Color.WHITE);
 			inputField.setText("");
@@ -165,7 +168,10 @@ public class ExpressionCalculator implements ActionListener {
 			outputField.setText("");
 			return;
 		}
+		*/
+		new GraphPanel(xValues,yValues,"x");
 		System.out.println("Graph Button has been pressed");
+		return;
 	}
 		
 	if(ae.getSource() == variableField){
