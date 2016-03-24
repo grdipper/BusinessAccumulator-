@@ -36,10 +36,12 @@ public class ExpressionCalculator implements ActionListener {
 	JTextField inputField = new JTextField(20);
 	JTextField outputField = new JTextField(25);
 	JTextField variableField = new JTextField(5);
+	JTextField stepSizeField = new JTextField(5);
 	JButton submitButton = new JButton("Evaluate");
 	JButton graphButton = new JButton("Graph Expression");
-	JLabel varLabel = new JLabel("x = ");
+	JLabel varLabel = new JLabel("for x = ");
 	JLabel varLabel2 = new JLabel("Type expression here: ");
+	JLabel xLabel1 = new JLabel("by x = ");
 	JPanel topPanel = new JPanel();
 
 	JLabel errorLabel = new JLabel();
@@ -77,6 +79,8 @@ public class ExpressionCalculator implements ActionListener {
 		topPanel.add(graphButton);
 		topPanel.add(varLabel);
 		topPanel.add(variableField);
+		topPanel.add(xLabel1);
+		topPanel.add(stepSizeField);
 		topPanel.add(outputField);
 		
 		submitButton.addActionListener(this);
@@ -88,7 +92,7 @@ public class ExpressionCalculator implements ActionListener {
 		outputField.setEditable(false);
 		
 		expressionWindow.setLocation(100, 100);
-		expressionWindow.setSize(1000, 200);
+		expressionWindow.setSize(1200, 300);
 		graphWindow.setLocation(200,200);
 		graphWindow.setSize(500, 500);
 		expressionWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -141,6 +145,7 @@ public class ExpressionCalculator implements ActionListener {
 		String expression = inputField.getText();
 		String eX = variableField.getText();
 		String answer;
+		
 	if(ae.getSource() == graphButton){
 		if((expression.trim().length()==0) && (eX.trim().length() == 0)) {
 			errorPanel.setBackground(Color.WHITE);
@@ -148,9 +153,6 @@ public class ExpressionCalculator implements ActionListener {
 			errorLabel.setText("");
 			variableField.setText("");
 			outputField.setText("Nothing has been typed in to graph.");
-		//Call GraphPanel
-			
-			//GraphPanel.GraphPanel(expression);
 			return;
 		}
 		if((expression.contains("x")) && (eX.trim().length() == 0)){
