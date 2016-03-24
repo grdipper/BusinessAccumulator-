@@ -26,6 +26,7 @@ public class GraphPanel extends JPanel implements MouseListener
 	// GOES In Expression Calculator JButton graphButton
 	Graphics g;
 	String expression;
+	double minY, maxY;
 	
 
 	
@@ -43,9 +44,30 @@ public GraphPanel (double[] xValues, double[] yValues, String expression) throws
 	
 	
     // To-dos for this constructor method:
-    // 1 call addMouseListener(this); to register this panel as the MouseListener
-    // 2 Calculate Y scale values (and save them) 
-    // 3 Build the mini displayXYpairWindow (reuse for each mouse click!)
+    
+	// 1 call addMouseListener(this); to register this panel as the MouseListener
+    	xyWindow.addMouseListener(this);
+    	 
+	// 2 Calculate Y scale values (and save them)
+     maxY= yValues[0];
+     minY= yValues[0];
+    	for (int counter = 1; counter < yValues.length ; counter++)//COmputes max
+    	{
+    	     if (yValues[counter] > maxY)
+    	     {
+    	      maxY = yValues[counter];
+    	     }
+    	}
+    	for (int counter = 1; counter < yValues.length ; counter++)//Computes min 
+    	{
+    	     if (yValues[counter] < minY)
+    	     {
+    	      minY = yValues[counter];
+    	     }
+    	}
+    	calculateYScale(minY, maxY);
+    
+   // 3 Build the mini displayXYpairWindow (reuse for each mouse click!)
     }
 
 @Override
@@ -89,7 +111,7 @@ public void paint(Graphics g) // overrides paint() in JPanel!
   public void mouseExited(MouseEvent  me){} // window events
   
 
-public void CaclulateYScale(int minY, int maxY)
+public void calculateYScale(double minY, double maxY)
   {
  // if (args.length != 2)
     // {
@@ -219,3 +241,5 @@ public void CaclulateYScale(int minY, int maxY)
 
   }      
 }
+	
+
