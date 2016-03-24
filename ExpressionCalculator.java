@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,11 +10,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -28,16 +31,22 @@ public class ExpressionCalculator implements ActionListener {
 	public static final double e = 2.7182818;
 	//GUI Objects
 	JFrame expressionWindow = new JFrame();
+	JFrame graphWindow = new JFrame();
+	JPanel graphArea = new JPanel();
 	JTextField inputField = new JTextField(20);
 	JTextField outputField = new JTextField(25);
 	JTextField variableField = new JTextField(5);
 	JButton submitButton = new JButton("Evaluate");
+	JButton graphButton = new JButton("Graph Expression");
 	JLabel varLabel = new JLabel("x = ");
 	JLabel varLabel2 = new JLabel("Type expression here: ");
 	JPanel topPanel = new JPanel();
 
 	JLabel errorLabel = new JLabel();
 	JPanel errorPanel = new JPanel();
+	
+	
+	Graphics g;
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -52,10 +61,10 @@ public class ExpressionCalculator implements ActionListener {
 		//BUILDING THE GUI
 		expressionWindow.getContentPane().add(topPanel,"North");
 		expressionWindow.getContentPane().add(errorPanel, "South");
-		
+		graphWindow.getContentPane().add(graphArea,"Center");
 		
 		errorPanel.add(errorLabel);
-		errorPanel.setBackground(Color.white);
+		errorPanel.setBackground(Color.WHITE);
 		
 		errorLabel.setFont(new Font("Times New Roman",Font.ITALIC,15));
 		errorLabel.setText("Errors will show up here");
@@ -65,6 +74,7 @@ public class ExpressionCalculator implements ActionListener {
 		topPanel.add(submitButton);
 		topPanel.add(varLabel2);
 		topPanel.add(inputField);
+		topPanel.add(graphButton);
 		topPanel.add(varLabel);
 		topPanel.add(variableField);
 		topPanel.add(outputField);
@@ -72,12 +82,15 @@ public class ExpressionCalculator implements ActionListener {
 		submitButton.addActionListener(this);
 		inputField.addActionListener(this);
 		variableField.addActionListener(this);
+		graphButton.addActionListener(this);
 		
 		//workArea.setEditable(false);
 		outputField.setEditable(false);
 		
 		expressionWindow.setLocation(100, 100);
 		expressionWindow.setSize(1000, 200);
+		graphWindow.setLocation(200,200);
+		graphWindow.setSize(500, 500);
 		expressionWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		expressionWindow.setVisible(true);
 		
@@ -128,6 +141,27 @@ public class ExpressionCalculator implements ActionListener {
 		String expression = inputField.getText();
 		String eX = variableField.getText();
 		String answer;
+	if(ae.getSource() == graphButton){
+		if((expression.trim().length()==0) && (eX.trim().length() == 0)) {
+			errorPanel.setBackground(Color.WHITE);
+			inputField.setText("");
+			errorLabel.setText("");
+			variableField.setText("");
+			outputField.setText("Nothing has been typed in to graph.");
+			return;
+		}
+		if((expression.contains("x")) && (eX.trim().length() == 0)){
+			errorPanel.setBackground(Color.WHITE);
+			graphWindow.setTitle("Graph of: " + expression);
+			graphWindow.setVisible(true);
+			g = graphWindow.getGraphics();
+			errorLabel.setText("");
+			variableField.setText("");
+			outputField.setText("");
+			return;
+		}
+		System.out.println("Graph Button has been pressed");
+	}
 		
 	if(ae.getSource() == variableField){
 		if((expression.trim().length()==0) && (eX.trim().length() == 0)) {
