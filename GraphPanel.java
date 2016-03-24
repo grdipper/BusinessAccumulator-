@@ -1,6 +1,10 @@
 
 public class GraphPanel extends JPanel implements MouseListener
 {
+	JFrame graphWindow= new JFrame();
+	JPanel graphArea= new Jpanel();
+	// GOES In Expression Calculator JButton graphButton
+	Graphics g;
 	
 	
 public GraphPanel (double[] xValues, double[] yValues) throws IllegalArgumentException
