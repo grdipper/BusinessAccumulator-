@@ -1,10 +1,20 @@
+import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class GraphPanel extends JPanel implements MouseListener
 {
 	JFrame graphWindow= new JFrame();
-	JPanel graphArea= new Jpanel();
+	JFrame XYpairWindow= new JFrame();
+	JPanel graphArea= new JPanel();
+	
 	// GOES In Expression Calculator JButton graphButton
 	Graphics g;
+	JTextField xTextField= new JTextField();
+	JTextField yTextField= new JTextField();
 	
 	
 public GraphPanel (double[] xValues, double[] yValues) throws IllegalArgumentException
@@ -28,17 +38,18 @@ public void paint(Graphics g) // overrides paint() in JPanel!
   public void mousePressed(MouseEvent me) // show tiny x,y values window
     {
     // xTextField and yTextField are in the mini displayXYpairWindow
+    int xPixelsToValueConversionFactor= 1; ////////////Requires Fine Tuning
     int xInPixels = me.getX();
     double xValue = xInPixels * xPixelsToValueConversionFactor;
     String xValueString = String.valueOf(xValue);
     xTextField.setText("X = " + xValueString);
   
-    String yValueString = calculator.calculate(expression,xValueString); 
+    String yValueString = ExpressionCalculator.calculate(expression,xValueString); 
     yTextField.setText("Y = " + yValueString);
 
     // show mini x,y display window
-    displayXYpairWindow.setLocation(me.getX(), me.getY());
-    displayXYpairWindow.setVisible(true); 
+   XYpairWindow.setLocation(me.getX(), me.getY());
+   XYpairWindow.setVisible(true); 
     }
 
   public void mouseReleased(MouseEvent me) // hide tiny window
