@@ -1,24 +1,47 @@
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+
+@SuppressWarnings("serial")
 public class GraphPanel extends JPanel implements MouseListener
 {
 	JFrame graphWindow= new JFrame();
-	JFrame XYpairWindow= new JFrame();
+	JFrame xyWindow= new JFrame();
+	
+	JPanel xyPanel= new JPanel();
 	JPanel graphArea= new JPanel();
+	
+	JLabel xLabel=new JLabel("X= ");
+	JLabel yLabel=new JLabel("Y= ");
+	
+	JTextField xText=new JTextField();
+	JTextField yText=new JTextField();
 	
 	// GOES In Expression Calculator JButton graphButton
 	Graphics g;
-	JTextField xTextField= new JTextField();
-	JTextField yTextField= new JTextField();
+	String expression;
 	
+
 	
-public GraphPanel (double[] xValues, double[] yValues) throws IllegalArgumentException
+
+public GraphPanel (double[] xValues, double[] yValues, String expression) throws IllegalArgumentException
     {
+	this.expression=expression;
+	//GUI BUILD HO
+	xyWindow.getContentPane().add(xyPanel,"North");
+	xyPanel.add(xLabel);
+	xyPanel.add(xText);
+	xyPanel.add(yLabel);
+	xyPanel.add(yText);
+	
+	
+	
     // To-dos for this constructor method:
     // 1 call addMouseListener(this); to register this panel as the MouseListener
     // 2 Calculate Y scale values (and save them) 
@@ -28,8 +51,11 @@ public GraphPanel (double[] xValues, double[] yValues) throws IllegalArgumentExc
 @Override
 public void paint(Graphics g) // overrides paint() in JPanel!
     {
-    int windowWidth  = getWidth();  // call methods in JPanel to get the
-    int windowHeight = getHeight(); // *CURRENT* size of the window!
+    int windowWidth  = getWidth();  
+    int windowHeight = getHeight(); 
+ // call methods in JPanel to get the
+    // *CURRENT* size of the window!
+    
     // 4 Calculate x and y pixels-to-value conversion factors (can't do in CTOR!) 	 
     // 5 Do ALL drawing here in paint() 
     // draw x and y scales and the expression graph here.
@@ -42,20 +68,20 @@ public void paint(Graphics g) // overrides paint() in JPanel!
     int xInPixels = me.getX();
     double xValue = xInPixels * xPixelsToValueConversionFactor;
     String xValueString = String.valueOf(xValue);
-    xTextField.setText("X = " + xValueString);
-  
-    String yValueString = ExpressionCalculator.calculate(expression,xValueString); 
-    yTextField.setText("Y = " + yValueString);
+    xText.setText( xValueString);
+   
+    String yValueString = ExpressionCalculator.evaluateExpression(expression.replace("x", xValueString)); //
+    yText.setText( yValueString);
 
     // show mini x,y display window
-   XYpairWindow.setLocation(me.getX(), me.getY());
-   XYpairWindow.setVisible(true); 
+   xyWindow.setLocation(me.getX(), me.getY());
+   xyWindow.setVisible(true); 
     }
 
   public void mouseReleased(MouseEvent me) // hide tiny window
     {
     // "erase" mini x,y display window	
-    displayXYpairWindow.setVisible(false);
+    xyWindow.setVisible(false);
     }
 
   public void mouseClicked(MouseEvent me){} // take no action
@@ -63,22 +89,23 @@ public void paint(Graphics g) // overrides paint() in JPanel!
   public void mouseExited(MouseEvent  me){} // window events
   
 
-public int CaclulateYScale(int minY, int maxY)
+public void CaclulateYScale(int minY, int maxY)
   {
-  if (args.length != 2)
-     {
-	 System.out.println("Provide two numeric values which are the min and max Y values to be plotted.");
+ // if (args.length != 2)
+    // {
+	// System.out.println("Provide two numeric values which are the min and max Y values to be plotted.");
 	 System.out.println("This program will determine appropriate Y scale values to be printed on the Y axis."); 
-	 return;
-     }
-  double yMin, yMax, dPlotRange;
+	 //return;
+   //  }
+  
+	 double yMin, yMax, dPlotRange;
   int    plotRange, initialIncrement, upperIncrement, 
          lowerIncrement, selectedIncrement, numberOfYscaleValues,
          lowestYscaleValue, highestYscaleValue;
   String zeros = "0000000000";
   try {
-	  yMin = Double.parseDouble(args[0]);
-	  yMax = Double.parseDouble(args[1]);
+	  yMin = Double.parseDouble(String.valueOf(minY));
+	  yMax = Double.parseDouble(String.valueOf(maxY));
 	  if (yMin > yMax)
 	     {
 		 double temp = yMax;
@@ -191,6 +218,4 @@ public int CaclulateYScale(int minY, int maxY)
   System.out.println(yScaleValue);
 
   }      
-}
-	
 }
