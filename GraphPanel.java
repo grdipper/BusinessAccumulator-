@@ -28,13 +28,16 @@ public class GraphPanel extends JPanel implements MouseListener
 	String expression;
 	double minY, maxY;
 	int yScaleValue;
-	
+	double[] xVals;
+	double[] yVals;
 
 	
 
 public GraphPanel (double[] xValues, double[] yValues, String expression) throws IllegalArgumentException
     {
 	this.expression=expression;
+	this.xVals = xValues;
+	this.yVals = yValues;
 	
 	xyWindow.getContentPane().add(xyPanel,"North");
 	graphWindow.getContentPane().add(this, "Center");
