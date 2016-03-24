@@ -27,6 +27,7 @@ public class GraphPanel extends JPanel implements MouseListener
 	Graphics g;
 	String expression;
 	double minY, maxY;
+	int yScaleValue;
 	
 
 	
@@ -34,15 +35,22 @@ public class GraphPanel extends JPanel implements MouseListener
 public GraphPanel (double[] xValues, double[] yValues, String expression) throws IllegalArgumentException
     {
 	this.expression=expression;
-	//GUI BUILD HO
-	xyWindow.getContentPane().add(xyPanel,"North");
+	
+	xyWindow.getContentPane().add(xyPanel,"South");
+	
 	xyPanel.add(xLabel);
 	xyPanel.add(xText);
 	xyPanel.add(yLabel);
 	xyPanel.add(yText);
 	
+	graphWindow.setLocation(200,200);
+	graphWindow.setSize(500, 500);
 	
+	graphWindow.setTitle("Graph of: " + expression);
+	graphWindow.setVisible(true);
+	g = graphWindow.getGraphics();
 	
+
     // To-dos for this constructor method:
     
 	// 1 call addMouseListener(this); to register this panel as the MouseListener
@@ -51,23 +59,30 @@ public GraphPanel (double[] xValues, double[] yValues, String expression) throws
 	// 2 Calculate Y scale values (and save them)
      maxY= yValues[0];
      minY= yValues[0];
-    	for (int counter = 1; counter < yValues.length ; counter++)//COmputes max
+    	for (int counter = 1; counter < yValues.length ; counter++)//COmputes max y
     	{
     	     if (yValues[counter] > maxY)
     	     {
     	      maxY = yValues[counter];
     	     }
     	}
-    	for (int counter = 1; counter < yValues.length ; counter++)//Computes min 
+    	for (int counter = 1; counter < yValues.length ; counter++)//Computes min y
     	{
     	     if (yValues[counter] < minY)
     	     {
     	      minY = yValues[counter];
     	     }
     	}
-    	calculateYScale(minY, maxY);
+    	calculateYScale(minY, maxY); //Changes yScaleValue which is a global variable
     
    // 3 Build the mini displayXYpairWindow (reuse for each mouse click!)
+    	
+    	xyWindow.getContentPane().add(xyPanel,"South");
+    	xyPanel.add(xLabel);
+    	xyPanel.add(xText);
+    	xyPanel.add(yLabel);
+    	xyPanel.add(yText);
+    	
     }
 
 @Override
@@ -231,7 +246,7 @@ public void calculateYScale(double minY, double maxY)
     	System.out.println("Upper Y scale value adjusted up to 0 to include 0 point. (Additional click marks added.)");
         }
      }
-  int yScaleValue = lowestYscaleValue;
+   yScaleValue = lowestYscaleValue;
   while(yScaleValue < highestYscaleValue)
        {
 	   System.out.print(yScaleValue + ",");
