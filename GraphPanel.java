@@ -1,11 +1,16 @@
+import java.awt.BasicStroke;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Line2D;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
 
 
 @SuppressWarnings("serial")
@@ -113,7 +118,20 @@ public void paint(Graphics g) // overrides paint() in JPanel!
     	
     // 5 Do ALL drawing here in paint() 
     // draw x and y scales and the expression graph here.
+    
+    DrawAxis(g);
     }
+    
+    
+    public void DrawAxis(Graphics g){
+	
+	Stroke stroke = new BasicStroke(2f);
+	((Graphics2D) g).setStroke(stroke);
+	g.drawLine(30, 30, 30, (this.getHeight() - 30));
+	g.drawLine(30, (this.getHeight() - 30), (this.getWidth() - 30) , (this.getHeight() - 30));
+	
+}
+    
 
   public void mousePressed(MouseEvent me) // show tiny x,y values window
     {
