@@ -47,7 +47,7 @@ public class ExpressionCalculator implements ActionListener {
 	JLabel errorLabel = new JLabel();
 	JPanel errorPanel = new JPanel();
 	
-	
+	//GridLayout layout = new GridLayout(0,3);
 	Graphics g;
 	
 	public static void main(String[] args) {
@@ -91,8 +91,8 @@ public class ExpressionCalculator implements ActionListener {
 		//workArea.setEditable(false);
 		outputField.setEditable(false);
 		
-		expressionWindow.setLocation(100, 100);
-		expressionWindow.setSize(1200, 300);
+		expressionWindow.setLocation(25, 25);
+		expressionWindow.setSize(1238, 300);
 		graphWindow.setLocation(200,200);
 		graphWindow.setSize(500, 500);
 		expressionWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -149,28 +149,66 @@ public class ExpressionCalculator implements ActionListener {
 	if(ae.getSource() == graphButton){
 		double[] xValues = {-5,-4,-3,-2,-1,0,1,2,3,4,5};
 		double[] yValues = {-5,-4,-3,-2,-1,0,1,2,3,4,5};
-		/*
-		if((expression.trim().length()==0) && (eX.trim().length() == 0)) {
-			errorPanel.setBackground(Color.WHITE);
-			inputField.setText("");
-			errorLabel.setText("");
+		//Nothing has been typed
+		if(expression.trim().length()==0) {
+			errorLabel.setBackground(Color.red);
+			printError("Nothing has been typed in to graph.");
+			return;
+			
+		}
+		if(eX.trim().length()==0) {
+			errorLabel.setBackground(Color.red);
+			printError("Nothing typed in the variable field.");
+			
+			
 			variableField.setText("");
-			outputField.setText("Nothing has been typed in to graph.");
+			
 			return;
 		}
-		if((expression.contains("x")) && (eX.trim().length() == 0)){
-			errorPanel.setBackground(Color.WHITE);
-			graphWindow.setTitle("Graph of: " + expression);
-			graphWindow.setVisible(true);
-			g = graphWindow.getGraphics();
-			errorLabel.setText("");
-			variableField.setText("");
-			outputField.setText("");
+		double testX;
+		try {
+			testX = Double.parseDouble(variableField.getText());
+		}
+		catch (Exception e) {
+			errorLabel.setBackground(Color.red);
+			printError("'"+variableField.getText()+"' is not a valid number.");
 			return;
 		}
-		*/
-		new GraphPanel(xValues,yValues,"x");
-		System.out.println("Graph Button has been pressed");
+		
+		try {
+			testX = Double.parseDouble(stepSizeField.getText());
+		}
+		catch (Exception e) {
+			errorLabel.setBackground(Color.red);
+			printError("'"+stepSizeField.getText()+"' is not a valid number.");
+			return;
+		}
+		
+		if((expression.contains("x")) && (eX.trim().length() != 0)&&(stepSizeField.getText().trim().length()!=0)){
+			errorPanel.setBackground(Color.WHITE);
+			
+			System.out.println("Graph Button has been pressed");
+			if(expression.replace(" ","").contains("xx")) {
+				
+				printError("Implicit multiplication on variable x");
+				return;
+			}
+			if(checkForErrors(expression.replace("x", "10.1"))){
+				
+				
+				return;
+			}
+			
+			
+			
+			errorLabel.setText("");
+			new GraphPanel(xValues,yValues,expression.replace(" ", ""));
+			
+			return;
+		}
+		
+		
+		
 		return;
 	}
 		
@@ -542,7 +580,14 @@ public class ExpressionCalculator implements ActionListener {
 		expression=expression.replace("E", String.valueOf(e));
 		expression=expression.replace("e", String.valueOf(e));
 		
-		
+		if(expression.contains("()")) {
+			printError("Expression contains '()'");
+			return true;
+		}
+		if(expression.replace(" ","").contains("()")) {
+			printError("Expression contains open then closed parentheses");
+			return true;
+		}
 		
 		// End of translation of unary operators
 		if(implicitMultiplicationError(expression)) {
@@ -937,6 +982,7 @@ public class ExpressionCalculator implements ActionListener {
 	}
 	public void printError(String error) {
 		//PRINT ERROR STRING TO ERROR LABEL
+		errorPanel.setBackground(Color.pink);
 		errorLabel.setText("Error: "+error);
 	}
 	
