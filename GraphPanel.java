@@ -36,7 +36,8 @@ public GraphPanel (double[] xValues, double[] yValues, String expression) throws
     {
 	this.expression=expression;
 	
-	xyWindow.getContentPane().add(xyPanel,"South");
+	xyWindow.getContentPane().add(xyPanel,"North");
+	graphWindow.getContentPane().add(this, "Center");
 	
 	xyPanel.add(xLabel);
 	xyPanel.add(xText);
@@ -49,6 +50,7 @@ public GraphPanel (double[] xValues, double[] yValues, String expression) throws
 	graphWindow.setTitle("Graph of: " + expression);
 	graphWindow.setVisible(true);
 	g = graphWindow.getGraphics();
+
 	
 
     // To-dos for this constructor method:
@@ -77,23 +79,35 @@ public GraphPanel (double[] xValues, double[] yValues, String expression) throws
     
    // 3 Build the mini displayXYpairWindow (reuse for each mouse click!)
     	
-    	xyWindow.getContentPane().add(xyPanel,"South");
+    	xyWindow.getContentPane().add(xyPanel,"North");
+    	
     	xyPanel.add(xLabel);
     	xyPanel.add(xText);
     	xyPanel.add(yLabel);
     	xyPanel.add(yText);
-    	
     }
 
 @Override
 public void paint(Graphics g) // overrides paint() in JPanel!
     {
+	int xstart=0, xend=1;
+	@SuppressWarnings("unused")
+	int xrange=xend-xstart;
+	
     int windowWidth  = getWidth();  
     int windowHeight = getHeight(); 
+    int initialPixelSpace=30;//pixels between edge of window and beginning of axis of graph
+  
+    int graphWidth=windowWidth-2*initialPixelSpace;// in pixels
+    int tickWidth=graphWidth/10;
+    int tickValue=xrange/10;
+   
+    int xPixelsToValueConversionFactor= tickValue/tickWidth;
  // call methods in JPanel to get the
     // *CURRENT* size of the window!
     
     // 4 Calculate x and y pixels-to-value conversion factors (can't do in CTOR!) 	 
+    	
     // 5 Do ALL drawing here in paint() 
     // draw x and y scales and the expression graph here.
     }
