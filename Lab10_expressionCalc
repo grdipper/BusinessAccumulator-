@@ -148,6 +148,9 @@ public class ExpressionCalculator implements ActionListener {
 			errorLabel.setText("");
 			variableField.setText("");
 			outputField.setText("Nothing has been typed in to graph.");
+		//Call GraphPanel
+			
+			//GraphPanel.GraphPanel(expression);
 			return;
 		}
 		if((expression.contains("x")) && (eX.trim().length() == 0)){
