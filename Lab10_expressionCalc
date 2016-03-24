@@ -1,295 +1,1340 @@
-import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Stroke;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.geom.Line2D;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+@SuppressWarnings("unused")
+public class ExpressionCalculator implements ActionListener {
+	public static final double pi = 3.14159265;
+	public static final double e = 2.7182818;
+	//GUI Objects
+	JFrame expressionWindow = new JFrame();
+	JFrame graphWindow = new JFrame();
+	JPanel graphArea = new JPanel();
+	JTextField inputField = new JTextField(20);
+	JTextField outputField = new JTextField(25);
+	JTextField variableField = new JTextField(5);
+	JTextField stepSizeField = new JTextField(5);
+	JButton submitButton = new JButton("Evaluate");
+	JButton graphButton = new JButton("Graph Expression");
+	JLabel varLabel = new JLabel("for x = ");
+	JLabel varLabel2 = new JLabel("Type expression here: ");
+	JLabel xLabel1 = new JLabel("by x = ");
+	JPanel topPanel = new JPanel();
 
-
-@SuppressWarnings("serial")
-public class GraphPanel extends JPanel implements MouseListener
-{
-	JFrame graphWindow= new JFrame();
-	JFrame xyWindow= new JFrame();
+	JLabel errorLabel = new JLabel();
+	JPanel errorPanel = new JPanel();
 	
-	JPanel xyPanel= new JPanel();
-	JPanel graphArea= new JPanel();
-	
-	JLabel xLabel=new JLabel("X= ");
-	JLabel yLabel=new JLabel("Y= ");
-	
-	JTextField xText=new JTextField();
-	JTextField yText=new JTextField();
-	
-	// GOES In Expression Calculator JButton graphButton
+	//GridLayout layout = new GridLayout(0,3);
 	Graphics g;
-	String expression;
-	double minY, maxY;
-	int yScaleValue;
-	double[] xVals;
-	double[] yVals;
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new ExpressionCalculator();
+	}
+	
+	
+	public ExpressionCalculator() {
+		//System.out.println(findPriorityParentheses("(3+4*(3-1))"));
+		//EXAMPLE OF FONT
+		//outChatTextArea.setFont(new Font("default",Font.BOLD,20));
+		//BUILDING THE GUI
+		expressionWindow.getContentPane().add(topPanel,"North");
+		expressionWindow.getContentPane().add(errorPanel, "South");
+		graphWindow.getContentPane().add(graphArea,"Center");
+		
+		errorPanel.add(errorLabel);
+		errorPanel.setBackground(Color.WHITE);
+		
+		errorLabel.setFont(new Font("Times New Roman",Font.ITALIC,15));
+		errorLabel.setText("Errors will show up here");
+		
+		
+		
+		topPanel.add(submitButton);
+		topPanel.add(varLabel2);
+		topPanel.add(inputField);
+		topPanel.add(graphButton);
+		topPanel.add(varLabel);
+		topPanel.add(variableField);
+		topPanel.add(xLabel1);
+		topPanel.add(stepSizeField);
+		topPanel.add(outputField);
+		
+		submitButton.addActionListener(this);
+		inputField.addActionListener(this);
+		variableField.addActionListener(this);
+		graphButton.addActionListener(this);
+		
+		//workArea.setEditable(false);
+		outputField.setEditable(false);
+		
+		expressionWindow.setLocation(25, 25);
+		expressionWindow.setSize(1238, 300);
+		graphWindow.setLocation(200,200);
+		graphWindow.setSize(500, 500);
+		expressionWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		expressionWindow.setVisible(true);
+		
+		//BUILDING THE GUI
+		
+		
+		
+	}
+
+	@Override
+	//**************************************************
+	// Method: actionPerformed
+	// Status: Complete
+	// Arguments: ActionEvent e
+	//
+	// Who calls this method: 
+	// 	When the "enter" key is pressed while inside
+	// 	the inputField, this method is called. Also,
+	// 	when the submitButton is pressed this method
+	//      is called.
+	//
+	// Purpose/Structure:
+	//	Starts the expressionCalculator algorithm by:
+	//	1. Checking to see if the user has typed
+	//	anything into the inputField. If not, it
+	//	displays a message in the outputField, returns, 
+	//	and waits for the user to hit "enter"
+	//	or the submitButton.
+	//	2. Calls the checkForErrors() method and passes
+	//	whatever the user has typed into the inputField
+	//	as a parameter.  If it returns true, then an
+	//	error was found and this method will return. The 
+	//	error message is handled by the checkForErrors()
+	//	method.
+	//	3. At this point, the user has typed in a valid
+	//	expression that we are ready to solve. Now we 
+	//	call the evaluateExpression() method and pass
+	//	the expression String to it. We assign the 
+	//	returned String to our "answer" variable and
+	//	display it in the outputField.
+	//
+	//
+	//
+	//**************************************************
+	public void actionPerformed(ActionEvent ae) {
+	// TODO Auto-generated method stub
+		
+		String expression = inputField.getText();
+		String eX = variableField.getText();
+		String answer;
+		
+	if(ae.getSource() == graphButton){
+		double[] xValues = {-5,-4,-3,-2,-1,0,1,2,3,4,5};
+		double[] yValues = {-5,-4,-3,-2,-1,0,1,2,3,4,5};
+		//Nothing has been typed
+		if(expression.trim().length()==0) {
+			errorLabel.setBackground(Color.red);
+			printError("Nothing has been typed in to graph.");
+			return;
+			
+		}
+		if(eX.trim().length()==0) {
+			errorLabel.setBackground(Color.red);
+			printError("Nothing typed in the variable field.");
+			
+			
+			variableField.setText("");
+			
+			return;
+		}
+		double testX;
+		try {
+			testX = Double.parseDouble(variableField.getText());
+		}
+		catch (Exception e) {
+			errorLabel.setBackground(Color.red);
+			printError("'"+variableField.getText()+"' is not a valid number.");
+			return;
+		}
+		if(stepSizeField.getText().trim().length()==0) {
+			printError("Nothing typed into stepSizeField");
+			return;
+		}
+		try {
+			testX = Double.parseDouble(stepSizeField.getText());
+		}
+		catch (Exception e) {
+			errorLabel.setBackground(Color.red);
+			printError("'"+stepSizeField.getText()+"' is not a valid number.");
+			return;
+		}
+		
+		if((expression.contains("x")) && (eX.trim().length() != 0)&&(stepSizeField.getText().trim().length()!=0)){
+			errorPanel.setBackground(Color.WHITE);
+			
+			System.out.println("Graph Button has been pressed");
+			if(expression.replace(" ","").contains("xx")) {
+				
+				printError("Implicit multiplication on variable x");
+				return;
+			}
+			if(checkForErrors(expression.replace("x", "10.1"))){
+				
+				
+				return;
+			}
+			
+			
+			
+			errorLabel.setText("");
+			new GraphPanel(xValues,yValues,"x");
+			
+			return;
+		}
+		
+		
+		
+		return;
+	}
+		
+	if(ae.getSource() == variableField){
+		if((expression.trim().length()==0) && (eX.trim().length() == 0)) {
+			errorPanel.setBackground(Color.WHITE);
+			inputField.setText("");
+			errorLabel.setText("");
+			variableField.setText("");
+			outputField.setText("Nothing has been typed in either of the fields.");
+			return;
+		}
+		
+		if((expression.trim().length()==0) && (eX.trim().length() != 0)) {
+			errorPanel.setBackground(Color.WHITE);
+			
+			errorLabel.setText("");
+			variableField.setText("");
+			outputField.setText("Nothing has been typed in the expression field.");
+			return;
+		}
+		if(expression.contains("x.x")){
+			errorPanel.setBackground(Color.PINK);
+			
+			variableField.setText("");
+			outputField.setText("");
+			errorLabel.setText("Error: Expression contained unknown operator: .");
+			return;
+		}
+		
+		if((expression.contains("x")) && (eX.trim().length() == 0)){
+			errorPanel.setBackground(Color.WHITE);
+			
+			errorLabel.setText("");
+			variableField.setText("");
+			outputField.setText("Nothing has been typed in the variable field.");
+			return;
+		}
+	
+		for(int a = 0; a < eX.length(); a++){
+			if((Character.getNumericValue(eX.charAt(a)) == -1) && (eX.charAt(a) != '-')){
+				errorPanel.setBackground(Color.PINK);
+				
+				variableField.setText("");
+				outputField.setText("");
+				errorLabel.setText("Error: Value entered in Variable Field is non-numeric");
+				return;
+			}
+			if((expression.contains("x") && ((Character.getNumericValue(eX.charAt(a)) != -1)
+				|| eX.charAt(a) == '-'))){
+				
+				
+				if(adjacentBinaryOperators(expression)){
+					
+					variableField.setText("");
+					errorPanel.setBackground(Color.PINK);
+					outputField.setText("");
+					errorLabel.setText("Error: Adjacent Operator Error");
+					return;
+					}
+				
+				
+			}
+		}
+		expression = expression.replace("x", eX );
+			if(checkForErrors(expression)){
+				
+				variableField.setText("");
+				errorPanel.setBackground(Color.PINK);
+				outputField.setText("");
+				return;
+			}
+			expression = expression.replace(" ", "");
+			expression = expression.replace("Pi", String.valueOf(pi));
+			expression = expression.replace("PI", String.valueOf(pi));
+			expression = expression.replace("pi", String.valueOf(pi));
+			expression = expression.replace("e", String.valueOf(this.e));
+			expression = expression.replace("E", String.valueOf(this.e));
+			if(checkNumberFormat(expression))
+				return;
+			answer = evaluateExpression("("+replaceUnaryOperator(expression)+")");
+			
+			variableField.setText("");
+			errorPanel.setBackground(Color.WHITE);
+			outputField.setText(answer);
+			errorLabel.setText("");
+		}
+	
+		
+	if(ae.getSource() == inputField) {
+		// Check to see if anything was typed in
+		// If it was blank, then the user probably didn't mean to 
+		if((expression.trim().length()==0) && (eX.trim().length() == 0)){
+			errorPanel.setBackground(Color.WHITE);
+			
+			errorLabel.setText("");
+			variableField.setText("");
+			outputField.setText("Nothing has been typed in either of the fields.");
+			return;
+		}
+		if(expression.contains("x.x")){
+			errorPanel.setBackground(Color.PINK);
+			
+			variableField.setText("");
+			outputField.setText("");
+			errorLabel.setText("Error: Expression contained unknown operator: .");
+			return;
+		}
+		if((expression.contains("x")) && (eX.trim().length() == 0)){
+			errorPanel.setBackground(Color.WHITE);
+			
+			errorLabel.setText("");
+			variableField.setText("");
+			outputField.setText("Nothing has been typed in the variable field.");
+			return;
+		}
+		if((expression.trim().length()==0) && (eX.trim().length() != 0)) {
+			errorPanel.setBackground(Color.WHITE);
+			
+			errorLabel.setText("");
+			variableField.setText("");
+			outputField.setText("Nothing has been typed in the expression field.");
+			return;
+		}
+		for(int a = 0; a < eX.length(); a++){
+			if((Character.getNumericValue(eX.charAt(a)) == -1) && (eX.charAt(a) != '-')){
+				errorPanel.setBackground(Color.PINK);
+				
+				variableField.setText("");
+				outputField.setText("");
+				errorLabel.setText("Error: Value entered in Variable Field is non-numeric");
+				return;
+			}
+			if((expression.contains("x") && ((Character.getNumericValue(eX.charAt(a)) != -1)
+				|| eX.charAt(a) == '-'))){
+			
+				
+				if(adjacentBinaryOperators(expression)){
+					
+					variableField.setText("");
+					errorPanel.setBackground(Color.PINK);
+					outputField.setText("");
+					errorLabel.setText("Error: Adjacent Operator Error");
+					return;
+					}
+				
+				
+			}
+		}
+		//Check for errors and TRUE means ERROR
+		expression = expression.replace("x", eX );
+		if(checkForErrors(expression)){
+			
+			variableField.setText("");
+			errorPanel.setBackground(Color.PINK);
+			outputField.setText("");
+			return;
+		}
+		
+		//Evaluate the expression and set it equal to the answer
+				
+				expression = expression.replace(" ", "");
+				expression = expression.replace("Pi", String.valueOf(pi));
+				expression = expression.replace("PI", String.valueOf(pi));
+				expression = expression.replace("pi", String.valueOf(pi));
+				expression = expression.replace("e", String.valueOf(e));
+				expression = expression.replace("E", String.valueOf(e));
+				if(checkNumberFormat(expression))
+					return;
+				answer = evaluateExpression("("+replaceUnaryOperator(expression)+")");
+				
+				variableField.setText("");
+				errorPanel.setBackground(Color.WHITE);
+				outputField.setText(answer);
+				errorLabel.setText("");
+	}
+			
+	if(ae.getSource() == submitButton){
+		// Check to see if anything was typed in
+				// If it was blank, then the user probably didn't mean to 
+				if((expression.trim().length()==0) && (eX.trim().length() == 0)){
+					errorPanel.setBackground(Color.WHITE);
+					
+					errorLabel.setText("");
+					variableField.setText("");
+					outputField.setText("Nothing has been typed in either of the fields.");
+					return;
+				}
+				if((expression.contains("x")) && (eX.trim().length() == 0)){
+					errorPanel.setBackground(Color.WHITE);
+					
+					errorLabel.setText("");
+					variableField.setText("");
+					outputField.setText("Nothing has been typed in the variable field.");
+					return;
+				}
+				if((expression.trim().length()==0) && (eX.trim().length() != 0)) {
+					errorPanel.setBackground(Color.WHITE);
+					
+					errorLabel.setText("");
+					variableField.setText("");
+					outputField.setText("Nothing has been typed in the expression field.");
+					return;
+				}
+				if(expression.contains("x.x")){
+					errorPanel.setBackground(Color.PINK);
+					
+					variableField.setText("");
+					outputField.setText("");
+					errorLabel.setText("Error: Expression contained unknown operator: .");
+					return;
+				}
+				for(int a = 0; a < eX.length(); a++){
+					if((Character.getNumericValue(eX.charAt(a)) == -1) && (eX.charAt(a) != '-')){
+						errorPanel.setBackground(Color.PINK);
+						
+						variableField.setText("");
+						outputField.setText("");
+						errorLabel.setText("Error: Value entered in Variable Field is non-numeric");
+						return;
+					}
+					if((expression.contains("x") && ((Character.getNumericValue(eX.charAt(a)) != -1)
+						|| eX.charAt(a) == '-'))){
+						//expression = expression.replace("x", eX );
+						
+						if(adjacentBinaryOperators(expression)){
+							
+							variableField.setText("");
+							errorPanel.setBackground(Color.PINK);
+							outputField.setText("");
+							errorLabel.setText("Error: Adjacent Operator Error");
+							return;
+							}
+						
+						
+					}
+				}
+			
+				//Check for errors and TRUE means ERROR
+				expression = expression.replace("x", eX );
+				if(checkForErrors(expression)){
+					
+					variableField.setText("");
+					errorPanel.setBackground(Color.PINK);
+					outputField.setText("");
+					return;
+				}
+				
+				//Evaluate the expression and set it equal to the answer
+						
+						expression = expression.replace(" ", "");
+						expression = expression.replace("Pi", String.valueOf(pi));
+						expression = expression.replace("PI", String.valueOf(pi));
+						expression = expression.replace("pi", String.valueOf(pi));
+						expression = expression.replace("e", String.valueOf(this.e));
+						expression = expression.replace("E", String.valueOf(this.e));
+						if(checkNumberFormat(expression))
+							return;
+						answer = evaluateExpression("("+replaceUnaryOperator(expression)+")");
+						
+						errorPanel.setBackground(Color.WHITE);
+						outputField.setText(answer);
+						errorLabel.setText("");
+			}
+		
+		if(checkForErrors(expression)){
+			
+			errorPanel.setBackground(Color.PINK);
+			outputField.setText("");
+			return;
+		}
+	
+		//Evaluate the expression and set it equal to the answer
+				expression = expression.replace("x", eX );
+				expression = expression.replace(" ", "");
+				expression = expression.replace("Pi", String.valueOf(pi));
+				expression = expression.replace("PI", String.valueOf(pi));
+				expression = expression.replace("pi", String.valueOf(pi));
+				expression = expression.replace("e", String.valueOf(this.e));
+				expression = expression.replace("E", String.valueOf(this.e));
+				if(checkNumberFormat(expression))
+					return;
+				answer = evaluateExpression("("+replaceUnaryOperator(expression)+")");
+				
+				variableField.setText("");
+				errorPanel.setBackground(Color.WHITE);
+				outputField.setText(answer);
+				errorLabel.setText("");
+	}
+	
+	
+	public boolean endsWithOperator(String expression) {
+		
+		expression = expression.trim();
+		if((expression.endsWith("/"))
+				||(expression.endsWith("*"))
+				||(expression.endsWith("+"))
+				||(expression.endsWith("-"))
+				||(expression.endsWith("^"))
+				||(expression.endsWith("r")))
+			return true;
+		
+		
+		return false;
+	}
+	public boolean startsWithOperator(String expression) {
+		
+		expression = expression.trim();
+		if((expression.startsWith("/"))
+				||(expression.startsWith("*"))
+				||(expression.startsWith("+"))
+				||(expression.startsWith("^"))
+				||(expression.startsWith("r")))
+			return true;
+		if(expression.startsWith("-")) {
+			
+			expression = expression.substring(1);
+			if(expression.startsWith("-"))
+				return true;
+			
+		}
+		
+		
+		return false;
+	}
+	
+	public boolean implicitMultiplicationError(String expression) {
+		expression = expression.replace(" ", "");
+		char[] exprArray = expression.toCharArray();
+		int i;
+		for(i=0;i<exprArray.length;i++) {
+			if((exprArray[i]=='(')&&(i>0)) {
+				if((exprArray[i-1]>='0')&&(exprArray[i-1]<='9'))
+					return true;
+			}
+			if((exprArray[i]==')')&&(i<exprArray.length-1)) {
+				if((exprArray[i+1]>='0')&&(exprArray[i+1]<='9'))
+					return true;
+			}
+		}
+		return false;
+	}
+	//**************************************************
+		// Method: checkForErrors
+		// Status: Incomplete
+		// Arguments: String expression
+		//
+		// Who calls this method: 
+		//	The actionPerformed() method will call this
+		//	method to check for errors in the user's typed
+		//	expression in the inputField.
+		//
+		// Purpose/Structure:
+		//	The sole purpose of this method is to check
+		//	for every possible error with the original
+		//	expression.  This method calls numerous
+		//	specific error-checking methods and this 
+		//	method will return false (no error) if every
+		//	error-checking method returns false as well.
+		//**************************************************
+	public boolean checkForErrors(String expression) {
+		// Check for all errors
+		// TRUE MEANS ERROR
+		
+		//Possibly translate all unary operators here
+		expression=expression.replace("PI", String.valueOf(pi));
+		expression=expression.replace("Pi", String.valueOf(pi));
+		expression=expression.replace("pi", String.valueOf(pi));
+		expression=expression.replace("E", String.valueOf(e));
+		expression=expression.replace("e", String.valueOf(e));
+		
+		if(expression.contains("()")) {
+			printError("Expression contains '()'");
+			return true;
+		}
+		if(expression.replace(" ","").contains("()")) {
+			printError("Expression contains open then closed parentheses");
+			return true;
+		}
+		
+		// End of translation of unary operators
+		if(implicitMultiplicationError(expression)) {
+			printError("Expression contains implicit multiplication");
+			return true;
+		}
+		
+		if(endsWithOperator(expression)) {
+			printError("Expression ends in operator");
+			return true;
+		}
+		if(startsWithOperator(expression)) {
+			printError("Expression starts with binary operator");
+			return true;
+		}
+		if(missingParenthesesError(expression)) {
+			printError("Missing Parentheses Error");
+			return true;
+		}
+		if(unmatchedParenthesesError(expression)) {
+			printError("Unmatched Parentheses Error");
+			return true;
+		}
+		if(adjacentBinaryOperators(expression)) {
+			printError("Adjacent Operator Error");
+			return true;
+		}
+		if(checkNumberFormat(expression)) {
+			printError("Incorrect Number Format with decimal");
+			return true;
+		}
+		if(unidentifiedOperatorError(expression)) {
+			// Print the error message within the method
+			// so that a more descriptive error could be given
+			// as to what character caused the error
+			// Example: "7%3-10*5" 
+			// This should give an error message about the '%' character specifically
+			// DOES NOT INCLUDE LETTERS
+			return true;
+		}
+		if(missingOperatorError(expression)) {
+			printError("Missing Operator Error");
+			return true;
+		}
+		if(divideByZeroError(expression)){
+			printError("Divide by Zero Error");
+			return true;
+		}
+		
+		if(unknownSymbolError(expression)) {
+			// Once again, put the printError message in the method
+			// because we want to give the user an accurate message
+			// of what symbol caused the error
+			// Example: "y*3+37"
+			// This should give an error message about the 'y' character
+			// being an unknown symbol
+			return true;
+		}
+		
+		
+		
+		
+		// NO ERRORS FOUND, return false
+		return false;
+	}
+	
+	public static String evaluateExpression(String expression) {
+		//EVALUATE THE EXPRESSION AND RETURN THE ANSWER STRING
+		//CALLS METHODS....
+		String priorityExpr;
+		
+		if((expression.startsWith("("))&&(expression.endsWith(")")))
+			expression=expression.substring(1,expression.length()-1);
+		
+		//FIND PRIORITY PARENTHESES (returns string inside the highest priority parentheses)
+		while(containsBinaryOperator(expression)) {
+		
+			if(expression.contains("(")) {
+				priorityExpr = findPriorityParentheses(expression);
+				expression = expression.replace(priorityExpr, evaluateExpression(priorityExpr));
+				
+				
+			}
+			else {
+				priorityExpr = expression;
+			//Replace the highest priority expression with the solved expression
+			
+			expression = expression.replace(priorityExpr, simplifyExp(priorityExpr));
+			
+			}
+			expression = replaceUnaryOperator(expression);
+		}
+		
+		
+		if(numberOfUnaryOperators(expression)%2==0) {
+			
+			expression = expression.replace("u", "");
+			expression = expression.replace("(", "");
+			expression = expression.replace(")", "");
+			
+		}
+		else {
+			//System.out.println("Odd number of u's");
+			expression = expression.replace("u", "");
+			expression = expression.replace("(", "");
+			expression = expression.replace(")", "");
+			expression = "-" + expression;
+		}
+			
+		expression = String.valueOf(Math.round(Double.parseDouble(expression) * 100000.0) / 100000.0);
+		return expression;
+	}
+	public static int numberOfUnaryOperators(String expression) {
+		int i;
+		int count = 0;
+		char[] exprArray = expression.toCharArray();
+		
+		for(i=0;i<exprArray.length;i++) {
+			if(exprArray[i]=='u')
+				count++;
+		}
+		
+		
+		
+		return count;
+	}
+	public static String replaceUnaryOperator(String expression) {
+		int i;
+		
+		char[] exprArray = expression.toCharArray();
+		if(expression.contains("-")) {
+			
+			
+			for(i=0;i<exprArray.length-1;i++) {
+				if(exprArray[i]=='-') {
+					if(i==0) {
+						exprArray[i] = 'u';
+					}
+					else {
+						
+						if((exprArray[i-1]=='-')||(exprArray[i-1]=='('))
+							exprArray[i]='u';
+						else if((exprArray[i-1]=='+')||(exprArray[i-1]=='-')
+								||(exprArray[i-1]=='*')||(exprArray[i-1]=='/')
+								||(exprArray[i-1]=='r')||(exprArray[i-1]=='^'))
+							exprArray[i]='u';
+					}
+				}
+			}
+			
+			
+		}
+		else
+			return expression;
+		
+	
+		return new String(exprArray);
+	}
+	
+	public static String simplifyExp(String expression) {
+		String priorityAns;
+		//All unary operators should be expressed as a 'u'
+		//Remove parentheses from beginning and end of expression
+		//There should never be nested parentheses when this method is called
+		if(expression.startsWith("("))
+			expression = expression.replace("(", "");
+		if(expression.endsWith(")"))
+			expression = expression.replace(")", "");
+		
+		//Parentheses have been removed and it is time to begin solving the expression
+		
+		int priority = 0;
+		int i;
+		int indexOfOperator = -1;
+		int indexOfOp1 = -1;
+		int indexOfOp2 = -1;
+		String priorityExpr = "";
+		char[] exprArray = expression.toCharArray();
+		
+		//Find index of operator
+		for(i=1;i<exprArray.length;i++) {
+			if(((exprArray[i]=='^')||(exprArray[i]=='r'))&&(priority<4)) {
+				priority = 4;
+				indexOfOperator = i;
+			}
+			else if(((exprArray[i]=='*')||(exprArray[i]=='/'))&&(priority<3)) {
+				priority = 3;
+				indexOfOperator = i;
+			}
+			else if(((exprArray[i]=='+')||(exprArray[i]=='-'))&&(priority<2)) {
+				priority = 2;
+				indexOfOperator = i;
+			}
+				
+		}
+	
+		
+		//Find index of operand 1
+		
+		for(i=indexOfOperator-1;i>=0;i--) {
+			// If it's not a number
+			if(exprArray[i]=='u') {
+				indexOfOp1 = i;
+				i = 0;
+			}
+			else if(i==0) {
+				indexOfOp1 = 0;
+				
+			}
+			else if((((exprArray[i]>'9')||(exprArray[i]<'0')||(i==0)))&&(exprArray[i]!='.')) {
+				indexOfOp1 = i+1;
+				i=0;
+			}
+		}
+		
+		for(i=indexOfOperator+1;i<exprArray.length;i++) {
+			if(exprArray[i]=='u'){
+				
+			}
+				
+			else if(i==exprArray.length-1)
+				indexOfOp2 = exprArray.length-1;
+			else if((((exprArray[i]>'9')||(exprArray[i]<'0')||(i==exprArray.length-1)))&&(exprArray[i]!='.')) {
+				indexOfOp2 = i;
+				i = exprArray.length;
+			}
+			
+			
+		}
+		
+		
+		
+		
+		
+		if(indexOfOp2==exprArray.length-1)
+			priorityExpr = expression.substring(indexOfOp1,indexOfOp2+1);
+		
+		else priorityExpr = expression.substring(indexOfOp1,indexOfOp2);
+		
+		priorityAns = solveMathExpression(priorityExpr);
+		if(priorityExpr.equals(expression))
+			expression = expression.replace(priorityExpr, priorityAns);
+		
+		else {
+			String prefix = expression.substring(0,indexOfOp1);
+			String suffix = expression.substring(indexOfOp2,expression.length());
+			if(!containsBinaryOperator(suffix))
+				suffix = "";
+			expression = prefix + solveMathExpression(priorityExpr) + suffix;
+		}
+		
+		expression = replaceUnaryOperator(expression);
+		if(containsBinaryOperator(expression))
+			expression = simplifyExp(expression);
+		
+		
+		
+		
+		return expression;
+	}
+	
+	public static String solveMathExpression(String expression) {
+		String answer = "0";
+		String operator = "-";
+		
+		if(expression.contains("^"))
+			operator = "^";
+		else if(expression.contains("r"))
+			operator = "r";
+		else if(expression.contains("*"))
+			operator = "*";
+		else if(expression.contains("/"))
+			operator = "/";
+		else if(expression.contains("+"))
+			operator = "+";
+		else if(expression.contains("-"))
+			operator = "-";
+		String op1 = expression.substring(0,expression.indexOf(operator));
+		String op2 = expression.substring(expression.indexOf(operator)+1, expression.length());
+		
+		if(op1.contains("u"))
+			op1 = String.valueOf(Double.parseDouble(op1.substring(1) )*-1);
+		if(op2.contains("u"))
+			op2 = String.valueOf(Double.parseDouble(op2.substring(1) )*-1);
+		
+		
+		if(operator=="+") 
+			answer = String.valueOf(Double.parseDouble(op1) + Double.parseDouble(op2));
+		else if(operator=="-") 
+			answer = String.valueOf(Double.parseDouble(op1) - Double.parseDouble(op2));
+		else if(operator=="*") 
+			answer = String.valueOf(Double.parseDouble(op1) * Double.parseDouble(op2));
+		else if(operator=="/") 
+			answer = String.valueOf(Double.parseDouble(op1) / Double.parseDouble(op2));
+		else if(operator=="^") 
+			answer = String.valueOf(Math.pow(Double.parseDouble(op1), Double.parseDouble(op2)));
+		else if(operator=="r") 
+			answer = String.valueOf(Math.pow(Double.parseDouble(op1), 1/Double.parseDouble(op2)));
+		
+		
+		//round answer to avoid weird bugs with 5*5 = 25.0000005
+		answer = String.valueOf(Math.round(Double.parseDouble(answer) * 10000000.0) / 10000000.0);
+	
+		return answer;
+	}
+	
+/**************************************************
+	// Method: findPriorityParentheses
+	// Status: Complete--------------------------------------------> NEEDS TESTING
+	// Arguments: String expression
+	 	Returns: String expression         (with open and close parentheses)
+	//
+	// Who calls this method: 
+	//	evaluateExpression method, only if the expression in the method has found a parentheses
+	//	
+	//
+	// Purpose/Structure:
+	 	Finds the indices of the top priority open and close parentheses, and truncates the string
+		to return that string.
+	***********************************************/
+	public static String findPriorityParentheses(String expression){
+		char[] exprArray = expression.toCharArray();
+		boolean priorityParFound=false;
+		int openParIndex=0;                        // index of priority parantheses
+		int closeParIndex=expression.length()-1;
+		for(int i=0;i<=exprArray.length-1;i++){ 						//Outer Loop
+			if(exprArray[i] == '(')
+				{
+				openParIndex=i; //saves Index of Open Parentheses
+					for(int j=i+1;j<=exprArray.length;j++){             //Inner Loop
+						{
+							if(exprArray[j]=='(')
+							{
+								openParIndex=j; //New priority Index
+							}
+							if(exprArray[j]==')')
+							{
+								closeParIndex=j;      // 
+								priorityParFound= true;
+								j=exprArray.length+1; //Exits the inner for loop, Indicates if
+							
+							}
+							}
+						}
+			
+				}
+			if(priorityParFound) break;
+			
+			}
+	
+		expression = expression.substring(openParIndex,closeParIndex+1);//needs to return a function surrounded with parentheses.
+		
+		return expression; 
+	} 
+	
+	
+	//**************************************************
+		// Method: containsBinaryOperator
+		// Status: Incomplete
+		// Arguments: String expression
+		//
+		// Who calls this method: 
+		//	The exaluateExpression() method calls upon
+		//  this method to check for the completion of
+		//  the program.
+		//
+		// Purpose/Structure:
+		//	The purpose of this method is to check for
+		//  any binary operators.  Returns true if there
+		//  are any.
+   //**************************************************
+	public static boolean containsBinaryOperator(String expression) {
+		//Check for binary operators: + / * r ^
+		if((expression.contains("+"))||(expression.contains("-"))||(expression.contains("/"))||(expression.contains("r"))||
+				(expression.contains("*"))||(expression.contains("^")))
+					return true;
+		
+		char[] expArray = expression.toCharArray();
+		int i;
+		
+		// Check for "-" binary operator
+		for(i=1;i<expArray.length;i++) {
+			if((((expArray[i-1]>='0')&&(expArray[i-1]<='9'))||(expArray[i-1]==')'))&&(expArray[i]=='-')) {
+			
+				return true;
+			}
+				
+		}
+		
+		
+		return false;
+	}
+	public void printError(String error) {
+		//PRINT ERROR STRING TO ERROR LABEL
+		errorPanel.setBackground(Color.pink);
+		errorLabel.setText("Error: "+error);
+	}
+	
+	public static boolean missingParenthesesError(String expression) {
+		//CHECK FOR MISSING PARENTHESES ERROR
+		//Should find error if number of open parentheses does not match number of closes parentheses
+		char[] exprArray = expression.toCharArray();
+		int paranCount=0;
+		
+		for(int i=0;i<exprArray.length;i++)
+		{
+			if(exprArray[i]=='(') paranCount++;
+			else if(exprArray[i]==')') paranCount--;
+		
+		}
+		
+		
+		if(paranCount==0)return false;
+		else return true;
+	}
 
 	
+	//Method to check that each parentheses has a match 
+	//Returns false if all parentheses having a matching pair
+	//By Alden Cope
+	public static boolean unmatchedParenthesesError(String expression) {
+		String manipulatedExpression = expression;
+		int parenthesesCounter = 0;
+		for( int i=0; i<manipulatedExpression.length(); i++ ) {
+			//if right facing parentheses found increase count by one
+		    if( manipulatedExpression.charAt(i) == '(' ) {
+		    	parenthesesCounter++;
+		    } 
+		  //if left facing parentheses found decrease count by one
+		    if( manipulatedExpression.charAt(i) == ')' ) {
+		    	parenthesesCounter--;
+		    } 
+		  //If there are move left facing parentheses encountered at first
+		    if(parenthesesCounter < 0){
+		    	return true;
+		    }
+		}
+		if(parenthesesCounter == 0){
+			return false;
+		}
+		return true;
+	}
+	
 
-public GraphPanel (double[] xValues, double[] yValues, String expression) throws IllegalArgumentException
-    {
-	this.expression=expression;
-	this.xVals = xValues;
-	this.yVals = yValues;
+	//For letters --- unknown symbol
+	//anything --- unknown operator
+	//Need to look for ..
+	//illegalOperator contains the illegal Operator found in string
+	static char illegalOperator = ' ';
+	//illegalIndexLocation contains the location of the illegal Operator
+	static int illegalIndexLocation = 0;
 	
-	xyWindow.getContentPane().add(xyPanel,"North");
-	graphWindow.getContentPane().add(this, "Center");
-	
-	xyPanel.add(xLabel);
-	xyPanel.add(xText);
-	xyPanel.add(yLabel);
-	xyPanel.add(yText);
-	
-	graphWindow.setLocation(200,200);
-	graphWindow.setSize(500, 500);
-	
-	graphWindow.setTitle("Graph of: " + expression);
-	graphWindow.setVisible(true);
-	g = graphWindow.getGraphics();
+	public boolean unidentifiedOperatorError(String expression) {
+		//FirstCheck checks all of the chars in the string for an illegal char, it returns the illegalOperator and it's illegalIndexLocation
+		
+		if(FirstCheck(expression) == true){
+			//WhatTypeError returns true if the problem is a letter
+			if(whatTypeError(expression) == true){
+				printError("Expression contained unknown symbol: " + illegalOperator);
+				
 
+				return true;
+			}
+			else{
+				printError("Expression contained unknown operator: " + illegalOperator);
+			
+				return true;
+			}
+		}
+		
+		return false;
+		
+		
+	}
+
+
+public static boolean whatTypeError(String expression){
+		//specialAlphabet excludes known letter operators r,x
+		String specialAlphabet = "abcdfghijklmnopqstuvwyzABCDFGHIJKLMNOPQSTUVWYZ";
+		for(int i = 0; i < (specialAlphabet.length()); i++){
+			if(illegalOperator == specialAlphabet.charAt(i)){
+				return true;
+				
+			}
+		}
+	
+		return false;
+	}
+	//specialCharCheck is a function that checks a string for a certain char and returns back true or false
+	public static boolean specialCharCheck(char specialChar, String expression){
+		if(expression.indexOf(specialChar) == -1){
+			return false;
+		}
+	
+		return true;
+	}
+	
+	public static boolean FirstCheck(String expression){
+		
+		char[] allowedChars = {'(',')','^','*','/','+','-',' ', '1','2','3','4','5','6','7','8','9','0','r','e','p','.','x','P','E'};
+		boolean matchesAnAllowedChar = false; 
+	
+		//First for loop looks through string
+		for(int i = 0; i < expression.length() ; i++ ){
+			//Second for loop uses character given to it and checks for all allowed chars
+			for(int k = 0; k < (allowedChars.length);  k++){
+				
+				//If it is an allowed char
+				if(expression.charAt(i) == allowedChars[k]){
+					
+					matchesAnAllowedChar = true;
+					if(expression.charAt(i) == 'p' || expression.charAt(i) == 'P'){
+						//Checks if the p is a part of pi operator
+					
+
+						if(expression.charAt(i+1) == 'i' && (expression.charAt(i) == 'p' || expression.charAt(i) == 'P')){
+							//Increase i by one to skip i of pi
+							i = i + 1;
+						
+						}
+						else if(expression.charAt(i+1) == 'I' && expression.charAt(i) == 'P'){
+							i = i + 1;
+						}
+						else{
+							matchesAnAllowedChar = false;
+							illegalOperator = expression.charAt(i);
+							illegalIndexLocation = i;
+							
+							return true;
+						}
+						
+					}
+					
+				
+					//If anAllowedChar is found it breaks out of the second for loop
+					if(matchesAnAllowedChar == true){
+						//breaks out of for loop
+						k = 25;
+						matchesAnAllowedChar = false;
+					}
+
+				}
+				//If it reaches the end of searching for allowed characters
+				if(k == allowedChars.length -1){
+					
+						matchesAnAllowedChar = false;
+						illegalOperator = expression.charAt(i);
+						illegalIndexLocation = i;
+					
+						return true;
+					}
+				}
+
+				
+			}
+		
+		illegalOperator = ' ';
+		illegalIndexLocation = 0;
+		return false;
+		}
+	/*scenarios:
+	1. (* or (- or (/ 
+	2. *) or -) or /)
+	3. 4__5
+	4. Starts with an operator. . . . *xxxx or /xxxx or +xxxxx
+	*/
+	public boolean missingOperatorError(String expression) {
+		char[] exprArray = expression.toCharArray();
+		
+		boolean firstCharDetected=false;
+		
+		for(int i=0;i<exprArray.length;i++)///////////Checks first character to see if it is a binary operator
+			{
+			
+			if(exprArray[i]==' ')
+				{
+		
+				i++;//disregards spaces
+				}
+			if((((exprArray[i]<='9')&&(exprArray[i]>='0'))||(exprArray[i]=='(')))
+				{
+	
+				firstCharDetected=true;//if a number is detected than, an operator is allowed.
+				break;
+				}
+		
+			if((exprArray[i]=='+'||exprArray[i]=='*'||exprArray[i]=='/') && (!firstCharDetected))
+			{
+	
+				return true;//first character is an operator
+			}
+			}
+		
+		for(int i=0; i< exprArray.length-1;i++){
+			
+			if((exprArray[i] == '(' )&& (exprArray[i+1]=='*'||exprArray[i+1]=='/'||exprArray[i+1]=='+'))//If we have an openParentheses and the next character is a binary operator
+				{
+				
+				
+				return true;
+				}
+			 if((exprArray[i] == ')' )&& (exprArray[i-1]=='-'||exprArray[i-1]=='*'||exprArray[i-1]=='/'||exprArray[i-1]=='+'))//If we have an openParentheses and the previous character is a binary operator 
+				{
+				
+				return true;
+				}
+			if(((exprArray[i]<= '9')&&(exprArray[i]>='0')) && exprArray[i+1]==' ')//detects a number with a space afterwards
+					{
+					for(int j=i+2; j<exprArray.length;j++)//checks rest of array
+						{
+						if(exprArray[j]=='+' ||exprArray[j]=='-'||exprArray[j]=='*'||exprArray[j]=='/'||exprArray[j]==')' )//detects a binary operator or end parentheses
+							{
+					
+							break;
+							}	
+						if(((exprArray[j]<='9') && (exprArray[j]>='0'))||exprArray[j]=='(')
+							{
+						
+							return true;//a number is detected once more
+							}
+						}
+					
+					}
+			
+				
+						}
+					
+			
+		return false;
+	}
+	
+	public boolean divideByZeroError(String expression) {
+		char[] exprArray = expression.toCharArray();
+		int i;
+		int error = 0;
+		if(!(expression.contains("/")))
+			return false;
+		if(!(expression.contains("0")))
+			return false;
+		for(i=0;i<exprArray.length;i++) {
+			if(exprArray[i]=='/')
+				error = 1;
+			else if(exprArray[i]=='0') {
+				if(error>=1)
+					error = 2;
+			}
+			
+			else if((exprArray[i]>='1')&&(exprArray[i]<='9')) {
+				error = 0;
+			}
+				
+			else if(exprArray[i]=='.'){}
+			
+			else {
+				if(error == 2 ) return true;
+				else error = 0;
+			}
+				
+		}
+		
+		if(error==2)
+			return true;
+		return false;
+	}
+	
+	public boolean adjacentBinaryOperators(String expression) {
+		
+		char[] bOperators = {'+','-','/','*'} ; // Creates an array of binary operators to reference
+		for(int k = 0; k<expression.length(); k++){ // this FOR loop checks the expression that is entered
+			for(int j = 0; j<bOperators.length; j++){ // this FOR loop then compares the elements in the expression entered to the elements in the operators array		
+				
+				//This IF statement gets the first operator and checks if the next element in the expression is a "+, *, or /" and if the next element is another one of these
+				//operators, then there is an adjacent binary operator error, thus return is TRUE.
+				if((expression.charAt(k) == bOperators[j]) && ((expression.charAt(k+1) == bOperators[0])//Adjacent operator is +
+						|| (expression.charAt(k+1) == bOperators[2]) // Adjacent operator is /
+						|| (expression.charAt(k+1) == bOperators[3]))){ // Adjacent operator is *
+				
+					return true;
+				}
+				
+				//This IF statement gets the first operator and checks if the next element in the expression is a "-", then it checks if the second element after the first operator
+				//is another operator.  These statements are to check for non-unary operators. The getNumericValue returns the corresponding value 0-9 if a char is 0-9. If a char
+				//is anything other than 0-9, it returns -1, thus that is why the last condition is checking to see if it less than 0.
+				if((expression.charAt(k) == bOperators[j]) && (expression.charAt(k+1) == bOperators[1]) && ((Character.getNumericValue(expression.charAt(k+2)) < 0))){
+					return true;
+				}
+				
+				//This IF statement checks to see if the first operator is a "-" sign. It then checks the next element to see if that is a "-" as well. Finally it checks the next
+				//element after that to see if it IS a decimal number. If it is, we then can treat the SECOND "-" in the expression as a UNARY operator, which is why the
+				//replaceUnaryOperator method is called.
+				if((expression.charAt(k) == bOperators[1]) && (expression.charAt(k+1) == bOperators[1]) && ((Character.getNumericValue(expression.charAt(k+2)) >= 0))){
+					expression = replaceUnaryOperator(expression);
+				}
+			}
+		}	
+		return false;
+	}
+	
+	public boolean unknownSymbolError(String expression) {
+		
+		return false;
+	}
+	public boolean checkNumberFormat(String expression) {
+		
+		char[] exprArray = expression.toCharArray();
+		int i;
+		int error = 0;
+		if(!(expression.contains(".")))
+			return false;
+		for(i=0;i<exprArray.length;i++) {
+			
+			if((exprArray[i]>='0')&&(exprArray[i]<='9')) {
+				if(error==0)
+					error = 1;
+				
+			}
+			else if(exprArray[i]=='.') {
+				if(error==2) {
+					
+					return true;
+				}
+				else if(error==1) {
+					error = 2;
+				
+				
+				if(i<exprArray.length-1) {
+					if(!((exprArray[i+1]>='0')&&((exprArray[i+1]<='9')))) {
+						
+						return true;
+					}
+				}
+				}
+					
+			}
+			else
+				error = 0;
+			
+			
+			
+			
+		}
+		return false;
+	}
+	
 	
 
-    // To-dos for this constructor method:
-    
-	// 1 call addMouseListener(this); to register this panel as the MouseListener
-    	xyWindow.addMouseListener(this);
-    	 
-	// 2 Calculate Y scale values (and save them)
-     maxY= yValues[0];
-     minY= yValues[0];
-    	for (int counter = 1; counter < yValues.length ; counter++)//COmputes max y
-    	{
-    	     if (yValues[counter] > maxY)
-    	     {
-    	      maxY = yValues[counter];
-    	     }
-    	}
-    	for (int counter = 1; counter < yValues.length ; counter++)//Computes min y
-    	{
-    	     if (yValues[counter] < minY)
-    	     {
-    	      minY = yValues[counter];
-    	     }
-    	}
-    	calculateYScale(minY, maxY); //Changes yScaleValue which is a global variable
-    
-   // 3 Build the mini displayXYpairWindow (reuse for each mouse click!)
-    	
-    	xyWindow.getContentPane().add(xyPanel,"North");
-    	
-    	xyPanel.add(xLabel);
-    	xyPanel.add(xText);
-    	xyPanel.add(yLabel);
-    	xyPanel.add(yText);
-    }
-
-@Override
-public void paint(Graphics g) // overrides paint() in JPanel!
-    {
-	int xstart=0, xend=1;
-	@SuppressWarnings("unused")
-	int xrange=xend-xstart;
-	
-    int windowWidth  = getWidth();  
-    int windowHeight = getHeight(); 
-    int initialPixelSpace=30;//pixels between edge of window and beginning of axis of graph
-  
-    int graphWidth=windowWidth-2*initialPixelSpace;// in pixels
-    int tickWidth=graphWidth/10;
-    int tickValue=xrange/10;
-   
-    int xPixelsToValueConversionFactor= tickValue/tickWidth;
- // call methods in JPanel to get the
-    // *CURRENT* size of the window!
-    
-    // 4 Calculate x and y pixels-to-value conversion factors (can't do in CTOR!) 	 
-    	
-    // 5 Do ALL drawing here in paint() 
-    // draw x and y scales and the expression graph here.
-    
-    DrawAxis(g);
-    }
-    
-    
-    public void DrawAxis(Graphics g){
-	
-	Stroke stroke = new BasicStroke(2f);
-	((Graphics2D) g).setStroke(stroke);
-	g.drawLine(30, 30, 30, (this.getHeight() - 30));
-	g.drawLine(30, (this.getHeight() - 30), (this.getWidth() - 30) , (this.getHeight() - 30));
-	
 }
-    
-
-  public void mousePressed(MouseEvent me) // show tiny x,y values window
-    {
-    // xTextField and yTextField are in the mini displayXYpairWindow
-    int xPixelsToValueConversionFactor= 1; ////////////Requires Fine Tuning
-    int xInPixels = me.getX();
-    double xValue = xInPixels * xPixelsToValueConversionFactor;
-    String xValueString = String.valueOf(xValue);
-    xText.setText( xValueString);
-   
-    String yValueString = ExpressionCalculator.evaluateExpression(expression.replace("x", xValueString)); //
-    yText.setText( yValueString);
-
-    // show mini x,y display window
-   xyWindow.setLocation(me.getX(), me.getY());
-   xyWindow.setVisible(true); 
-    }
-
-  public void mouseReleased(MouseEvent me) // hide tiny window
-    {
-    // "erase" mini x,y display window	
-    xyWindow.setVisible(false);
-    }
-
-  public void mouseClicked(MouseEvent me){} // take no action
-  public void mouseEntered(MouseEvent me){} // on these
-  public void mouseExited(MouseEvent  me){} // window events
-  
-
-public void calculateYScale(double minY, double maxY)
-  {
- // if (args.length != 2)
-    // {
-	// System.out.println("Provide two numeric values which are the min and max Y values to be plotted.");
-	 System.out.println("This program will determine appropriate Y scale values to be printed on the Y axis."); 
-	 //return;
-   //  }
-  
-	 double yMin, yMax, dPlotRange;
-  int    plotRange, initialIncrement, upperIncrement, 
-         lowerIncrement, selectedIncrement, numberOfYscaleValues,
-         lowestYscaleValue, highestYscaleValue;
-  String zeros = "0000000000";
-  try {
-	  yMin = Double.parseDouble(String.valueOf(minY));
-	  yMax = Double.parseDouble(String.valueOf(maxY));
-	  if (yMin > yMax)
-	     {
-		 double temp = yMax;
-		 yMax = yMin;
-		 yMin = temp;
-	     }
-	  System.out.println("Entered values are: Ymin = " + yMin + " Ymax = " + yMax);
-      }
-  catch(NumberFormatException nfe)
-      {
-	  System.out.println("Both input parms must be numeric.");
-	  return;
-      }
-  
-  // 1) Determine the RANGE to be plotted.
-  dPlotRange = yMax - yMin;
-  System.out.println("Plot range (Ymax-Ymin) = " + dPlotRange);
-
-  // 2) Determine an initial increment value.
-  if (dPlotRange > 10)
-     {
-	 plotRange = (int)dPlotRange;
-	 System.out.println("Rounded plot range = " + plotRange);
-     }
-  else
-     {
-	 System.out.println("Add handling of small plot range!");
-	 return;
-     }
-/*ASSUME*/ // 10 scale values as a starting assumption.
-  initialIncrement = plotRange/10;
-  System.out.println("Initial increment value = " + initialIncrement);
-  // Please excuse this clumsy "math"!
-  String initialIncrementString = String.valueOf(initialIncrement);
-  //System.out.println("InitialIncrementString = " + initialIncrementString + " (length = " + initialIncrementString.length() + ")");
-
-  // 3) Find even numbers above and below the initial increment. 
-  String leadingDigit = initialIncrementString.substring(0,1);
-  int leadingNumber = Integer.parseInt(leadingDigit);
-  int bumpedLeadingNumber = leadingNumber + 1;
-  String bumpedLeadingDigit = String.valueOf(bumpedLeadingNumber);
-  String upperIncrementString = bumpedLeadingDigit + zeros.substring(0,initialIncrementString.length()-1);
-  String lowerIncrementString = leadingDigit       + zeros.substring(0,initialIncrementString.length()-1);
-  upperIncrement = Integer.parseInt(upperIncrementString);
-  lowerIncrement = Integer.parseInt(lowerIncrementString);
-  System.out.println("Upper increment alternative = " + upperIncrement);
-  System.out.println("Lower increment alternative = " + lowerIncrement);
-
-  // 4) Pick the upper or lower even increment depending on which is closest.
-  int distanceToUpper = upperIncrement - initialIncrement;
-  int distanceToLower = initialIncrement - lowerIncrement;
-  if (distanceToUpper > distanceToLower)
-	  selectedIncrement = lowerIncrement;
-    else
-      selectedIncrement = upperIncrement;
-  System.out.println("The closest even increment (and therefore the one chosen) = " + selectedIncrement);
-
-  // 5) Determine lowest Y scale value
-  numberOfYscaleValues = 0;
-  lowestYscaleValue    = 0;
-  if (yMin < 0)
-     {
-     for (; lowestYscaleValue > yMin; lowestYscaleValue-=selectedIncrement)
-          numberOfYscaleValues++;
-     }
-  if (yMin > 0)
-     {
-	 for (; lowestYscaleValue < yMin; lowestYscaleValue+=selectedIncrement)
-	      numberOfYscaleValues++;
-     numberOfYscaleValues--;
-     lowestYscaleValue -= selectedIncrement;
-     }
-  System.out.println("The lowest Y scale value will be " + lowestYscaleValue + ")");
-  
-  
-  // 6) Determine upper Y scale value
-  numberOfYscaleValues = 1;
-  for (highestYscaleValue = lowestYscaleValue; highestYscaleValue < yMax; highestYscaleValue+=selectedIncrement)
-	  numberOfYscaleValues++;
-  System.out.println("The highest Y scale value will be " + highestYscaleValue);
-  System.out.println("The number of Y scale click marks will be " + numberOfYscaleValues);
-  if ((numberOfYscaleValues < 5) || (numberOfYscaleValues > 20))
-     {
-	 System.out.println("Number of Y scale click marks is too few or too many!");
-	 return;
-     }
-  
-  // 7) Determine if Y scale will be extended to include the 0 point.
-  if ((lowestYscaleValue < 0) && (highestYscaleValue > 0))
-       System.out.println("The Y scale includes the 0 point.");
-    else // Y scale does not include 0.
-     {   //	Should it be extended to include the 0 point?
-     if ((lowestYscaleValue > 0) && (lowestYscaleValue/selectedIncrement <= 3))
-        {
-    	lowestYscaleValue = 0;
-    	System.out.println("Lower Y scale value adjusted down to 0 to include 0 point. (Additional click marks added.)");
-        }
-     if ((highestYscaleValue < 0) && (highestYscaleValue/selectedIncrement <= 3))
-        {
-     	highestYscaleValue = 0;
-    	System.out.println("Upper Y scale value adjusted up to 0 to include 0 point. (Additional click marks added.)");
-        }
-     }
-   yScaleValue = lowestYscaleValue;
-  while(yScaleValue < highestYscaleValue)
-       {
-	   System.out.print(yScaleValue + ",");
-	   yScaleValue += selectedIncrement;
-       }
-  System.out.println(yScaleValue);
-
-  }      
-}
-	
-
