@@ -40,6 +40,7 @@ public class GraphPanel extends JPanel implements MouseListener
 	static double[] yVals = new double[11];
 	
 	static double[] yTickVal;
+	static double[] xTickVal;
 
 	
 
