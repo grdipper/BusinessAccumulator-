@@ -98,7 +98,6 @@ public GraphPanel (double[] xValues, double[] yValues, String expression) throws
 @Override
 public void paint(Graphics g) // overrides paint() in JPanel!
     {
-	int xstart=0, xend=1;
 	@SuppressWarnings("unused")
 	int xrange=xend-xstart;
 	
@@ -118,11 +117,28 @@ public void paint(Graphics g) // overrides paint() in JPanel!
     	
     // 5 Do ALL drawing here in paint() 
     // draw x and y scales and the expression graph here.
-    
+    DrawTicks(g);
     DrawAxis(g);
     }
     
-    
+    public void DrawTicks(Graphics g){
+    int stepValue = Integer.parseInt(stepSize);
+    Stroke stroke1 = new BasicStroke(2f);
+    ((Graphics2D) g).setStroke(stroke1);
+    int i,k; //THE Y AXIS TICK MARKS
+    	for(i=0; i <=10; i++){
+        	graphWindow.getGraphics();
+        	g.drawLine(27, (this.getHeight()-30)-((i*(this.getHeight()-60))/10), 33, (this.getHeight() - 30)-((i*(this.getHeight()-60))/10));
+        }
+
+    int j,l;//THE X AXIS TICK MARKS
+
+    	for(j=0; j <=10; j++){
+        	graphWindow.getGraphics();
+        	g.drawLine((30+((j*(this.getWidth()-60))/10)),(this.getHeight() - 27) , (30+((j*(this.getWidth()-60))/10)), (this.getHeight() - 33));
+        }
+    }
+  
     public void DrawAxis(Graphics g){
 	
 	Stroke stroke = new BasicStroke(2f);
