@@ -284,7 +284,7 @@ public class GraphPanel extends JPanel implements MouseListener {
 	    int graphWidth=windowWidth-2*initialPixelSpace;// in pixels
 	    int tickWidth=graphWidth;
 	   xPixelsToValueConversionFactor=(xVals[10]-xVals[0])/tickWidth;
-	  int xInPixels = me.getX();
+	  int xInPixels = me.getX()-60;
 	//  double xInPixelz= xInPixels;
     double xValue = ((double) xInPixels * xPixelsToValueConversionFactor)+ xVals[0];
     System.out.println(xValue);
