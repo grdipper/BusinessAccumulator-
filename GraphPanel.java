@@ -36,10 +36,10 @@ public class GraphPanel extends JPanel implements MouseListener
 	String expression;
 	double minY, maxY;
 	int yScaleValue;
-	double[] xVals;
-	double[] yVals;
+	static double[] xVals;
+	static double[] yVals;
 	
-	double[] xTickVal, yTickVal;
+	static double[] xTickVal, yTickVal;
 
 	
 
@@ -124,7 +124,7 @@ public void paint(Graphics g) // overrides paint() in JPanel!
     // 5 Do ALL drawing here in paint() 
     // draw x and y scales and the expression graph here.
     //
-    //Upper_Lower_Bounds()
+    Upper_Lower_Bounds();
     DrawTicks(g);
     DrawAxis(g);
     }
@@ -166,6 +166,69 @@ public void paint(Graphics g) // overrides paint() in JPanel!
 	g.drawLine(60, (this.getHeight() - 60), (this.getWidth() - 60) , (this.getHeight() - 60));
 	
 }
+
+
+	
+	public static void Upper_Lower_Bounds(){
+		xTickVal = xVals;
+		yTickVal = yVals;
+		
+		double xVals_Max = 0;
+		double xVals_Min = 0; 
+		
+		double yVals_Max = 0;
+		double yVals_Min = 0; 
+		
+		for(int i = 0; i< xVals.length;  i++){
+			if(xVals[i] > xVals_Max){
+				xVals_Max = xVals[i];
+			}
+			xTickVal[i] = 0;
+		}
+		xVals_Min = xVals_Max;
+		
+		
+		for(int i = 0; i< xVals.length;  i++){
+			if(xVals[i] < xVals_Min){
+				xVals_Min = xVals[i];
+			}
+		}
+		
+		
+		double range_x = xVals_Max - xVals_Min;
+		
+		int numberOfTicks = 11;
+		
+		double unchangedTickValue_for_x = range_x/(numberOfTicks-1);
+		
+		double x = Math.ceil(Math.log10(unchangedTickValue_for_x)-1);
+		double x10thPower = Math.pow(10, x);
+		double new_x_rounded_Tick = Math.ceil(unchangedTickValue_for_x / x10thPower) * x10thPower;
+		System.out.println("new Tick average is: " + new_x_rounded_Tick);
+		
+		//new lower bound = 30 * round(15/30) = 0
+		xTickVal[0] = new_x_rounded_Tick*(xVals[0]/new_x_rounded_Tick);
+		for(int i = 1; i< 11; i++){
+			xTickVal[i] = new_x_rounded_Tick + xTickVal[i -1];
+			
+		}
+		
+		
+		for(int i = 0; i< yVals.length;  i++){
+			if(yVals[i] > yVals_Max){
+				yVals_Max = yVals[i];
+			}
+			yTickVal[i] = 0;
+		}
+		yVals_Min = yVals_Max;
+		
+		
+		for(int i = 0; i< yVals.length;  i++){
+			if(yVals[i] < yVals_Min){
+				yVals_Min = yVals[i];
+			}
+		}
+	}
     
 
   public void mousePressed(MouseEvent me) // show tiny x,y values window
