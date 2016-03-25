@@ -120,23 +120,30 @@ public void paint(Graphics g) // overrides paint() in JPanel!
     DrawTicks(g);
     DrawAxis(g);
     }
-    
-    public void DrawTicks(Graphics g){
+       public void DrawTicks(Graphics g){
    
-    Stroke stroke1 = new BasicStroke(2f);
-    ((Graphics2D) g).setStroke(stroke1);
-    int i,k; //THE Y AXIS TICK MARKS
-    	for(i=0; i <=10; i++){
-        	graphWindow.getGraphics();
-        	g.drawLine(57, (this.getHeight()-60)-((i*(this.getHeight()-120))/10), 63, (this.getHeight() - 60)-((i*(this.getHeight()-120))/10));
-        }
+    	double stepSize= xVals[1]-xVals[0];
+    	
+	    Stroke stroke1 = new BasicStroke(2f);
+	    ((Graphics2D) g).setStroke(stroke1);
+	    int i,k; //THE Y AXIS TICK MARKS
+	    	for(i=0; i <=10; i++){
+	        	graphWindow.getGraphics();
+	        	g.drawLine(57, (this.getHeight()-60)-((i*(this.getHeight()-120))/10), 63, (this.getHeight() - 60)-((i*(this.getHeight()-120))/10));
+	        }
 
-    int j,l;//THE X AXIS TICK MARKS
-
-    	for(j=0; j <=10; j++){
-        	graphWindow.getGraphics();
-        	g.drawLine((60+((j*(this.getWidth()-120))/10)),(this.getHeight() - 57) , (60+((j*(this.getWidth()-120))/10)), (this.getHeight() - 63));
-        }
+	    int j,l;//THE X AXIS TICK MARKS
+	
+	    	for(j=0; j <=10; j++){
+	    		//stepSize=2;
+	    		double tickValue= (j+1)*stepSize;
+	    		
+	    		String tickVal= String.valueOf(tickValue);
+	        	graphWindow.getGraphics();
+	        	g.drawLine((60+((j*(this.getWidth()-120))/10)),(this.getHeight() - 57) , (60+((j*(this.getWidth()-120))/10)), (this.getHeight() - 63));
+	        	g.drawString(tickVal, (58+((j*(this.getWidth()-120))/10)), (this.getHeight() - 30));
+	 
+	    	}
     }
   
     public void DrawAxis(Graphics g){
