@@ -99,7 +99,7 @@ public GraphPanel (double[] xValues, double[] yValues, String expression) throws
 public void paint(Graphics g) // overrides paint() in JPanel!
     {
 	@SuppressWarnings("unused")
-	int xrange=xend-xstart;
+
 	
     int windowWidth  = getWidth();  
     int windowHeight = getHeight(); 
@@ -107,9 +107,9 @@ public void paint(Graphics g) // overrides paint() in JPanel!
   
     int graphWidth=windowWidth-2*initialPixelSpace;// in pixels
     int tickWidth=graphWidth/10;
-    int tickValue=xrange/10;
+
    
-    int xPixelsToValueConversionFactor= tickValue/tickWidth;
+    
  // call methods in JPanel to get the
     // *CURRENT* size of the window!
     
@@ -122,20 +122,20 @@ public void paint(Graphics g) // overrides paint() in JPanel!
     }
     
     public void DrawTicks(Graphics g){
-    int stepValue = Integer.parseInt(stepSize);
+   
     Stroke stroke1 = new BasicStroke(2f);
     ((Graphics2D) g).setStroke(stroke1);
     int i,k; //THE Y AXIS TICK MARKS
     	for(i=0; i <=10; i++){
         	graphWindow.getGraphics();
-        	g.drawLine(27, (this.getHeight()-30)-((i*(this.getHeight()-60))/10), 33, (this.getHeight() - 30)-((i*(this.getHeight()-60))/10));
+        	g.drawLine(57, (this.getHeight()-60)-((i*(this.getHeight()-120))/10), 63, (this.getHeight() - 60)-((i*(this.getHeight()-120))/10));
         }
 
     int j,l;//THE X AXIS TICK MARKS
 
     	for(j=0; j <=10; j++){
         	graphWindow.getGraphics();
-        	g.drawLine((30+((j*(this.getWidth()-60))/10)),(this.getHeight() - 27) , (30+((j*(this.getWidth()-60))/10)), (this.getHeight() - 33));
+        	g.drawLine((60+((j*(this.getWidth()-120))/10)),(this.getHeight() - 57) , (60+((j*(this.getWidth()-120))/10)), (this.getHeight() - 63));
         }
     }
   
@@ -143,8 +143,8 @@ public void paint(Graphics g) // overrides paint() in JPanel!
 	
 	Stroke stroke = new BasicStroke(2f);
 	((Graphics2D) g).setStroke(stroke);
-	g.drawLine(30, 30, 30, (this.getHeight() - 30));
-	g.drawLine(30, (this.getHeight() - 30), (this.getWidth() - 30) , (this.getHeight() - 30));
+	g.drawLine(60, 60, 60, (this.getHeight() - 60));
+	g.drawLine(60, (this.getHeight() - 60), (this.getWidth() - 60) , (this.getHeight() - 60));
 	
 }
     
