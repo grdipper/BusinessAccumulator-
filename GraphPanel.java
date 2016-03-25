@@ -276,22 +276,23 @@ public class GraphPanel extends JPanel implements MouseListener {
 	  xyWindow.setSize(300, 100);
 	   xyWindow.setLocation(me.getX()+200, me.getY()+200);
 	   
-	    int windowWidth  = getWidth();  
+	    int windowWidth  = this.getWidth();  
 		//int windowHeight = getHeight(); 
 	    int initialPixelSpace=60;//pixels between edge of window and beginning of axis of graph
 	    double stepSize= xVals[1]-xVals[0];
 	    
 	    int graphWidth=windowWidth-2*initialPixelSpace;// in pixels
-	    int tickWidth=graphWidth/10;
-	   xPixelsToValueConversionFactor=stepSize/tickWidth;
+	    int tickWidth=graphWidth;
+	   xPixelsToValueConversionFactor=(xVals[10]-xVals[0])/tickWidth;
 	  int xInPixels = me.getX();
 	//  double xInPixelz= xInPixels;
     double xValue = ((double) xInPixels * xPixelsToValueConversionFactor)+ xVals[0];
+    System.out.println(xValue);
     xValue=Math.round(xValue * 1000.0) / 1000.0;
     String xValueString = String.valueOf(xValue);
     xText.setText( xValueString);
    
-    String yValueString = ExpressionCalculator.evaluateExpression(expression.replace("x", xValueString)); //
+    String yValueString = ExpressionCalculator.evaluateExpression(ExpressionCalculator.replaceUnaryOperator(expression.replace("x", "("+xValueString+")"))); //
     double yValue=Double.parseDouble(yValueString);
     yValue=Math.round(yValue * 1000.0) / 1000.0;
     yValueString=String.valueOf(yValue);
