@@ -268,23 +268,38 @@ public class GraphPanel extends JPanel implements MouseListener {
 		}
 	}
 
-	public void mousePressed(MouseEvent me) // show tiny x,y values window
-	{
-		// xTextField and yTextField are in the mini displayXYpairWindow
-		int xPixelsToValueConversionFactor = 1; //////////// Requires Fine
-												//////////// Tuning
-		int xInPixels = me.getX();
-		double xValue = xInPixels * xPixelsToValueConversionFactor;
-		String xValueString = String.valueOf(xValue);
-		xText.setText(xValueString);
+	
+  public void mousePressed(MouseEvent me) // show tiny x,y values window
+    {
+    // xTextField and yTextField are in the mini displayXYpairWindow
+    //int xPixelsToValueConversionFactor= 1; ////////////Requires Fine Tuning
+	  	
+	    int windowWidth  = getWidth();  
+		//int windowHeight = getHeight(); 
+	    int initialPixelSpace=60;//pixels between edge of window and beginning of axis of graph
+	    double stepSize= xVals[1]-xVals[0];
+	    
+	    int graphWidth=windowWidth-2*initialPixelSpace;// in pixels
+	    int tickWidth=graphWidth/10;
+	   xPixelsToValueConversionFactor=stepSize/tickWidth;
+	  int xInPixels = me.getX();
+	//  double xInPixelz= xInPixels;
+    double xValue = ((double) xInPixels * xPixelsToValueConversionFactor)+ xVals[0];
+    xValue=Math.round(xValue * 1000.0) / 1000.0;
+    String xValueString = String.valueOf(xValue);
+    xText.setText( xValueString);
+   
+    String yValueString = ExpressionCalculator.evaluateExpression(expression.replace("x", xValueString)); //
+    double yValue=Double.parseDouble(yValueString);
+    yValue=Math.round(yValue * 1000.0) / 1000.0;
+    yValueString=String.valueof(yValue);
+    yText.setText( yValueString);
 
-		String yValueString = ExpressionCalculator.evaluateExpression(expression.replace("x", xValueString)); //
-		yText.setText(yValueString);
-
-		// show mini x,y display window
-		xyWindow.setLocation(me.getX(), me.getY());
-		xyWindow.setVisible(true);
-	}
+    // show mini x,y display window
+   xyWindow.setSize(300, 100);
+   xyWindow.setLocation(me.getX(), me.getY());
+   xyWindow.setVisible(true); 
+    }
 
 	public void mouseReleased(MouseEvent me) // hide tiny window
 	{
