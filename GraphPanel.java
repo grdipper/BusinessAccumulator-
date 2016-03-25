@@ -89,7 +89,7 @@ public GraphPanel (double[] xValues, double[] yValues, String expression) throws
     	      minY = yValues[counter];
     	     }
     	}
-    	calculateYScale(minY, maxY); //Changes yScaleValue which is a global variable
+    	//calculateYScale(minY, maxY); //Changes yScaleValue which is a global variable
     
    // 3 Build the mini displayXYpairWindow (reuse for each mouse click!)
     	
@@ -123,28 +123,34 @@ public void paint(Graphics g) // overrides paint() in JPanel!
     	
     // 5 Do ALL drawing here in paint() 
     // draw x and y scales and the expression graph here.
+    //
+    //Upper_Lower_Bounds()
     DrawTicks(g);
     DrawAxis(g);
     }
-       public void DrawTicks(Graphics g){
+  public void DrawTicks(Graphics g){
    
     	double stepSize= xVals[1]-xVals[0];
+    	double tickValue;
+    	String tickVal;
     	
-	    Stroke stroke1 = new BasicStroke(2f);
+    	Stroke stroke1 = new BasicStroke(2f);
 	    ((Graphics2D) g).setStroke(stroke1);
-	    int i,k; //THE Y AXIS TICK MARKS
-	    	for(i=0; i <=10; i++){
+	     //THE Y AXIS TICK MARKS
+	    	for(int i=0; i <=10; i++){
+	    		 tickValue=yTickVal[i];
+	    		 tickVal= String.valueOf(tickValue);
 	        	graphWindow.getGraphics();
 	        	g.drawLine(57, (this.getHeight()-60)-((i*(this.getHeight()-120))/10), 63, (this.getHeight() - 60)-((i*(this.getHeight()-120))/10));
-	        }
+	        	g.drawString(tickVal, 50, (this.getHeight()-60)-((i*(this.getHeight()-120))/10));
+	    	}
 
-	    int j,l;//THE X AXIS TICK MARKS
+	    //THE X AXIS TICK MARKS
 	
-	    	for(j=0; j <=10; j++){
-	    		//stepSize=2;
-	    		double tickValue= (j+1)*stepSize;
+	    	for(int j=0; j <=10; j++){
 	    		
-	    		String tickVal= String.valueOf(tickValue);
+	    		 tickValue=xTickVal[j];
+	    		 tickVal= String.valueOf(tickValue);
 	        	graphWindow.getGraphics();
 	        	g.drawLine((60+((j*(this.getWidth()-120))/10)),(this.getHeight() - 57) , (60+((j*(this.getWidth()-120))/10)), (this.getHeight() - 63));
 	        	g.drawString(tickVal, (58+((j*(this.getWidth()-120))/10)), (this.getHeight() - 30));
@@ -189,7 +195,7 @@ public void paint(Graphics g) // overrides paint() in JPanel!
   public void mouseEntered(MouseEvent me){} // on these
   public void mouseExited(MouseEvent  me){} // window events
   
-
+/*
 public void calculateYScale(double minY, double maxY)
   {
  // if (args.length != 2)
@@ -236,7 +242,7 @@ public void calculateYScale(double minY, double maxY)
 	 System.out.println("Add handling of small plot range!");
 	 return;
      }
-/*ASSUME*/ // 10 scale values as a starting assumption.
+//ASSUME/ // 10 scale values as a starting assumption.
   initialIncrement = plotRange/10;
   System.out.println("Initial increment value = " + initialIncrement);
   // Please excuse this clumsy "math"!
@@ -318,7 +324,5 @@ public void calculateYScale(double minY, double maxY)
        }
   System.out.println(yScaleValue);
 
-  }      
+  }     */
 }
-	
-
