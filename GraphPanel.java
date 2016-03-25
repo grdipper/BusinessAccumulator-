@@ -36,10 +36,10 @@ public class GraphPanel extends JPanel implements MouseListener
 	String expression;
 	double minY, maxY;
 	int yScaleValue;
-	static double[] xVals;
-	static double[] yVals;
+	static double[] xVals = new double[11];
+	static double[] yVals = new double[11];
 	
-	static double[] xTickVal, yTickVal;
+	static double[] yTickVal;
 
 	
 
@@ -47,8 +47,9 @@ public GraphPanel (double[] xValues, double[] yValues, String expression) throws
     {
     	//Save arguments to global variable
 	this.expression=expression;
-	this.xVals = xValues;
-	this.yVals = yValues;
+	xVals = xValues;
+	yVals = yValues;
+	
 	
 	xyWindow.getContentPane().add(xyPanel,"North");
 	graphWindow.getContentPane().add(this, "Center");
@@ -93,7 +94,7 @@ public GraphPanel (double[] xValues, double[] yValues, String expression) throws
     
    // 3 Build the mini displayXYpairWindow (reuse for each mouse click!)
     	
-    	xyWindow.getContentPane().add(xyPanel,"North");
+    	//xyWindow.getContentPane().add(xyPanel,"North");
     	
     	xyPanel.add(xLabel);
     	xyPanel.add(xText);
@@ -124,12 +125,24 @@ public void paint(Graphics g) // overrides paint() in JPanel!
     // 5 Do ALL drawing here in paint() 
     // draw x and y scales and the expression graph here.
     //
+    for(int j = 0;j<11;j++) {
+    	System.out.println(xVals[j]);
+    }
     Upper_Lower_Bounds();
+    for(int j = 0;j<11;j++) {
+    	System.out.println(xVals[j]);
+    }
     DrawTicks(g);
+    for(int j = 0;j<11;j++) {
+    	System.out.println(xVals[j]);
+    }
     DrawAxis(g);
+    for(int j = 0;j<11;j++) {
+    	System.out.println(xVals[j]);
+    }
     }
   public void DrawTicks(Graphics g){
-   
+	  
     	double stepSize= xVals[1]-xVals[0];
     	double tickValue;
     	String tickVal;
@@ -149,7 +162,8 @@ public void paint(Graphics g) // overrides paint() in JPanel!
 	
 	    	for(int j=0; j <=10; j++){
 	    		
-	    		 tickValue=xTickVal[j];
+	    		 tickValue=xVals[j];
+	    		 
 	    		 tickVal= String.valueOf(tickValue);
 	        	graphWindow.getGraphics();
 	        	g.drawLine((60+((j*(this.getWidth()-120))/10)),(this.getHeight() - 57) , (60+((j*(this.getWidth()-120))/10)), (this.getHeight() - 63));
@@ -170,48 +184,35 @@ public void paint(Graphics g) // overrides paint() in JPanel!
 
 	
 	public static void Upper_Lower_Bounds(){
-		xTickVal = xVals;
-		yTickVal = yVals;
 		
-		double xVals_Max = 0;
-		double xVals_Min = 0; 
+		yTickVal = yVals;
+		for(int j = 0;j<11;j++) {
+	    	System.out.println("ULB"+xVals[j]);
+	    }
+		
 		
 		double yVals_Max = 0;
 		double yVals_Min = 0; 
 		
-		for(int i = 0; i< xVals.length;  i++){
-			if(xVals[i] > xVals_Max){
-				xVals_Max = xVals[i];
-			}
-			xTickVal[i] = 0;
-		}
-		xVals_Min = xVals_Max;
 		
 		
-		for(int i = 0; i< xVals.length;  i++){
-			if(xVals[i] < xVals_Min){
-				xVals_Min = xVals[i];
-			}
-		}
 		
 		
-		double range_x = xVals_Max - xVals_Min;
+		
+		
+		
+		
 		
 		int numberOfTicks = 11;
 		
-		double unchangedTickValue_for_x = range_x/(numberOfTicks-1);
 		
-		double x = Math.ceil(Math.log10(unchangedTickValue_for_x)-1);
-		double x10thPower = Math.pow(10, x);
-		double new_x_rounded_Tick = Math.ceil(unchangedTickValue_for_x / x10thPower) * x10thPower;
-	//	System.out.println("new Tick average is: " + new_x_rounded_Tick);
+		
+		
 		
 		//new lower bound = 30 * round(15/30) = 0
-		xTickVal[0] = new_x_rounded_Tick*(xVals[0]/new_x_rounded_Tick);
-		for(int i = 1; i< 11; i++){
-			xTickVal[i] = new_x_rounded_Tick + xTickVal[i -1];
-			
-		}
+		
+		
+		
 		
 		
 		for(int i = 0; i< yVals.length;  i++){
