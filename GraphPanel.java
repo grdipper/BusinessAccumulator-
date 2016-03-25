@@ -39,9 +39,8 @@ public class GraphPanel extends JPanel implements MouseListener
 	static double[] xVals = new double[11];
 	static double[] yVals = new double[11];
 	
-	static double[] yTickVal;
-	static double[] xTickVal;
-
+	static double[] yTickVal = {0,0,0,0,0,0,0,0,0,0,0};
+	static double[] xTickVal = {0,0,0,0,0,0,0,0,0,0,0};
 	
 
 public GraphPanel (double[] xValues, double[] yValues, String expression) throws IllegalArgumentException
