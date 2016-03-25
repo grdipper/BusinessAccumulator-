@@ -87,6 +87,7 @@ public class ExpressionCalculator implements ActionListener {
 		inputField.addActionListener(this);
 		variableField.addActionListener(this);
 		graphButton.addActionListener(this);
+		stepSizeField.addActionListener(this);
 		
 		//workArea.setEditable(false);
 		outputField.setEditable(false);
@@ -144,9 +145,11 @@ public class ExpressionCalculator implements ActionListener {
 		
 		String expression = inputField.getText();
 		String eX = variableField.getText();
+		String stepSize = stepSizeField.getText();
 		String answer;
 		
-	if(ae.getSource() == graphButton){
+	if((ae.getSource() == graphButton)||(ae.getSource() == stepSizeField)){
+		System.out.println("In G Button");
 		double[] xValues = {-5,-4,-3,-2,-1,0,1,2,3,4,5};
 		double[] yValues = {-5,-4,-3,-2,-1,0,1,2,3,4,5};
 		//Nothing has been typed
@@ -235,7 +238,7 @@ public class ExpressionCalculator implements ActionListener {
 		
 		return;
 	}
-		
+	/*	
 	if(ae.getSource() == variableField){
 		if((expression.trim().length()==0) && (eX.trim().length() == 0)) {
 			errorPanel.setBackground(Color.WHITE);
@@ -320,9 +323,46 @@ public class ExpressionCalculator implements ActionListener {
 			outputField.setText(answer);
 			errorLabel.setText("");
 		}
-	
+	*/
 		
-	if(ae.getSource() == inputField) {
+	if((ae.getSource() == inputField)||(ae.getSource() == variableField)||(ae.getSource() == submitButton)) {
+		System.out.println("In inputField");
+		if(stepSizeField.getText().trim().length() != 0){
+			printError("Remove the Step Size Field for Accumulate or Expression mode");
+			return;
+		}
+			
+		if((expression.trim().length() != 0) && 
+		   (eX.trim().length() == 0) &&
+		   (stepSize.trim().length()==0)){
+				if(expression.startsWith("+")){
+					System.out.println(expression.substring(1));
+					try{
+					double express = Double.parseDouble(expression.substring(1));
+					if(outputField.getText().trim().length()==0)
+						outputField.setText(String.valueOf(express));
+					else
+						outputField.setText(String.valueOf(Double.parseDouble(outputField.getText())+express));
+					
+					return;
+					}
+					catch(Exception e){System.out.println("Not Accumulate");
+					}
+				}
+				else{
+					try{
+						double express = Double.parseDouble(expression);
+						if(outputField.getText().trim().length()==0)
+							outputField.setText(String.valueOf(express));
+						else
+							outputField.setText(String.valueOf(Double.parseDouble(outputField.getText())+express));
+						
+						return;
+						}
+						catch(Exception e){System.out.println("Not Accumulate");
+						}
+				}
+			}
 		// Check to see if anything was typed in
 		// If it was blank, then the user probably didn't mean to 
 		if((expression.trim().length()==0) && (eX.trim().length() == 0)){
@@ -330,7 +370,7 @@ public class ExpressionCalculator implements ActionListener {
 			
 			errorLabel.setText("");
 			variableField.setText("");
-			outputField.setText("Nothing has been typed in either of the fields.");
+			printError("Nothing has been typed in either of the fields.");
 			return;
 		}
 		if(expression.contains("x.x")){
@@ -338,7 +378,7 @@ public class ExpressionCalculator implements ActionListener {
 			
 			variableField.setText("");
 			outputField.setText("");
-			errorLabel.setText("Error: Expression contained unknown operator: .");
+			printError("Error: Expression contained unknown operator: .");
 			return;
 		}
 		if((expression.contains("x")) && (eX.trim().length() == 0)){
@@ -346,7 +386,7 @@ public class ExpressionCalculator implements ActionListener {
 			
 			errorLabel.setText("");
 			variableField.setText("");
-			outputField.setText("Nothing has been typed in the variable field.");
+			printError("Nothing has been typed in the variable field.");
 			return;
 		}
 		if((expression.trim().length()==0) && (eX.trim().length() != 0)) {
@@ -354,16 +394,15 @@ public class ExpressionCalculator implements ActionListener {
 			
 			errorLabel.setText("");
 			variableField.setText("");
-			outputField.setText("Nothing has been typed in the expression field.");
+			printError("Nothing has been typed in the expression field.");
 			return;
 		}
 		for(int a = 0; a < eX.length(); a++){
 			if((Character.getNumericValue(eX.charAt(a)) == -1) && (eX.charAt(a) != '-')){
 				errorPanel.setBackground(Color.PINK);
-				
 				variableField.setText("");
 				outputField.setText("");
-				errorLabel.setText("Error: Value entered in Variable Field is non-numeric");
+				printError("Error: Value entered in Variable Field is non-numeric");
 				return;
 			}
 			if((expression.contains("x") && ((Character.getNumericValue(eX.charAt(a)) != -1)
@@ -375,13 +414,20 @@ public class ExpressionCalculator implements ActionListener {
 					variableField.setText("");
 					errorPanel.setBackground(Color.PINK);
 					outputField.setText("");
-					errorLabel.setText("Error: Adjacent Operator Error");
+					printError("Error: Adjacent Operator Error");
 					return;
 					}
-				
-				
+			}
+			try{
+				Double.parseDouble(eX);
+			}
+			catch(Exception e){
+				printError("Error: Value entered in Variable Field is non-numeric");
+				return;
 			}
 		}
+		
+		
 		//Check for errors and TRUE means ERROR
 		expression = expression.replace("x", eX );
 		if(checkForErrors(expression)){
@@ -408,9 +454,9 @@ public class ExpressionCalculator implements ActionListener {
 				errorPanel.setBackground(Color.WHITE);
 				outputField.setText(answer);
 				errorLabel.setText("");
-	}
-			
+	}		
 	if(ae.getSource() == submitButton){
+		System.out.println("In Submit Button");
 		// Check to see if anything was typed in
 				// If it was blank, then the user probably didn't mean to 
 				if((expression.trim().length()==0) && (eX.trim().length() == 0)){
