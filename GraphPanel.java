@@ -181,10 +181,10 @@ public class GraphPanel extends JPanel implements MouseListener {
 			g.fillOval(xCoord, yCoord, 5, 5);
 			if(i>=1) {
 				g.setColor(Color.blue);
-				g.drawLine(prevX, prevY, xCoord, yCoord);
+				g.drawLine(prevX, prevY, xCoord+2, yCoord+2);
 			}
-			prevX = xCoord;
-			prevY = yCoord;
+			prevX = xCoord+2;
+			prevY = yCoord+2;
 			
 
 		}
@@ -254,10 +254,15 @@ public class GraphPanel extends JPanel implements MouseListener {
 
 		double unchangedTickValue_for_y = range_y / (numberOfTicks - 1);
 
-		//double y = Math.ceil(Math.log10(unchangedTickValue_for_y) - 1);
-		double y10thPower = Math.pow(10, x);
+		double y = Math.ceil(Math.log10(unchangedTickValue_for_y) - 1);
+		double y10thPower = Math.pow(10, y);
+		
 		double new_y_rounded_Tick = Math.ceil(unchangedTickValue_for_y / y10thPower) * y10thPower;
-		yTickVal[0] = new_y_rounded_Tick * (yVals_Min / new_y_rounded_Tick);
+		System.out.println("THE MINIMUM IS: "+yVals_Min);
+		yTickVal[0] = new_y_rounded_Tick * ((int)(yVals_Min / new_y_rounded_Tick));
+		while(yTickVal[0]>yVals_Min) {
+			yTickVal[0] = yTickVal[0] - new_y_rounded_Tick;
+		}
 		for (int i = 1; i < 11; i++) {
 			yTickVal[i] = new_y_rounded_Tick + yTickVal[i - 1];
 
