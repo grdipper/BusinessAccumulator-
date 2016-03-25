@@ -204,7 +204,7 @@ public void paint(Graphics g) // overrides paint() in JPanel!
 		double x = Math.ceil(Math.log10(unchangedTickValue_for_x)-1);
 		double x10thPower = Math.pow(10, x);
 		double new_x_rounded_Tick = Math.ceil(unchangedTickValue_for_x / x10thPower) * x10thPower;
-		System.out.println("new Tick average is: " + new_x_rounded_Tick);
+	//	System.out.println("new Tick average is: " + new_x_rounded_Tick);
 		
 		//new lower bound = 30 * round(15/30) = 0
 		xTickVal[0] = new_x_rounded_Tick*(xVals[0]/new_x_rounded_Tick);
