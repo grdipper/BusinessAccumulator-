@@ -155,7 +155,7 @@ public void paint(Graphics g) // overrides paint() in JPanel!
 	    		 tickVal= String.valueOf(tickValue);
 	        	graphWindow.getGraphics();
 	        	g.drawLine(57, (this.getHeight()-60)-((i*(this.getHeight()-120))/10), 63, (this.getHeight() - 60)-((i*(this.getHeight()-120))/10));
-	        	g.drawString(tickVal, 50, (this.getHeight()-60)-((i*(this.getHeight()-120))/10));
+	        	g.drawString(tickVal, 10, 4+(this.getHeight()-60)-((i*(this.getHeight()-120))/10));
 	    	}
 
 	    //THE X AXIS TICK MARKS
@@ -167,7 +167,7 @@ public void paint(Graphics g) // overrides paint() in JPanel!
 	    		 tickVal= String.valueOf(tickValue);
 	        	graphWindow.getGraphics();
 	        	g.drawLine((60+((j*(this.getWidth()-120))/10)),(this.getHeight() - 57) , (60+((j*(this.getWidth()-120))/10)), (this.getHeight() - 63));
-	        	g.drawString(tickVal, (58+((j*(this.getWidth()-120))/10)), (this.getHeight() - 30));
+	        	g.drawString(tickVal, (50+((j*(this.getWidth()-120))/10)), (this.getHeight() - 30));
 	 		
 	    	}
     }
@@ -259,7 +259,8 @@ public static void Upper_Lower_Bounds(){
 			
 		}
 		for(int i =0;i<11;i++) {
-			System.out.println(yTickVal[i]);
+			yTickVal[i] = Math.round(yTickVal[i] * 1000.0) / 1000.0;
+			xVals[i] = Math.round(xVals[i]*1000.0)/1000.0;
 		}
 	}
     
