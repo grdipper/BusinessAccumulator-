@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.Line2D;
+//import java.awt.geom.Line2D;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -129,7 +129,7 @@ public class GraphPanel extends JPanel implements MouseListener {
 
 	public void DrawTicks(Graphics g) {
 
-		double stepSize = xVals[1] - xVals[0];
+		//double stepSize = xVals[1] - xVals[0];
 		double tickValue;
 		String tickVal;
 
@@ -254,7 +254,7 @@ public class GraphPanel extends JPanel implements MouseListener {
 
 		double unchangedTickValue_for_y = range_y / (numberOfTicks - 1);
 
-		double y = Math.ceil(Math.log10(unchangedTickValue_for_y) - 1);
+		//double y = Math.ceil(Math.log10(unchangedTickValue_for_y) - 1);
 		double y10thPower = Math.pow(10, x);
 		double new_y_rounded_Tick = Math.ceil(unchangedTickValue_for_y / y10thPower) * y10thPower;
 		yTickVal[0] = new_y_rounded_Tick * (yVals_Min / new_y_rounded_Tick);
@@ -273,7 +273,9 @@ public class GraphPanel extends JPanel implements MouseListener {
     {
     // xTextField and yTextField are in the mini displayXYpairWindow
     //int xPixelsToValueConversionFactor= 1; ////////////Requires Fine Tuning
-	  	
+	  xyWindow.setSize(300, 100);
+	   xyWindow.setLocation(me.getX()+200, me.getY()+200);
+	   
 	    int windowWidth  = getWidth();  
 		//int windowHeight = getHeight(); 
 	    int initialPixelSpace=60;//pixels between edge of window and beginning of axis of graph
@@ -292,12 +294,11 @@ public class GraphPanel extends JPanel implements MouseListener {
     String yValueString = ExpressionCalculator.evaluateExpression(expression.replace("x", xValueString)); //
     double yValue=Double.parseDouble(yValueString);
     yValue=Math.round(yValue * 1000.0) / 1000.0;
-    yValueString=String.valueof(yValue);
+    yValueString=String.valueOf(yValue);
     yText.setText( yValueString);
 
     // show mini x,y display window
-   xyWindow.setSize(300, 100);
-   xyWindow.setLocation(me.getX(), me.getY());
+   
    xyWindow.setVisible(true); 
     }
 
