@@ -183,36 +183,51 @@ public void paint(Graphics g) // overrides paint() in JPanel!
 
 
 	
-	public static void Upper_Lower_Bounds(){
+public static void Upper_Lower_Bounds(){
+		for(int i = 0; i< 11; i++){
+		xTickVal[i] = xVals[i];
 		
-		yTickVal = yVals;
-		for(int j = 0;j<11;j++) {
-	    	System.out.println("ULB"+xVals[j]);
-	    }
+		yTickVal[i] = yVals[i];}
 		
+		double xVals_Max = 0;
+		double xVals_Min = 0; 
 		
 		double yVals_Max = 0;
 		double yVals_Min = 0; 
 		
+		for(int i = 0; i< xVals.length;  i++){
+			if(xVals[i] > xVals_Max){
+				xVals_Max = xVals[i];
+			}
+			xTickVal[i] = 0;
+		}
+		xVals_Min = xVals_Max;
 		
 		
+		for(int i = 0; i< xVals.length;  i++){
+			if(xVals[i] < xVals_Min){
+				xVals_Min = xVals[i];
+			}
+		}
 		
 		
-		
-		
-		
-		
+		double range_x = xVals_Max - xVals_Min;
 		
 		int numberOfTicks = 11;
 		
+		double unchangedTickValue_for_x = range_x/(numberOfTicks-1);
 		
-		
-		
+		double x = Math.ceil(Math.log10(unchangedTickValue_for_x)-1);
+		double x10thPower = Math.pow(10, x);
+		double new_x_rounded_Tick = Math.ceil(unchangedTickValue_for_x / x10thPower) * x10thPower;
+		//System.out.println("new Tick average is: " + new_x_rounded_Tick);
 		
 		//new lower bound = 30 * round(15/30) = 0
-		
-		
-		
+		xTickVal[0] = new_x_rounded_Tick*(xVals[0]/new_x_rounded_Tick);
+		for(int i = 1; i< 11; i++){
+			xTickVal[i] = new_x_rounded_Tick + xTickVal[i -1];
+			
+		}
 		
 		
 		for(int i = 0; i< yVals.length;  i++){
@@ -228,6 +243,23 @@ public void paint(Graphics g) // overrides paint() in JPanel!
 			if(yVals[i] < yVals_Min){
 				yVals_Min = yVals[i];
 			}
+		}
+		double range_y = yVals_Max - yVals_Min;
+		
+		numberOfTicks = 11;
+		
+		double unchangedTickValue_for_y = range_y/(numberOfTicks-1);
+		
+		double y = Math.ceil(Math.log10(unchangedTickValue_for_y)-1);
+		double y10thPower = Math.pow(10, x);
+		double new_y_rounded_Tick = Math.ceil(unchangedTickValue_for_y / y10thPower) * y10thPower;
+		yTickVal[0] = new_y_rounded_Tick*(yVals_Min/new_y_rounded_Tick);
+		for(int i = 1; i< 11; i++){
+			yTickVal[i] = new_y_rounded_Tick + yTickVal[i -1];
+			
+		}
+		for(int i =0;i<11;i++) {
+			System.out.println(yTickVal[i]);
 		}
 	}
     
