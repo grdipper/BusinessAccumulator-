@@ -196,7 +196,8 @@ public class ExpressionCalculator implements ActionListener {
 				printError("Implicit multiplication on variable x");
 				return;
 			}
-			if(checkForErrors(expression.replace("x", "10.1"))){
+			System.out.println(replaceUnaryOperator(expression));
+			if(checkForErrors(replaceUnaryOperator(expression.replace("x", "10.1")))){
 				
 				
 				return;
@@ -214,7 +215,7 @@ public class ExpressionCalculator implements ActionListener {
 			}
 			System.out.println(evaluateExpression("("+expression.replace("x", "12")+")"));
 			for(i=0;i<yValues.length;i++) {
-				yValues[(int) i] = Double.parseDouble(evaluateExpression(replaceUnaryOperator("("+expression.replace("x", Double.toString(xValues[(int) i]))+")")));
+				yValues[(int) i] = Double.parseDouble(evaluateExpression(replaceUnaryOperator("("+expression.replace("x", "("+Double.toString(xValues[(int) i])+")")+")")));
 			}
 			
 			
@@ -688,7 +689,8 @@ public class ExpressionCalculator implements ActionListener {
 			if(expression.contains("(")) {
 				priorityExpr = findPriorityParentheses(expression);
 				expression = expression.replace(priorityExpr, evaluateExpression(priorityExpr));
-				
+				System.out.println(expression);
+				expression = expression.replace("u-", "");
 				
 			}
 			else {
@@ -699,6 +701,7 @@ public class ExpressionCalculator implements ActionListener {
 			
 			}
 			expression = replaceUnaryOperator(expression);
+			System.out.println(expression);
 		}
 		
 		
@@ -1086,7 +1089,7 @@ public class ExpressionCalculator implements ActionListener {
 
 public static boolean whatTypeError(String expression){
 		//specialAlphabet excludes known letter operators r,x
-		String specialAlphabet = "abcdfghijklmnopqstuvwyzABCDFGHIJKLMNOPQSTUVWYZ";
+		String specialAlphabet = "abcdfghijklmnopqstvwyzABCDFGHIJKLMNOPQSTUVWYZ";
 		for(int i = 0; i < (specialAlphabet.length()); i++){
 			if(illegalOperator == specialAlphabet.charAt(i)){
 				return true;
@@ -1107,7 +1110,7 @@ public static boolean whatTypeError(String expression){
 	
 	public static boolean FirstCheck(String expression){
 		
-		char[] allowedChars = {'(',')','^','*','/','+','-',' ', '1','2','3','4','5','6','7','8','9','0','r','e','p','.','x','P','E'};
+		char[] allowedChars = {'u','(',')','^','*','/','+','-',' ', '1','2','3','4','5','6','7','8','9','0','r','e','p','.','x','P','E'};
 		boolean matchesAnAllowedChar = false; 
 	
 		//First for loop looks through string
@@ -1145,7 +1148,7 @@ public static boolean whatTypeError(String expression){
 					//If anAllowedChar is found it breaks out of the second for loop
 					if(matchesAnAllowedChar == true){
 						//breaks out of for loop
-						k = 25;
+						k = 26;
 						matchesAnAllowedChar = false;
 					}
 
