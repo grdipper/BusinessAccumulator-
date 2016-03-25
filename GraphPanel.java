@@ -13,6 +13,9 @@ import javax.swing.JTextField;
 
 
 
+
+
+
 @SuppressWarnings("serial")
 public class GraphPanel extends JPanel implements MouseListener
 {
@@ -35,11 +38,14 @@ public class GraphPanel extends JPanel implements MouseListener
 	int yScaleValue;
 	double[] xVals;
 	double[] yVals;
+	
+	double[] xTickVal, yTickVal;
 
 	
 
 public GraphPanel (double[] xValues, double[] yValues, String expression) throws IllegalArgumentException
     {
+    	//Save arguments to global variable
 	this.expression=expression;
 	this.xVals = xValues;
 	this.yVals = yValues;
@@ -142,7 +148,7 @@ public void paint(Graphics g) // overrides paint() in JPanel!
 	        	graphWindow.getGraphics();
 	        	g.drawLine((60+((j*(this.getWidth()-120))/10)),(this.getHeight() - 57) , (60+((j*(this.getWidth()-120))/10)), (this.getHeight() - 63));
 	        	g.drawString(tickVal, (58+((j*(this.getWidth()-120))/10)), (this.getHeight() - 30));
-	 
+	 		
 	    	}
     }
   
