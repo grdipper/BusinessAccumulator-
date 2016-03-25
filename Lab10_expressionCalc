@@ -202,8 +202,24 @@ public class ExpressionCalculator implements ActionListener {
 				return;
 			}
 			
+			expression = expression.replace(" ", "");
+			double i;
 			
+			for(i=0;i<xValues.length;i++) {
+				xValues[(int) i] = Double.parseDouble(eX.trim())+i*Double.parseDouble(stepSizeField.getText().trim());
+			}
 			
+			for(i=0;i<xValues.length;i++) {
+				System.out.println(xValues[(int)i]);
+			}
+			for(i=0;i<yValues.length;i++) {
+				yValues[(int) i] = Double.parseDouble(evaluateExpression("("+expression.replace("x", Double.toString(xValues[(int) i]))+")"));
+			}
+			
+			System.out.println(evaluateExpression("("+expression.replace("x", "12")+")"));
+			for(i=0;i<xValues.length;i++) {
+				System.out.println(yValues[(int)i]);
+			}
 			errorLabel.setText("");
 			new GraphPanel(xValues,yValues,"x");
 			
